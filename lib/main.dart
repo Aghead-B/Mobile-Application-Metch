@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import './widgets/list_item.dart';
+import './widgets/bottom_navigation.dart';
+import 'package:metch_ui_kit/metch_ui_kit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,20 +26,11 @@ class MyApp extends StatelessWidget {
                         Image.asset('assets/images/logo.png'),
                         const Text(
                           'Metch',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Tahoma',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 35.0,
-                          ),
+                          style: title,
                         ),
                         const Text(
                           'Find players of your level',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Tahoma',
-                            fontSize: 17.5,
-                          ),
+                          style: paragraph,
                         ),
                       ],
                     ),
@@ -62,98 +56,5 @@ class MyApp extends StatelessWidget {
             ),
             backgroundColor: const Color.fromRGBO(53, 162, 158, 1.000),
             bottomNavigationBar: const BottomNavigation()));
-  }
-}
-
-class ListItemWidget extends StatelessWidget {
-  const ListItemWidget({super.key, required this.name, required this.icon});
-
-  final String name;
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              color: Colors.white,
-              size: 40,
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-              child: Text(
-                name,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Tahoma',
-                  fontSize: 25,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class BottomNavigation extends StatelessWidget {
-  const BottomNavigation({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: [
-        BottomNavigationBarItem(
-            icon: Container(
-              decoration: const BoxDecoration(
-                color: Colors.transparent,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.home,
-                color: Colors.white,
-                size: 35,
-              ),
-            ),
-            label: ''),
-        BottomNavigationBarItem(
-            icon: Container(
-              decoration: const BoxDecoration(
-                color: Colors.transparent,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.search,
-                color: Colors.white,
-                size: 35,
-              ),
-            ),
-            label: '',
-            backgroundColor: Colors.white),
-        BottomNavigationBarItem(
-            icon: Container(
-              decoration: const BoxDecoration(
-                color: Colors.transparent,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 35,
-              ),
-            ),
-            label: '',
-            backgroundColor: Colors.white)
-      ],
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      backgroundColor: const Color.fromRGBO(41, 125, 121, 1.000),
-    );
   }
 }
