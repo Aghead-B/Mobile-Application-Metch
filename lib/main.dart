@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import './widgets/list_item.dart';
+import 'package:metch/pages/find_match_page.dart';
+import 'package:metch/pages/my_match_page.dart';
+import 'package:metch/pages/setup_match_page.dart';
+import 'package:metch/widgets/home_text_button.dart';
 import './widgets/bottom_navigation.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 
@@ -36,21 +39,51 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                      padding: const EdgeInsets.fromLTRB(47, 35, 0, 0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Column(
-                          children: const [
-                            ListItemWidget(
-                                name: 'Setup match', icon: Icons.add),
-                            ListItemWidget(
-                                name: 'Find match', icon: Icons.search),
-                            ListItemWidget(
-                                name: 'My match', icon: Icons.calendar_month),
-                            ListItemWidget(name: 'Profile', icon: Icons.person),
-                          ],
-                        ),
-                      ))
+                    padding: const EdgeInsets.fromLTRB(47, 35, 0, 0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: const [
+                              HomeTextButton(
+                                name: "Setup Match",
+                                icon: Icons.add,
+                                page: SetupMatchPage(),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: const [
+                              HomeTextButton(
+                                name: "Find Match",
+                                icon: Icons.search,
+                                page: FindMatchPage(),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: const [
+                              HomeTextButton(
+                                name: "My Match",
+                                icon: Icons.calendar_month,
+                                page: MyMatchPage(),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: const [
+                              HomeTextButton(
+                                name: "Profile",
+                                icon: Icons.person,
+                                page: FindMatchPage(),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
