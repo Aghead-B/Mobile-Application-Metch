@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
                               HomeTextButton(
                                 name: "Setup Match",
                                 icon: Icons.add,
-                                page: SetupMatchPage(),
+                                page: SetupMatch(),
                               ),
                             ],
                           ),
