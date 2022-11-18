@@ -58,3 +58,22 @@ const headline4 = TextStyle(
   fontSize: _textSizeHeadline4,
   color: Colors.white,
 );
+
+const headline1Bold = TextStyle(
+  fontFamily: _metchFontFamily,
+  fontSize: _textSizeHeadline1,
+  color: Colors.white,
+  fontWeight: FontWeight.bold,
+);
+
+const secondaryText = TextStyle(
+  fontFamily: _metchFontFamily,
+  color: Colors.grey,
+  fontSize: 18,
+);
+
+const buttonText = TextStyle(
+  fontFamily: _metchFontFamily,
+  color: Colors.white,
+  fontSize: 20,
+);

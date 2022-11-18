@@ -13,7 +13,7 @@ class ButtonDefault extends Button {
   @override
   Widget build(BuildContext context) {
     return RawMaterialButton(
-      fillColor: color ?? primary500,
+      fillColor: color ?? secondary500,
       onPressed: onPressed,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(4.0))),

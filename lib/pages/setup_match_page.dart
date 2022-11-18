@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:metch_ui_kit/metch_ui_kit.dart';
 import '../widgets/bottom_navigation.dart';
 import '../widgets/dropdown.dart';
 
@@ -31,14 +32,20 @@ class SetupMatch extends StatefulWidget {
 }
 
 class _SetupMatchState extends State<SetupMatch> {
-  // Initial Selected Value
-  String playersDropdownValue = playersList[1];
-  String durationDropdownValue = durationList[0];
-  String courtDropdownValue = courtList[1];
+
+  Future<TimeOfDay?> pickTime() => showTimePicker(
+    context: context,
+    initialTime: TimeOfDay(hour: date.hour, minute: date.minute),
+  );
 
   DateTime date = DateTime.now();
-  late var formattedDate;
-  late var formattedTime;
+
+  late dynamic formattedDate;
+  late dynamic formattedTime;
+
+  String playersValue = playersList[1];
+  String durationValue = durationList[1];
+  String courtValue = courtList[1];
 
   @override
   void initState() {
@@ -49,15 +56,15 @@ class _SetupMatchState extends State<SetupMatch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(53, 162, 158, 1.000),
+      backgroundColor: primary500,
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(41, 125, 121, 1.000),
+        backgroundColor: primary700,
         title: Center(
           child: Container(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 0.0),
             child: const Text(
               'Setup Match',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: headline1Bold,
             ),
           ),
         ),
@@ -71,7 +78,7 @@ class _SetupMatchState extends State<SetupMatch> {
               children: [
                 const Text(
                   'Level 2-3',
-                  style: TextStyle(fontSize: 22, color: Colors.white),
+                  style: headline1,
                 ),
                 GestureDetector(
                   onTap: () {
@@ -92,7 +99,7 @@ class _SetupMatchState extends State<SetupMatch> {
                 children: [
                   const Text(
                     'Padelbaan Amstelveen',
-                    style: TextStyle(fontSize: 22, color: Colors.white),
+                    style: headline1,
                   ),
                   GestureDetector(
                     onTap: () {
@@ -118,7 +125,7 @@ class _SetupMatchState extends State<SetupMatch> {
                   ),
                   Text(
                     ' Looking for',
-                    style: TextStyle(fontSize: 22, color: Colors.white),
+                    style: headline1,
                   ),
                 ],
               ),
@@ -133,9 +140,12 @@ class _SetupMatchState extends State<SetupMatch> {
               ),
               padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
               child: Dropdown(
-                dropdownValue: playersDropdownValue,
+                dropdownValue: playersValue,
                 list: playersList,
                 icon: Icons.keyboard_arrow_down,
+                setter: (value) {
+                  playersValue = value;
+                },
               ),
             ),
             Container(
@@ -149,7 +159,7 @@ class _SetupMatchState extends State<SetupMatch> {
                   ),
                   Text(
                     ' When',
-                    style: TextStyle(fontSize: 22, color: Colors.white),
+                    style: headline1,
                   ),
                 ],
               ),
@@ -173,11 +183,7 @@ class _SetupMatchState extends State<SetupMatch> {
                       children: [
                         Text(
                           formattedDate,
-                          style: const TextStyle(
-                            fontFamily: 'Tahoma',
-                            color: Colors.grey,
-                            fontSize: 18,
-                          ),
+                          style: secondaryText,
                         ),
                         const Icon(
                           Icons.keyboard_arrow_down,
@@ -220,11 +226,7 @@ class _SetupMatchState extends State<SetupMatch> {
                       children: [
                         Text(
                           formattedTime,
-                          style: const TextStyle(
-                            fontFamily: 'Tahoma',
-                            color: Colors.grey,
-                            fontSize: 18,
-                          ),
+                          style: secondaryText,
                         ),
                         const Icon(
                           Icons.keyboard_arrow_down,
@@ -255,9 +257,12 @@ class _SetupMatchState extends State<SetupMatch> {
                     color: Colors.white,
                   ),
                   child: Dropdown(
-                    dropdownValue: durationDropdownValue,
+                    dropdownValue: durationValue,
                     list: durationList,
                     icon: Icons.keyboard_arrow_down,
+                    setter: (value) {
+                      durationValue = value;
+                    },
                   ),
                 )
               ],
@@ -273,7 +278,7 @@ class _SetupMatchState extends State<SetupMatch> {
                   ),
                   Text(
                     ' Court',
-                    style: TextStyle(fontSize: 22, color: Colors.white),
+                    style: headline1,
                   ),
                 ],
               ),
@@ -291,9 +296,12 @@ class _SetupMatchState extends State<SetupMatch> {
                   ),
                   child: DropdownButtonHideUnderline(
                     child: Dropdown(
-                      dropdownValue: courtDropdownValue,
+                      dropdownValue: courtValue,
                       list: courtList,
                       icon: Icons.keyboard_arrow_down,
+                      setter: (value) {
+                        courtValue = value;
+                      },
                     ),
                   ),
                 ),
@@ -301,15 +309,11 @@ class _SetupMatchState extends State<SetupMatch> {
                   children: const [
                     Text(
                       '  Only select if you booked a court.',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: caption,
                     ),
                     Text(
                       'We NOT book a court for you!.',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                      style: caption,
                     ),
                   ],
                 )
@@ -320,18 +324,18 @@ class _SetupMatchState extends State<SetupMatch> {
               height: 45,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(242, 139, 32, 1.000),
+                  backgroundColor: secondary500,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                 ),
                 onPressed: () {
-                  print('{level2-3, Padelbaan Amstelveen, }');
+                  debugPrint(
+                      '{level2-3, Padelbaan Amstelveen, $playersValue, $formattedDate, $formattedTime, $durationValue, $courtValue}');
                 },
                 child: const Text(
                   'Setup Match',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontFamily: 'Tahoma',
-                  ),
+                  style: buttonText,
                 ),
               ),
             )
@@ -341,9 +345,4 @@ class _SetupMatchState extends State<SetupMatch> {
       bottomNavigationBar: const BottomNavigation(),
     );
   }
-
-  Future<TimeOfDay?> pickTime() => showTimePicker(
-        context: context,
-        initialTime: TimeOfDay(hour: date.hour, minute: date.minute),
-      );
 }
