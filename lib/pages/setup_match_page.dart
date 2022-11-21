@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
-import '../widgets/bottom_navigation.dart';
 import '../widgets/dropdown.dart';
 
 const List<String> playersList = <String>[
@@ -24,14 +23,14 @@ const List<String> courtList = <String>[
   '4',
 ];
 
-class SetupMatch extends StatefulWidget {
-  const SetupMatch({Key? key}) : super(key: key);
+class SetupMatchPage extends StatefulWidget {
+  const SetupMatchPage({Key? key}) : super(key: key);
 
   @override
-  State<SetupMatch> createState() => _SetupMatchState();
+  State<SetupMatchPage> createState() => _SetupMatchPageState();
 }
 
-class _SetupMatchState extends State<SetupMatch> {
+class _SetupMatchPageState extends State<SetupMatchPage> {
 
   Future<TimeOfDay?> pickTime() => showTimePicker(
     context: context,
@@ -342,7 +341,6 @@ class _SetupMatchState extends State<SetupMatch> {
           ],
         ),
       ),
-      bottomNavigationBar: const BottomNavigation(),
     );
   }
 }
