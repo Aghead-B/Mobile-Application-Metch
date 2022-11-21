@@ -6,11 +6,14 @@ publish_to: none
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.18.4 <3.0.0"
+  sdk: ">=2.18.1 <3.0.0"
 
 dependencies:
   cupertino_icons: ^1.0.2
+  intl: ^0.17.0
   flutter:
+    sdk: flutter
+  flutter_localizations:
     sdk: flutter
   metch_ui_kit:
     path: packages/metch_ui_kit
