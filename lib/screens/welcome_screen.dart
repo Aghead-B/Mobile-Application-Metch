@@ -17,15 +17,6 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
 
-  late ClubService clubRepository;
-
-  @override
-  void initState() {
-    super.initState();
-    clubRepository = ClubService();
-    clubRepository.searchClubs("sd");
-  }
-
   List<Widget> pages = const [
     HomeScreen(),
     FindMatchScreen(),
