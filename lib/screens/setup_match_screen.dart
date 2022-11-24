@@ -23,14 +23,14 @@ const List<String> courtList = <String>[
   '4',
 ];
 
-class SetupMatchPage extends StatefulWidget {
-  const SetupMatchPage({Key? key}) : super(key: key);
+class SetupMatchScreen extends StatefulWidget {
+  const SetupMatchScreen({Key? key}) : super(key: key);
 
   @override
-  State<SetupMatchPage> createState() => _SetupMatchPageState();
+  State<SetupMatchScreen> createState() => _SetupMatchScreenState();
 }
 
-class _SetupMatchPageState extends State<SetupMatchPage> {
+class _SetupMatchScreenState extends State<SetupMatchScreen> {
 
   Future<TimeOfDay?> pickTime() => showTimePicker(
     context: context,

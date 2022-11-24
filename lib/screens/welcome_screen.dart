@@ -1,24 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:metch/pages/profile_page.dart';
-import 'package:metch/pages/setup_match_page.dart';
-import 'find_match_page.dart';
-import 'home_page.dart';
-import 'my_match_page.dart';
+import 'package:metch/domain/models/club.dart';
+import 'package:metch/domain/repositories/club_repository.dart';
+import 'package:metch/screens/profile_screen.dart';
+import 'package:metch/screens/setup_match_screen.dart';
+import '../domain/services/club_service.dart';
+import 'find_match_screen.dart';
+import 'home_screen.dart';
+import 'my_match_screen.dart';
 
-class WelcomePage extends StatefulWidget {
-  const WelcomePage({Key? key}) : super(key: key);
+class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<WelcomePage> createState() => _WelcomePageState();
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
-class _WelcomePageState extends State<WelcomePage> {
+class _WelcomeScreenState extends State<WelcomeScreen> {
+
+  late ClubService clubRepository;
+
+  @override
+  void initState() {
+    super.initState();
+    clubRepository = ClubService();
+    clubRepository.searchClubs("sd");
+  }
+
   List<Widget> pages = const [
-    HomePage(),
-    FindMatchPage(),
-    MyMatchPage(),
-    ProfilePage(),
-    SetupMatchPage()
+    HomeScreen(),
+    FindMatchScreen(),
+    MyMatchScreen(),
+    ProfileScreen(),
+    SetupMatchScreen()
   ];
   int currentIndex = 0;
 
