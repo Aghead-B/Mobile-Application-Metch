@@ -1,33 +1,45 @@
 import 'dart:convert';
-
+import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:metch/domain/models/club.dart';
 import 'package:metch/domain/repositories/club_repository.dart';
+import 'package:http/http.dart' as http;
 
+class ClubTest {
+  final List<Club> clubs;
 
-class ClubService implements ClubRepository{
+  const ClubTest({
+    required this.clubs,
+  });
+
+  factory ClubTest.fromJson(Map<String, dynamic> json) {
+    return ClubTest(
+      clubs: json['Clubs'],
+    );
+  }
+}
+
+class ClubService implements ClubRepository {
   @override
   Future<List<Club>> searchClubs(String name) async {
-    debugPrint("BANAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAN");
-    final response = await http
-        .get(Uri.parse('https://cdn2.thecatapi.com/images/ebv.jpg'));
-
+    final response =
+        await http.get(Uri.parse('https://metch.io/api/Club/?sportid=9&q=utr'));
 
     if (response.statusCode == 200) {
-      Set body = jsonDecode(response.body);
-      var it = body.iterator;
+      List<Club> finalClubList = [];
+      List<dynamic> clubs = jsonDecode(response.body)['Clubs'];
+
+      var it = clubs.iterator;
+
       while (it.moveNext()) {
-        debugPrint(it.current);
+        finalClubList.add(Club(
+            id: it.current['Id'].toString(),
+            name: it.current['Name'].toString()));
       }
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      return [];
+
+      return finalClubList;
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load album');
+      throw Exception('Failed to load club(s)');
     }
-
   }
-
 }

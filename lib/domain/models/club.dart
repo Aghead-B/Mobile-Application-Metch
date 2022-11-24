@@ -1,5 +1,5 @@
 class Club {
-  final int id;
+  final String id;
   final String name;
 
   const Club({

@@ -17,6 +17,7 @@ dependencies:
     sdk: flutter
   metch_ui_kit:
     path: packages/metch_ui_kit
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_lints: ^2.0.0
