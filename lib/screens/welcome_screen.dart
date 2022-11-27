@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:metch/domain/models/club.dart';
-import 'package:metch/domain/repositories/club_repository.dart';
 import 'package:metch/screens/profile_screen.dart';
 import 'package:metch/screens/setup_match_screen.dart';
-import '../domain/services/club_service.dart';
 import 'find_match_screen.dart';
 import 'home_screen.dart';
 import 'my_match_screen.dart';
