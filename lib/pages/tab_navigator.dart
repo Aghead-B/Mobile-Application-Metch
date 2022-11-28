@@ -17,11 +17,11 @@ class TabNavigator extends StatelessWidget {
   Widget build(BuildContext context) {
 
     late Widget child ;
-    if(tabItem == "Page1") {
+    if(tabItem == "HomePage") {
       child = const HomePage();
-    } else if(tabItem == "Page2") {
+    } else if(tabItem == "FindMatchPage") {
       child = const MyMatchPage();
-    } else if(tabItem == "Page3") {
+    } else if(tabItem == "SetupMatchPage") {
       child = const SetupMatchPage();
     }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:metch/pages/tab_navigator.dart';
+import 'package:metch_ui_kit/metch_ui_kit.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
@@ -9,12 +10,12 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  String _currentPage = "Page1";
-  List<String> pageKeys = ["Page1", "Page2", "Page3"];
+  String _currentPage = "HomePage";
+  List<String> pageKeys = ["HomePage", "FindMatchPage", "SetupMatchPage"];
   final Map<String, GlobalKey<NavigatorState>> _navigatorKeys = {
-    "Page1": GlobalKey<NavigatorState>(),
-    "Page2": GlobalKey<NavigatorState>(),
-    "Page3": GlobalKey<NavigatorState>(),
+    "HomePage": GlobalKey<NavigatorState>(),
+    "FindMatchPage": GlobalKey<NavigatorState>(),
+    "SetupMatchPage": GlobalKey<NavigatorState>(),
   };
   int _selectedIndex = 0;
 
@@ -34,10 +35,10 @@ class _AppState extends State<App> {
     return WillPopScope(
       onWillPop: () async {
         final isFirstRouteInCurrentTab =
-        !await _navigatorKeys[_currentPage]!.currentState!.maybePop();
+        await _navigatorKeys[_currentPage]!.currentState!.maybePop();
         if (isFirstRouteInCurrentTab) {
-          if (_currentPage != "Page1") {
-            _selectTab("Page1", 1);
+          if (_currentPage != "HomePage") {
+            _selectTab("HomePage", 1);
             return false;
           }
         }
@@ -47,9 +48,9 @@ class _AppState extends State<App> {
       child: Scaffold(
         body: Stack(
           children: <Widget>[
-            _buildOffstageNavigator("Page1"),
-            _buildOffstageNavigator("Page2"),
-            _buildOffstageNavigator("Page3"),
+            _buildOffstageNavigator("HomePage"),
+            _buildOffstageNavigator("FindMatchPage"),
+            _buildOffstageNavigator("SetupMatchPage"),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -103,7 +104,7 @@ class _AppState extends State<App> {
           ],
           showSelectedLabels: false,
           showUnselectedLabels: false,
-          backgroundColor: const Color.fromRGBO(41, 125, 121, 1.000),
+          backgroundColor: primary700,
         ),
       ),
     );
