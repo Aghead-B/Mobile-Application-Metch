@@ -43,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                         HomeTextButton(
                           name: "Setup Match",
                           icon: Icons.add,
-                          page: FindLocationScreen(),
+                          page: SetupMatchScreen(),
                         ),
                       ],
                     ),

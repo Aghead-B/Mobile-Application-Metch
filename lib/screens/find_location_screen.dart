@@ -47,11 +47,24 @@ class _FindLocationScreenState extends State<FindLocationScreen> {
                 futureClub = clubService.searchClubs(value);
               }),
               decoration: InputDecoration(
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                hintText: '',
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(
+                      width: 1,
+                      color: primary700,
+                    )),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(
+                    width: 2,
+                    color: primary700,
+                  ),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                hintText: 'Search location',
               ),
-              style: headline4,
+              style: headline4Black,
             ),
             FutureBuilder<List<Club>>(
               future: futureClub,
@@ -73,10 +86,12 @@ class _FindLocationScreenState extends State<FindLocationScreen> {
                     itemCount: snapshot.data!.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+                        padding:
+                            const EdgeInsets.fromLTRB(10.0, 20.0, 0.0, 0.0),
                         child: GestureDetector(
                           onTap: () {
                             debugPrint(snapshot.data![index].name);
+                            Navigator.pop(context, snapshot.data![index].name);
                           },
                           child: Text(
                             snapshot.data![index].name,
@@ -95,7 +110,10 @@ class _FindLocationScreenState extends State<FindLocationScreen> {
                     ),
                   );
                 }
-                return const CircularProgressIndicator();
+                return const Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 0.0),
+                  child: CircularProgressIndicator(),
+                );
               },
             ),
           ],

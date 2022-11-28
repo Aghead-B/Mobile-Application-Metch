@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:metch/screens/find_location_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import '../widgets/dropdown.dart';
 
@@ -31,20 +32,29 @@ class SetupMatchScreen extends StatefulWidget {
 }
 
 class _SetupMatchScreenState extends State<SetupMatchScreen> {
-
-  Future<TimeOfDay?> pickTime() => showTimePicker(
-    context: context,
-    initialTime: TimeOfDay(hour: date.hour, minute: date.minute),
-  );
-
-  DateTime date = DateTime.now();
-
   late dynamic formattedDate;
   late dynamic formattedTime;
-
+  late String locationValue = '';
+  DateTime date = DateTime.now();
   String playersValue = playersList[1];
   String durationValue = durationList[1];
   String courtValue = courtList[1];
+
+  Future<TimeOfDay?> pickTime() => showTimePicker(
+        context: context,
+        initialTime: TimeOfDay(hour: date.hour, minute: date.minute),
+      );
+
+  Future<void> _navigateAndGetDataSelection(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const FindLocationScreen()),
+    );
+
+    setState(() {
+      locationValue = result;
+    });
+  }
 
   @override
   void initState() {
@@ -91,26 +101,26 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                 ),
               ],
             ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Padelbaan Amstelveen',
-                    style: headline1,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      debugPrint('Redirect to location selector');
-                    },
-                    child: const Icon(
+            GestureDetector(
+              onTap: () {
+                _navigateAndGetDataSelection(context);
+              },
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      locationValue == '' ? 'Kies locatie...' : locationValue,
+                      style: headline1,
+                    ),
+                    const Icon(
                       Icons.arrow_forward,
                       color: Colors.white,
                       size: 28.0,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Container(
@@ -304,18 +314,21 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                     ),
                   ),
                 ),
-                Column(
-                  children: const [
-                    Text(
-                      '  Only select if you booked a court.',
-                      style: caption,
-                    ),
-                    Text(
-                      'We NOT book a court for you!.',
-                      style: caption,
-                    ),
-                  ],
-                )
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 0.0),
+                  child: Column(
+                    children: const [
+                      Text(
+                        'Only select if you booked a court.',
+                        style: caption,
+                      ),
+                      Text(
+                        'We do NOT book a court for you!.',
+                        style: caption,
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
             Container(
@@ -330,7 +343,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                 ),
                 onPressed: () {
                   debugPrint(
-                      '{level2-3, Padelbaan Amstelveen, $playersValue, $formattedDate, $formattedTime, $durationValue, $courtValue}');
+                      '{level2-3, Padelbaan Amstelveen, $locationValue, $playersValue, $formattedDate, $formattedTime, $durationValue, $courtValue}');
                 },
                 child: const Text(
                   'Setup Match',
