@@ -18,20 +18,19 @@ class _SetLevelPageState extends State<SetLevelPage> {
   int maximumDropdownValue = maximumLevelList[6];
   late int firstDropdown = minimumDropdownValue;
   late int secondDropdown = maximumDropdownValue;
-  late int temporaryStorage;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(53, 162, 158, 1.000),
+      backgroundColor: primary400,
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(41, 125, 121, 1.000),
+        backgroundColor: primary700,
         title: Center(
           child: Container(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 0.0),
             child: const Text(
               'Set Level',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: headline1Bold,
             ),
           ),
         ),
@@ -74,9 +73,8 @@ class _SetLevelPageState extends State<SetLevelPage> {
                       onChanged: (int? value) {
                         setState(() {
                           if (value! > secondDropdown) {
-                            temporaryStorage = secondDropdown;
+                            firstDropdown = secondDropdown;
                             secondDropdown = value;
-                            firstDropdown = temporaryStorage;
                           } else {
                             firstDropdown = value;
                           }
@@ -112,9 +110,8 @@ class _SetLevelPageState extends State<SetLevelPage> {
                       onChanged: (int? value) {
                         setState(() {
                           if (value! < firstDropdown) {
-                            temporaryStorage = firstDropdown;
+                            secondDropdown = firstDropdown;
                             firstDropdown = value;
-                            secondDropdown = temporaryStorage;
                           } else {
                             secondDropdown = value;
                           }
@@ -136,7 +133,7 @@ class _SetLevelPageState extends State<SetLevelPage> {
               height: 45,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(242, 139, 32, 1.000),
+                  backgroundColor: secondary500,
                 ),
                 onPressed: () {
                   debugPrint(
@@ -144,11 +141,7 @@ class _SetLevelPageState extends State<SetLevelPage> {
                 },
                 child: const Text(
                   'Set Level',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontFamily: 'Tahoma',
-                  ),
+                  style: buttonText,
                 ),
               ),
             ),
