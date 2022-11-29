@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:metch/pages/profile_page.dart';
 import 'package:metch/pages/set_level_page.dart';
 import 'package:metch/pages/setup_match_page.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
@@ -70,7 +71,7 @@ class HomePage extends StatelessWidget {
                         HomeTextButton(
                           name: "Profile",
                           icon: Icons.person,
-                          page: SetLevelPage(),
+                          page: ProfilePage(),
                         ),
                       ],
                     ),
