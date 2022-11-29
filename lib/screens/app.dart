@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:metch/pages/tab_navigator.dart';
+import 'package:metch/screens/tab_navigator.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 
 class App extends StatefulWidget {
