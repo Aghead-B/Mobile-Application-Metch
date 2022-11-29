@@ -1,24 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:metch/widgets/star_rating_dropdown.dart';
-import 'package:video_player/video_player.dart';
+import 'package:metch/widgets/video/video_player.dart';
+import 'package:metch_ui_kit/metch_ui_kit.dart';
 
-const List<String> minimumLevelList = <String>[
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-];
-
-const List<String> maximumLevelList = <String>[
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-];
-
+var minimumLevelList = List<int>.generate(10, (i) => i + 1);
+var maximumLevelList = List<int>.generate(10, (i) => i + 1);
 
 class SetLevelPage extends StatefulWidget {
   const SetLevelPage({Key? key}) : super(key: key);
@@ -28,27 +13,12 @@ class SetLevelPage extends StatefulWidget {
 }
 
 class _SetLevelPageState extends State<SetLevelPage> {
-  late VideoPlayerController _videoPlayerController;
-  @override
-  void initState() {
-    super.initState();
-    _videoPlayerController = VideoPlayerController.asset(
-        'assets/videos/test.mp4')
-      ..initialize().then((_) {
-        setState(() {});
-      });
-  }
 
-  @override
-  void dispose() {
-    _videoPlayerController.dispose();
-    super.dispose();
-  }
-
-  String minimumDropdownValue = minimumLevelList[1];
-  String maximumDropdownValue = minimumLevelList[3];
-  late String minimumSelectedValue = minimumDropdownValue;
-  late String maximumSelectedValue = maximumDropdownValue;
+  int minimumDropdownValue = minimumLevelList[2];
+  int maximumDropdownValue = maximumLevelList[6];
+  late int firstDropdown = minimumDropdownValue;
+  late int secondDropdown = maximumDropdownValue;
+  late int temporaryStorage;
 
   @override
   Widget build(BuildContext context) {
@@ -66,70 +36,101 @@ class _SetLevelPageState extends State<SetLevelPage> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(15.0, 30.0, 15.0, 0.0),
-        child: Column(
+      body: Column(
           children: [
-            StarRatingDropdown(
-                text: "Minimum",
-                dropdownValue: minimumDropdownValue,
-                list: minimumLevelList,
-                icon: Icons.keyboard_arrow_down,
-                onChanged: (value) {
-                minimumSelectedValue = value;
-                },
-                limitValue: maximumSelectedValue,
-                
-            ),
-            StarRatingDropdown(
-                text: "Maximum",
-                dropdownValue: maximumDropdownValue,
-                list: maximumLevelList,
-                icon: Icons.keyboard_arrow_down,
-                onChanged: (value) {
-                  maximumSelectedValue = value;
-                },
-                limitValue: minimumSelectedValue,
-            ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
-              ),
-              _videoPlayerController.value.isInitialized
-                  ? AspectRatio(
-                  aspectRatio: _videoPlayerController.value.aspectRatio,
-                  child: VideoPlayer(_videoPlayerController))
-                  : Container(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            const VideoPlayerWidget(),
+            Container(
+              padding: const EdgeInsets.fromLTRB(15.0, 30.0, 0.0, 0.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.black.withOpacity(0.05)),
-                          fixedSize: MaterialStateProperty.all(const Size(30, 30)),
-                          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(100)))),
-                      onPressed: () {
-                        _videoPlayerController.pause();
+                  const Icon(
+                    Icons.star,
+                    size: 45,
+                    color: Colors.orange,
+                  ),
+                  const Padding(
+                      padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
+                      child: Text("Min", style: headline1),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 0.0),
+                    height: 40.0,
+                    width: 50.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.white,
+                    ),
+                    child: DropdownButton<int>(
+                      dropdownColor: Colors.white,
+                      value: firstDropdown,
+                      alignment: AlignmentDirectional.center,
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down,
+                        color: Colors.grey,
+                      ),
+                      elevation: 0,
+                      style: secondaryText,
+                      onChanged: (int? value) {
+                        setState(() {
+                          if (value! > secondDropdown) {
+                            temporaryStorage = secondDropdown;
+                            secondDropdown = value;
+                            firstDropdown = temporaryStorage;
+                          } else {
+                            firstDropdown = value;
+                          }
+                        });
                       },
-                      child: const Icon(Icons.pause)),
-                  const Padding(padding: EdgeInsets.all(2)),
-                  ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.black.withOpacity(0.05)),
-                          fixedSize: MaterialStateProperty.all<Size>(const Size(30, 30)),
-                          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(100)))),
-                      onPressed: () {
-                        _videoPlayerController.play();
+                      items: minimumLevelList.map<DropdownMenuItem<int>>((int value) {
+                        return DropdownMenuItem<int>(
+                          value: value,
+                          child: Text(value.toString()),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  const Text("Max", style: headline1),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(10.0, 10.0, 0.0, 0.0),
+                    height: 40.0,
+                    width: 50.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.white,
+                    ),
+                    child: DropdownButton<int>(
+                      dropdownColor: Colors.white,
+                      value: secondDropdown,
+                      alignment: AlignmentDirectional.center,
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down,
+                        color: Colors.grey,
+                      ),
+                      elevation: 0,
+                      style: secondaryText,
+                      onChanged: (int? value) {
+                        setState(() {
+                          if (value! < firstDropdown) {
+                            temporaryStorage = firstDropdown;
+                            firstDropdown = value;
+                            secondDropdown = temporaryStorage;
+                          } else {
+                            secondDropdown = value;
+                          }
+                        });
                       },
-                      child: const Icon(Icons.play_arrow))
+                      items: maximumLevelList.map<DropdownMenuItem<int>>((int value) {
+                        return DropdownMenuItem<int>(
+                          value: value,
+                          child: Text(value.toString()),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ],
-              )
-            ],
-          ),
+              ),
+            ),
             Container(
               margin: const EdgeInsets.fromLTRB(0.0, 60.0, 0.0, 0.0),
               height: 45,
@@ -138,7 +139,8 @@ class _SetLevelPageState extends State<SetLevelPage> {
                   backgroundColor: const Color.fromRGBO(242, 139, 32, 1.000),
                 ),
                 onPressed: () {
-                  print(minimumSelectedValue + maximumSelectedValue);
+                  debugPrint(
+                      '{"levelMin":$firstDropdown, "levelMax":$secondDropdown}');
                 },
                 child: const Text(
                   'Set Level',
@@ -152,7 +154,6 @@ class _SetLevelPageState extends State<SetLevelPage> {
             ),
           ],
         ),
-      ),
     );
   }
 }
