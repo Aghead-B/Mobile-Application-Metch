@@ -59,6 +59,12 @@ const headline4 = TextStyle(
   color: Colors.white,
 );
 
+const headline4Black = TextStyle(
+  fontFamily: _metchFontFamily,
+  fontSize: _textSizeHeadline4,
+  color: Colors.black,
+);
+
 const headline1Bold = TextStyle(
   fontFamily: _metchFontFamily,
   fontSize: _textSizeHeadline1,

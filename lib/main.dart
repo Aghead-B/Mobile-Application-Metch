@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:metch/pages/app.dart';
+import 'package:metch/screens/app.dart';
 
 
 void main() {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:metch/pages/home_page.dart';
-import 'package:metch/pages/my_match_page.dart';
-import 'package:metch/pages/setup_match_page.dart';
+import 'package:metch/screens/home_screen.dart';
+import 'package:metch/screens/my_match_screen.dart';
+import 'package:metch/screens/setup_match_screen.dart';
 
 class TabNavigatorRoutes {
   static const String root = '/';
@@ -18,11 +18,11 @@ class TabNavigator extends StatelessWidget {
 
     late Widget child ;
     if(tabItem == "HomePage") {
-      child = const HomePage();
+      child = const HomeScreen();
     } else if(tabItem == "FindMatchPage") {
-      child = const MyMatchPage();
+      child = const MyMatchScreen();
     } else if(tabItem == "SetupMatchPage") {
-      child = const SetupMatchPage();
+      child = const SetupMatchScreen();
     }
 
     return Navigator(

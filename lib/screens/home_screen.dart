@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:metch/pages/setup_match_page.dart';
+import 'package:metch/screens/find_location_screen.dart';
+import 'package:metch/screens/setup_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import '../widgets/home_text_button.dart';
-import 'find_match_page.dart';
-import 'my_match_page.dart';
+import 'find_match_screen.dart';
+import 'my_match_screen.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
 
   @override
@@ -42,7 +43,7 @@ class HomePage extends StatelessWidget {
                         HomeTextButton(
                           name: "Setup Match",
                           icon: Icons.add,
-                          page: SetupMatchPage(),
+                          page: SetupMatchScreen(),
                         ),
                       ],
                     ),
@@ -51,7 +52,7 @@ class HomePage extends StatelessWidget {
                         HomeTextButton(
                           name: "Find Match",
                           icon: Icons.search,
-                          page: FindMatchPage(),
+                          page: FindMatchScreen(),
                         ),
                       ],
                     ),
@@ -60,7 +61,7 @@ class HomePage extends StatelessWidget {
                         HomeTextButton(
                           name: "My Match",
                           icon: Icons.calendar_month,
-                          page: MyMatchPage(),
+                          page: MyMatchScreen(),
                         ),
                       ],
                     ),
@@ -69,7 +70,7 @@ class HomePage extends StatelessWidget {
                         HomeTextButton(
                           name: "Profile",
                           icon: Icons.person,
-                          page: FindMatchPage(),
+                          page: FindMatchScreen(),
                         ),
                       ],
                     ),
