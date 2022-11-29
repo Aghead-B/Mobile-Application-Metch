@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:metch/screens/find_location_screen.dart';
 import 'package:metch/screens/setup_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import '../widgets/home_text_button.dart';

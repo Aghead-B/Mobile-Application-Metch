@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:metch/screens/find_location_screen.dart';
+import 'package:metch/screens/share_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import '../widgets/dropdown.dart';
 
@@ -40,7 +41,8 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
   String durationValue = durationList[1];
   String courtValue = courtList[1];
 
-  Future<TimeOfDay?> pickTime() => showTimePicker(
+  Future<TimeOfDay?> pickTime() =>
+      showTimePicker(
         context: context,
         initialTime: TimeOfDay(hour: date.hour, minute: date.minute),
       );
@@ -342,6 +344,10 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                   ),
                 ),
                 onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (BuildContext context) {
+                        return const ShareMatchScreen();
+                      }));
                   debugPrint(
                       '{level2-3, Padelbaan Amstelveen, $locationValue, $playersValue, $formattedDate, $formattedTime, $durationValue, $courtValue}');
                 },
