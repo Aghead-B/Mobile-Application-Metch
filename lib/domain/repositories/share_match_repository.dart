@@ -1,4 +1,4 @@
-import 'package:metch/domain/models/match.dart';
+import 'package:metch/domain/models/share_match.dart';
 
 abstract class MatchRepository{
   const MatchRepository();

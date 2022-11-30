@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:metch/domain/services/share_match_service.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
-import 'package:metch/domain/models/match.dart';
+import 'package:metch/domain/models/share_match.dart';
 import 'package:intl/intl.dart';
 
 class ShareMatchScreen extends StatefulWidget {
