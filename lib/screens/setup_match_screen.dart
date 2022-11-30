@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:metch/domain/models/Level.dart';
 import 'package:metch/domain/models/match.dart';
 import 'package:metch/domain/services/match_service.dart';
 import 'package:metch/screens/find_location_screen.dart';
+import 'package:metch/screens/set_level_page.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import '../domain/models/club.dart';
 import '../widgets/dropdown.dart';
@@ -39,22 +41,23 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
   late String displayDate;
   late String formattedTime;
   late String displayTime;
-  late dynamic currentDate;
   late Future<MatchCreated> matchCreated;
   late MatchService matchService;
+  late bool toggleButton;
+  final int SPORT_ID_PADEL = 109;
   Club club = const Club(id: '', name: '');
+  Level level =  const Level(levelMin: 0, levelMax: 0);
   DateTime date = DateTime.now();
   String playersValue = playersList[1];
   String durationValue = durationList[1];
   String courtValue = courtList[0];
-  late bool toggleButton;
 
   Future<TimeOfDay?> pickTime() => showTimePicker(
         context: context,
         initialTime: TimeOfDay(hour: date.hour, minute: date.minute),
       );
 
-  Future<void> _navigateAndGetDataSelection(BuildContext context) async {
+  Future<void> _navigateAndGetLocationSelection(BuildContext context) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const FindLocationScreen()),
@@ -62,6 +65,16 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
 
     setState(() {
       club = result;
+    });
+  }
+
+  Future<void> _navigateAndGetLevelSelection(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SetLevelPage()),
+    );
+    setState(() {
+      level = result;
     });
   }
 
@@ -98,13 +111,13 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Level 2-3',
+                 Text(
+                  level.levelMin == 0 || level.levelMax == 0 ? 'Choose level...' : "Level ${level.levelMin}-${level.levelMax}",
                   style: headline1,
                 ),
                 GestureDetector(
                   onTap: () {
-                    debugPrint('Redirect to the level screen');
+                    _navigateAndGetLevelSelection(context);
                   },
                   child: const Icon(
                     Icons.arrow_forward,
@@ -116,7 +129,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
             ),
             GestureDetector(
               onTap: () {
-                _navigateAndGetDataSelection(context);
+                _navigateAndGetLocationSelection(context);
               },
               child: Container(
                 padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
@@ -124,7 +137,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      club.name == '' ? 'Kies locatie...' : club.name,
+                      club.name == '' ? 'Choose location...' : club.name,
                       style: headline1,
                     ),
                     const Icon(
@@ -370,31 +383,25 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
     );
   }
 
-  void showAlert(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (context) => const AlertDialog(
-              content: Text("Please select a location."),
-            ));
-  }
-
   Future<void> setupMatch() async {
-    if (club.id != '') {
+    if (club.id != '' && level.levelMin != 0 && level.levelMax != 0) {
+      print("inside");
       setState(() {
         toggleButton = false;
       });
       String getNumberDuration = durationValue.replaceAll(RegExp(r'[^0-9]'), '');
       String getNumberSpot = playersValue.replaceAll(RegExp(r'[^0-9]'), '');
-      String plannedDate = "${formattedDate}T${formattedTime}Z";
+      String CombinedISO8601 = "${formattedDate}T${formattedTime}Z";
       Match match = Match(
           clubid: int.parse(club.id),
-          sportid: 109,
-          levelmin: 2,
-          planned: plannedDate,
+          sportid: SPORT_ID_PADEL,
+          levelmin: level.levelMin,
+          planned: CombinedISO8601,
           duration: int.parse(getNumberDuration),
           spots: int.parse(getNumberSpot),
-          levelmax: 4,
-          court: int.parse(courtValue));
+          levelmax: level.levelMax,
+          court: int.parse(courtValue)
+      );
       matchCreated = matchService.postMatch(match);
       await Future.delayed(const Duration(seconds: 1), () {});
       setState(() {
@@ -403,5 +410,13 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
     } else {
       showAlert(context);
     }
+  }
+
+  void showAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          content: Text("Please select a level and location."),
+        ));
   }
 }

@@ -11,6 +11,7 @@ environment:
 dependencies:
   cupertino_icons: ^1.0.2
   intl: ^0.17.0
+  video_player: ^2.4.8
   flutter:
     sdk: flutter
   flutter_localizations:
@@ -27,6 +28,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/logo.png
+    - assets/videos/test.mp4
   fonts:
     - family: Tahoma
       fonts:

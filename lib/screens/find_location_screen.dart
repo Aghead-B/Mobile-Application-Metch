@@ -90,9 +90,7 @@ class _FindLocationScreenState extends State<FindLocationScreen> {
                             const EdgeInsets.fromLTRB(10.0, 20.0, 0.0, 0.0),
                         child: GestureDetector(
                           onTap: () {
-                            // debugPrint(snapshot.data![index].name);
                             var club = Club(id: snapshot.data![index].id, name: snapshot.data![index].name);
-
                             Navigator.pop(context, club);
                           },
                           child: Text(
