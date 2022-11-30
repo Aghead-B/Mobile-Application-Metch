@@ -12,6 +12,7 @@ class MatchService implements MatchRepository {
     final response = await http.get(Uri.parse('$api_url/Metch/$id'));
 
     if (response.statusCode == 200) {
+      debugPrint(jsonDecode(response.body).toString());
       Match newMatch = Match.fromJson(jsonDecode(response.body));
       return newMatch;
     } else {
