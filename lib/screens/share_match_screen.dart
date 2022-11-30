@@ -50,10 +50,6 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
         body: FutureBuilder<Match>(
           future: futureMatch,
           builder: (context, snapshot) {
-            // var splitString = snapshot.data!.planned.toString().split('T');
-            // DateTime dateTime = DateTime.parse(splitString[0]);
-            // var formattedDate = DateFormat('EEEE dd MMMM').format(dateTime);
-
             if (snapshot.hasData) {
               return Column(
                 children: [
