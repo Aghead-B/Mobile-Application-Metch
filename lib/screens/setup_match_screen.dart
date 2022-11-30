@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:metch/domain/models/Level.dart';
+import 'package:metch/domain/models/match.dart';
+import 'package:metch/domain/services/match_service.dart';
 import 'package:metch/screens/find_location_screen.dart';
-import 'package:metch/screens/share_match_screen.dart';
+import 'package:metch/screens/set_level_page.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
+import '../domain/models/club.dart';
 import '../widgets/dropdown.dart';
+import 'package:metch/screens/share_match_screen.dart';
 
 const List<String> playersList = <String>[
   '1 players',
   '2 players',
   '3 players',
-  '4 players'
 ];
 
 const List<String> durationList = <String>[
@@ -19,6 +23,7 @@ const List<String> durationList = <String>[
 ];
 
 const List<String> courtList = <String>[
+  '0',
   '1',
   '2',
   '3',
@@ -33,13 +38,20 @@ class SetupMatchScreen extends StatefulWidget {
 }
 
 class _SetupMatchScreenState extends State<SetupMatchScreen> {
-  late dynamic formattedDate;
-  late dynamic formattedTime;
-  late String locationValue = '';
+  late String formattedDate;
+  late String displayDate;
+  late String formattedTime;
+  late String displayTime;
+  late Future<MatchCreated> matchCreated;
+  late MatchService matchService;
+  late bool toggleButton;
+  final int SPORT_ID_PADEL = 109;
+  Club club = const Club(id: '', name: '');
+  Level level =  const Level(levelMin: 0, levelMax: 0);
   DateTime date = DateTime.now();
   String playersValue = playersList[1];
   String durationValue = durationList[1];
-  String courtValue = courtList[1];
+  String courtValue = courtList[0];
 
   Future<TimeOfDay?> pickTime() =>
       showTimePicker(
@@ -47,21 +59,35 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
         initialTime: TimeOfDay(hour: date.hour, minute: date.minute),
       );
 
-  Future<void> _navigateAndGetDataSelection(BuildContext context) async {
+  Future<void> _navigateAndGetLocationSelection(BuildContext context) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const FindLocationScreen()),
     );
 
     setState(() {
-      locationValue = result;
+      club = result;
+    });
+  }
+
+  Future<void> _navigateAndGetLevelSelection(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SetLevelPage()),
+    );
+    setState(() {
+      level = result;
     });
   }
 
   @override
   void initState() {
-    formattedDate = DateFormat('d-MMM').format(date);
-    formattedTime = DateFormat('Hm').format(date);
+    formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    displayDate = DateFormat('d-MMM').format(date);
+    formattedTime = DateFormat('HH:mm:ss.SSS').format(date);
+    displayTime = DateFormat('Hm').format(date);
+    toggleButton = true;
+    matchService = MatchService();
   }
 
   @override
@@ -87,13 +113,13 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Level 2-3',
+                 Text(
+                  level.levelMin == 0 || level.levelMax == 0 ? 'Choose level...' : "Level ${level.levelMin}-${level.levelMax}",
                   style: headline1,
                 ),
                 GestureDetector(
                   onTap: () {
-                    debugPrint('Redirect to the level screen');
+                    _navigateAndGetLevelSelection(context);
                   },
                   child: const Icon(
                     Icons.arrow_forward,
@@ -105,7 +131,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
             ),
             GestureDetector(
               onTap: () {
-                _navigateAndGetDataSelection(context);
+                _navigateAndGetLocationSelection(context);
               },
               child: Container(
                 padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
@@ -113,7 +139,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      locationValue == '' ? 'Kies locatie...' : locationValue,
+                      club.name == '' ? 'Choose location...' : club.name,
                       style: headline1,
                     ),
                     const Icon(
@@ -193,7 +219,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          formattedDate,
+                          displayDate,
                           style: secondaryText,
                         ),
                         const Icon(
@@ -213,6 +239,8 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                           setState(() {
                             date = selectedDate;
                             formattedDate =
+                                DateFormat('yyyy-MM-dd').format(selectedDate);
+                            displayDate =
                                 DateFormat('d-MMM').format(selectedDate);
                           });
                         }
@@ -236,7 +264,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          formattedTime,
+                          displayTime,
                           style: secondaryText,
                         ),
                         const Icon(
@@ -254,7 +282,8 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
 
                       setState(() {
                         date = newDateTime; // pressed 'OK'
-                        formattedTime = DateFormat('Hm').format(date);
+                        formattedTime = DateFormat('HH:mm:ss.SSS').format(date);
+                        displayTime = DateFormat('Hm').format(date);
                       });
                     },
                   ),
@@ -343,14 +372,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (BuildContext context) {
-                        return const ShareMatchScreen();
-                      }));
-                  debugPrint(
-                      '{level2-3, Padelbaan Amstelveen, $locationValue, $playersValue, $formattedDate, $formattedTime, $durationValue, $courtValue}');
-                },
+                onPressed: toggleButton ? () => setupMatch() : null,
                 child: const Text(
                   'Setup Match',
                   style: buttonText,
@@ -361,5 +383,46 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> setupMatch() async {
+    if (club.id != '' && level.levelMin != 0 && level.levelMax != 0) {
+      setState(() {
+        toggleButton = false;
+      });
+      String getNumberDuration = durationValue.replaceAll(RegExp(r'[^0-9]'), '');
+      String getNumberSpot = playersValue.replaceAll(RegExp(r'[^0-9]'), '');
+      String CombinedISO8601 = "${formattedDate}T${formattedTime}Z";
+      Match match = Match(
+          clubid: int.parse(club.id),
+          sportid: SPORT_ID_PADEL,
+          levelmin: level.levelMin,
+          planned: CombinedISO8601,
+          duration: int.parse(getNumberDuration),
+          spots: int.parse(getNumberSpot),
+          levelmax: level.levelMax,
+          court: int.parse(courtValue)
+      );
+      matchCreated = matchService.postMatch(match);
+      await Future.delayed(const Duration(seconds: 1), () {});
+      setState(() {
+        toggleButton = true;
+      });
+	    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (BuildContext context) {
+                        return const ShareMatchScreen();
+                 })
+      );
+    } else {
+      showAlert(context);
+    }
+  }
+
+  void showAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          content: Text("Please select a level and location."),
+        ));
   }
 }
