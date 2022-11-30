@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:metch/domain/models/match.dart';
+import 'package:metch/domain/services/match_service.dart';
 import 'package:metch/screens/find_location_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
+import '../domain/models/club.dart';
 import '../widgets/dropdown.dart';
 
 const List<String> playersList = <String>[
   '1 players',
   '2 players',
   '3 players',
-  '4 players'
 ];
 
 const List<String> durationList = <String>[
@@ -34,11 +36,16 @@ class SetupMatchScreen extends StatefulWidget {
 class _SetupMatchScreenState extends State<SetupMatchScreen> {
   late dynamic formattedDate;
   late dynamic formattedTime;
-  late String locationValue = '';
+  late dynamic currentDate;
+  late Future<MatchCreated> matchCreated;
+  Club club = const Club(id: '', name:'');
   DateTime date = DateTime.now();
   String playersValue = playersList[1];
   String durationValue = durationList[1];
   String courtValue = courtList[1];
+  late MatchService matchService;
+
+
 
   Future<TimeOfDay?> pickTime() => showTimePicker(
         context: context,
@@ -52,7 +59,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
     );
 
     setState(() {
-      locationValue = result;
+      club = result;
     });
   }
 
@@ -60,6 +67,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
   void initState() {
     formattedDate = DateFormat('d-MMM').format(date);
     formattedTime = DateFormat('Hm').format(date);
+    matchService = MatchService();
   }
 
   @override
@@ -111,7 +119,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      locationValue == '' ? 'Kies locatie...' : locationValue,
+                      club.name == '' ? 'Kies locatie...' : club.name,
                       style: headline1,
                     ),
                     const Icon(
@@ -342,8 +350,13 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                   ),
                 ),
                 onPressed: () {
-                  debugPrint(
-                      '{level2-3, Padelbaan Amstelveen, $locationValue, $playersValue, $formattedDate, $formattedTime, $durationValue, $courtValue}');
+                  String getNumberDuration = durationValue.replaceAll(RegExp(r'[^0-9]'),'');
+                  String getNumberSpot = playersValue.replaceAll(RegExp(r'[^0-9]'),'');
+
+                  Match match = Match(clubid: int.parse(club.id), sportid: 109, levelmin: 2, planned: '2022-12-30T13:42:42.131Z', duration: int.parse(getNumberDuration), spots: int.parse(getNumberSpot), levelmax: 4, court: 0);
+                  matchCreated = matchService.postMatch(match);
+                  debugPrint(matchCreated.toString());
+
                 },
                 child: const Text(
                   'Setup Match',
