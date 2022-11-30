@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:metch/domain/api.constants.dart';
 import 'package:metch/domain/models/match.dart';
-import 'package:metch/domain/repositories/match_repository.dart';
+import 'package:metch/domain/repositories/share_match_repository.dart';
 import 'package:http/http.dart' as http;
 
 class MatchService implements MatchRepository {
