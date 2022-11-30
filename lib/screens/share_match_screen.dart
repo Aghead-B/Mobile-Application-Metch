@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:metch/domain/services/match_service.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 
 class ShareMatchScreen extends StatefulWidget {
@@ -9,12 +10,22 @@ class ShareMatchScreen extends StatefulWidget {
 }
 
 class _ShareMatchScreenState extends State<ShareMatchScreen> {
-  //TODO CHANGE TO NOT MOCK DATA
+  late MatchService matchService;
+  late Future<Match> match;
+
   late final String level = "3-4";
   late final String date = "Monday 11 November";
   late final String time = "13.00 - 14.30";
   late final String location = "Padelbaan Amstelveen";
   late final String court = "court 2";
+
+  @override
+  void initState() {
+    super.initState();
+    matchService = MatchService();
+    // match = matchService.searchMatch(40);
+    var matchv2 = matchService.searchMatch(40);
+  }
 
   @override
   Widget build(BuildContext context) {

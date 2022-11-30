@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:metch/domain/api.constants.dart';
 import 'package:metch/domain/models/club.dart';
 import 'package:metch/domain/repositories/club_repository.dart';
