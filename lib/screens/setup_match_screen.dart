@@ -387,7 +387,6 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
 
   Future<void> setupMatch() async {
     if (club.id != '' && level.levelMin != 0 && level.levelMax != 0) {
-      print("inside");
       setState(() {
         toggleButton = false;
       });
@@ -409,10 +408,11 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
       setState(() {
         toggleButton = true;
       });
-	Navigator.of(context).push(
+	    Navigator.of(context).push(
                       MaterialPageRoute(builder: (BuildContext context) {
                         return const ShareMatchScreen();
-                 }));
+                 })
+      );
     } else {
       showAlert(context);
     }
