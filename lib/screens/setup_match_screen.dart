@@ -8,6 +8,7 @@ import 'package:metch/screens/set_level_page.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import '../domain/models/club.dart';
 import '../widgets/dropdown.dart';
+import 'package:metch/screens/share_match_screen.dart';
 
 const List<String> playersList = <String>[
   '1 players',
@@ -52,7 +53,8 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
   String durationValue = durationList[1];
   String courtValue = courtList[0];
 
-  Future<TimeOfDay?> pickTime() => showTimePicker(
+  Future<TimeOfDay?> pickTime() =>
+      showTimePicker(
         context: context,
         initialTime: TimeOfDay(hour: date.hour, minute: date.minute),
       );
@@ -407,6 +409,10 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
       setState(() {
         toggleButton = true;
       });
+	Navigator.of(context).push(
+                      MaterialPageRoute(builder: (BuildContext context) {
+                        return const ShareMatchScreen();
+                 }));
     } else {
       showAlert(context);
     }

@@ -29,6 +29,7 @@ flutter:
   assets:
     - assets/images/logo.png
     - assets/videos/test.mp4
+	- assets/images/padel.png
   fonts:
     - family: Tahoma
       fonts:
