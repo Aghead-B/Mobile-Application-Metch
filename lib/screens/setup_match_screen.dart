@@ -20,6 +20,7 @@ const List<String> durationList = <String>[
 ];
 
 const List<String> courtList = <String>[
+  '0',
   '1',
   '2',
   '3',
@@ -34,18 +35,19 @@ class SetupMatchScreen extends StatefulWidget {
 }
 
 class _SetupMatchScreenState extends State<SetupMatchScreen> {
-  late dynamic formattedDate;
-  late dynamic formattedTime;
+  late String formattedDate;
+  late String displayDate;
+  late String formattedTime;
+  late String displayTime;
   late dynamic currentDate;
   late Future<MatchCreated> matchCreated;
-  Club club = const Club(id: '', name:'');
+  late MatchService matchService;
+  Club club = const Club(id: '', name: '');
   DateTime date = DateTime.now();
   String playersValue = playersList[1];
   String durationValue = durationList[1];
-  String courtValue = courtList[1];
-  late MatchService matchService;
-
-
+  String courtValue = courtList[0];
+  late bool toggleButton;
 
   Future<TimeOfDay?> pickTime() => showTimePicker(
         context: context,
@@ -65,8 +67,11 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
 
   @override
   void initState() {
-    formattedDate = DateFormat('d-MMM').format(date);
-    formattedTime = DateFormat('Hm').format(date);
+    formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    displayDate = DateFormat('d-MMM').format(date);
+    formattedTime = DateFormat('HH:mm:ss.SSS').format(date);
+    displayTime = DateFormat('Hm').format(date);
+    toggleButton = true;
     matchService = MatchService();
   }
 
@@ -199,7 +204,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          formattedDate,
+                          displayDate,
                           style: secondaryText,
                         ),
                         const Icon(
@@ -219,6 +224,8 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                           setState(() {
                             date = selectedDate;
                             formattedDate =
+                                DateFormat('yyyy-MM-dd').format(selectedDate);
+                            displayDate =
                                 DateFormat('d-MMM').format(selectedDate);
                           });
                         }
@@ -242,7 +249,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          formattedTime,
+                          displayTime,
                           style: secondaryText,
                         ),
                         const Icon(
@@ -260,7 +267,8 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
 
                       setState(() {
                         date = newDateTime; // pressed 'OK'
-                        formattedTime = DateFormat('Hm').format(date);
+                        formattedTime = DateFormat('HH:mm:ss.SSS').format(date);
+                        displayTime = DateFormat('Hm').format(date);
                       });
                     },
                   ),
@@ -349,15 +357,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                onPressed: () {
-                  String getNumberDuration = durationValue.replaceAll(RegExp(r'[^0-9]'),'');
-                  String getNumberSpot = playersValue.replaceAll(RegExp(r'[^0-9]'),'');
-
-                  Match match = Match(clubid: int.parse(club.id), sportid: 109, levelmin: 2, planned: '2022-12-30T13:42:42.131Z', duration: int.parse(getNumberDuration), spots: int.parse(getNumberSpot), levelmax: 4, court: 0);
-                  matchCreated = matchService.postMatch(match);
-                  debugPrint(matchCreated.toString());
-
-                },
+                onPressed: toggleButton ? () => setupMatch() : null,
                 child: const Text(
                   'Setup Match',
                   style: buttonText,
@@ -368,5 +368,40 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
         ),
       ),
     );
+  }
+
+  void showAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+              content: Text("Please select a location."),
+            ));
+  }
+
+  Future<void> setupMatch() async {
+    if (club.id != '') {
+      setState(() {
+        toggleButton = false;
+      });
+      String getNumberDuration = durationValue.replaceAll(RegExp(r'[^0-9]'), '');
+      String getNumberSpot = playersValue.replaceAll(RegExp(r'[^0-9]'), '');
+      String plannedDate = "${formattedDate}T${formattedTime}Z";
+      Match match = Match(
+          clubid: int.parse(club.id),
+          sportid: 109,
+          levelmin: 2,
+          planned: plannedDate,
+          duration: int.parse(getNumberDuration),
+          spots: int.parse(getNumberSpot),
+          levelmax: 4,
+          court: int.parse(courtValue));
+      matchCreated = matchService.postMatch(match);
+      await Future.delayed(const Duration(seconds: 1), () {});
+      setState(() {
+        toggleButton = true;
+      });
+    } else {
+      showAlert(context);
+    }
   }
 }

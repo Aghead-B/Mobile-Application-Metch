@@ -114,7 +114,9 @@ class _FindLocationScreenState extends State<FindLocationScreen> {
                 }
                 return const Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 0.0),
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    valueColor:AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
                 );
               },
             ),
