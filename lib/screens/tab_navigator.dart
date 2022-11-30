@@ -21,7 +21,7 @@ class TabNavigator extends StatelessWidget {
       child = const HomeScreen();
     } else if(tabItem == "FindMatchPage") {
       child = const MyMatchScreen();
-    } else if(tabItem == "SetupMatchPage") {
+    } else if(tabItem == "SetupMatchScreen") {
       child = const SetupMatchScreen();
     }
 

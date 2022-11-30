@@ -27,6 +27,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/logo.png
+    - assets/images/padel.png
   fonts:
     - family: Tahoma
       fonts:

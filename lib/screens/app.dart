@@ -11,11 +11,11 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   String _currentPage = "HomePage";
-  List<String> pageKeys = ["HomePage", "FindMatchPage", "SetupMatchPage"];
+  List<String> pageKeys = ["HomePage", "FindMatchPage", "SetupMatchScreen"];
   final Map<String, GlobalKey<NavigatorState>> _navigatorKeys = {
     "HomePage": GlobalKey<NavigatorState>(),
     "FindMatchPage": GlobalKey<NavigatorState>(),
-    "SetupMatchPage": GlobalKey<NavigatorState>(),
+    "SetupMatchScreen": GlobalKey<NavigatorState>(),
   };
   int _selectedIndex = 0;
 
@@ -50,7 +50,7 @@ class _AppState extends State<App> {
           children: <Widget>[
             _buildOffstageNavigator("HomePage"),
             _buildOffstageNavigator("FindMatchPage"),
-            _buildOffstageNavigator("SetupMatchPage"),
+            _buildOffstageNavigator("SetupMatchScreen"),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
