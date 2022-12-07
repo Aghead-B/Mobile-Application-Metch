@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:metch/domain/models/club.dart';
+import 'package:metch/domain/models/resource.dart';
 import 'package:metch/domain/services/club_service.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
+import '../domain/services/resource_service.dart';
 
 class FindLocationScreen extends StatefulWidget {
   const FindLocationScreen({Key? key}) : super(key: key);
@@ -11,12 +13,17 @@ class FindLocationScreen extends StatefulWidget {
 }
 
 class _FindLocationScreenState extends State<FindLocationScreen> {
+  late ResourceService resourceService;
+  late Future<List<Resource>> futureResource;
   late ClubService clubService;
   late Future<List<Club>> futureClub;
 
   @override
   void initState() {
     super.initState();
+    resourceService = ResourceService();
+    futureResource = resourceService.getResource(35);
+
     clubService = ClubService();
     futureClub = clubService.searchClubs("");
   }
@@ -90,7 +97,9 @@ class _FindLocationScreenState extends State<FindLocationScreen> {
                             const EdgeInsets.fromLTRB(10.0, 20.0, 0.0, 0.0),
                         child: GestureDetector(
                           onTap: () {
-                            var club = Club(id: snapshot.data![index].id, name: snapshot.data![index].name);
+                            var club = Club(
+                                id: snapshot.data![index].id,
+                                name: snapshot.data![index].name);
                             Navigator.pop(context, club);
                           },
                           child: Text(
@@ -102,10 +111,11 @@ class _FindLocationScreenState extends State<FindLocationScreen> {
                     },
                   );
                 } else if (snapshot.hasError) {
-                  return Padding(
-                    padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                  debugPrint(snapshot.error.toString());
+                  return const Padding(
+                    padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                     child: Text(
-                      '${snapshot.error}',
+                      'Something went wrong with retrieving the clubs. Please try again later.',
                       style: headline4,
                     ),
                   );
@@ -113,7 +123,7 @@ class _FindLocationScreenState extends State<FindLocationScreen> {
                 return const Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 0.0),
                   child: CircularProgressIndicator(
-                    valueColor:AlwaysStoppedAnimation<Color>(Colors.white),
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                   ),
                 );
               },

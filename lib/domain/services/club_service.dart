@@ -8,7 +8,7 @@ class ClubService implements ClubRepository {
   @override
   Future<List<Club>> searchClubs(String name) async {
     final response =
-        await http.get(Uri.parse('$api_url/Resource/?ids=9&q=$name'));
+    await http.get(Uri.parse('$api_url/Club/?sportid=9&q=$name'));
 
     if (response.statusCode == 200) {
       List<Club> finalClubList = [];
