@@ -408,11 +408,10 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
       setState(() {
         toggleButton = true;
       });
+      debugPrint(match.clubid.toString());
 	    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (BuildContext context) {
-                        return const ShareMatchScreen();
-                 })
-      );
+                      MaterialPageRoute(builder: (context) => ShareMatchScreen(clubid: match.clubid)
+      ));
     } else {
       showAlert(context);
     }

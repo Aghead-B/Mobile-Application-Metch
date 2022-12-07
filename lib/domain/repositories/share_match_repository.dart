@@ -3,5 +3,5 @@ import 'package:metch/domain/models/share_match.dart';
 abstract class MatchRepository{
   const MatchRepository();
 
-  Future<Match> searchMatch(int id);
+  Future<SharedMatch> getMatch(int id);
 }
