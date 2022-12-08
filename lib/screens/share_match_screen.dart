@@ -7,8 +7,8 @@ import 'package:metch/domain/models/share_match.dart';
 import 'package:intl/intl.dart';
 
 class ShareMatchScreen extends StatefulWidget {
-  const ShareMatchScreen({Key? key, required this.clubid}) : super(key: key);
-  final int clubid;
+  const ShareMatchScreen({Key? key, required this.matchId}) : super(key: key);
+  final int matchId;
 
   @override
   State<ShareMatchScreen> createState() => _ShareMatchScreenState();
@@ -24,7 +24,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
   void initState() {
     super.initState();
     matchService = MatchService();
-    futureMatch = matchService.getMatch(widget.clubid);
+    futureMatch = matchService.getMatch(widget.matchId);
   }
 
   Future<void> _navigateAndGetDataSelection(BuildContext context) async {
