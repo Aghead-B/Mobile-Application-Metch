@@ -413,8 +413,6 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
             MaterialPageRoute(
                 builder: (context) => ShareMatchScreen(matchId: value.id)),
           ));
-
-      debugPrint(matchCreated.toString());
     }
   }
 
