@@ -47,14 +47,13 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
   late bool toggleButton;
   final int SPORT_ID_PADEL = 109;
   Club club = const Club(id: '', name: '');
-  Level level =  const Level(levelMin: 0, levelMax: 0);
+  Level level = const Level(levelMin: 0, levelMax: 0);
   DateTime date = DateTime.now();
   String playersValue = playersList[1];
   String durationValue = durationList[1];
   String courtValue = courtList[0];
 
-  Future<TimeOfDay?> pickTime() =>
-      showTimePicker(
+  Future<TimeOfDay?> pickTime() => showTimePicker(
         context: context,
         initialTime: TimeOfDay(hour: date.hour, minute: date.minute),
       );
@@ -93,14 +92,22 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primary500,
+      backgroundColor: secondaryBackground,
       appBar: AppBar(
-        backgroundColor: primary700,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xff827e7a), Color(0xff202020)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+        ),
         title: Center(
           child: Container(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 0.0),
             child: const Text(
-              'Setup Match',
+              'setup match',
               style: headline1Bold,
             ),
           ),
@@ -113,8 +120,10 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                 Text(
-                  level.levelMin == 0 || level.levelMax == 0 ? 'Choose level...' : "Level ${level.levelMin}-${level.levelMax}",
+                Text(
+                  level.levelMin == 0 || level.levelMax == 0
+                      ? 'Choose level...'
+                      : "Level ${level.levelMin}-${level.levelMax}",
                   style: headline1,
                 ),
                 GestureDetector(
@@ -123,7 +132,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                   },
                   child: const Icon(
                     Icons.arrow_forward,
-                    color: Colors.white,
+                    color: Color(0xff71716f),
                     size: 28.0,
                   ),
                 ),
@@ -144,7 +153,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                     ),
                     const Icon(
                       Icons.arrow_forward,
-                      color: Colors.white,
+                      color: Color(0xff71716f),
                       size: 28.0,
                     ),
                   ],
@@ -157,7 +166,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                 children: const [
                   Icon(
                     Icons.person,
-                    color: Colors.white,
+                    color: Color(0xff71716f),
                     size: 30.0,
                   ),
                   Text(
@@ -191,7 +200,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                 children: const [
                   Icon(
                     Icons.calendar_month,
-                    color: Colors.white,
+                    color: Color(0xff71716f),
                     size: 30.0,
                   ),
                   Text(
@@ -313,7 +322,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                 children: const [
                   Icon(
                     Icons.sports_tennis_sharp,
-                    color: Colors.white,
+                    color: Color(0xff71716f),
                     size: 30.0,
                   ),
                   Text(
@@ -390,29 +399,29 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
       setState(() {
         toggleButton = false;
       });
-      String getNumberDuration = durationValue.replaceAll(RegExp(r'[^0-9]'), '');
+      String getNumberDuration =
+          durationValue.replaceAll(RegExp(r'[^0-9]'), '');
       String getNumberSpot = playersValue.replaceAll(RegExp(r'[^0-9]'), '');
       String CombinedISO8601 = "${formattedDate}T${formattedTime}Z";
       Match match = Match(
-          clubid: int.parse(club.id),
-          sportid: SPORT_ID_PADEL,
-          levelmin: level.levelMin,
-          planned: CombinedISO8601,
-          duration: int.parse(getNumberDuration),
-          spots: int.parse(getNumberSpot),
-          levelmax: level.levelMax,
-          court: int.parse(courtValue)
+        clubid: int.parse(club.id),
+        sportid: SPORT_ID_PADEL,
+        levelmin: level.levelMin,
+        planned: CombinedISO8601,
+        duration: int.parse(getNumberDuration),
+        spots: int.parse(getNumberSpot),
+        levelmax: level.levelMax,
+        court: int.parse(courtValue),
       );
       matchCreated = matchService.postMatch(match);
       await Future.delayed(const Duration(seconds: 1), () {});
       setState(() {
         toggleButton = true;
       });
-	    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (BuildContext context) {
-                        return const ShareMatchScreen();
-                 })
-      );
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (BuildContext context) {
+        return const ShareMatchScreen();
+      }));
     } else {
       showAlert(context);
     }
@@ -422,7 +431,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
     showDialog(
         context: context,
         builder: (context) => const AlertDialog(
-          content: Text("Please select a level and location."),
-        ));
+              content: Text("Please select a level and location."),
+            ));
   }
 }

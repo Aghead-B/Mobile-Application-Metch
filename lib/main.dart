@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:metch/screens/app.dart';
+import 'package:metch/screens/app_version1.dart';
 
 
 void main() {
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: App(),
+      home: AppVersion1(),
     );
   }
 }

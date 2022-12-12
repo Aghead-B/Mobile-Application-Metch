@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:metch/domain/api.constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:metch/domain/models/match.dart';
@@ -12,6 +13,7 @@ class MatchService {
     );
 
       if (response.statusCode == 200) {
+        debugPrint(jsonDecode(response.body)['Id'].toString());
         return MatchCreated(id: jsonDecode(response.body)['Id']);
       } else {
         throw Exception('Failed to create match');

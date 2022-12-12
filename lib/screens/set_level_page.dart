@@ -22,9 +22,17 @@ class _SetLevelPageState extends State<SetLevelPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primary400,
+      backgroundColor: secondaryBackground,
       appBar: AppBar(
-        backgroundColor: primary700,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xff827e7a), Color(0xff202020)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+        ),
         title: Center(
           child: Container(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 0.0),

@@ -30,6 +30,8 @@ flutter:
     - assets/images/logo.png
     - assets/videos/test.mp4
     - assets/images/padel.png
+    - assets/images/logoWithShadow.png
+    - assets/images/metchTagLine.png
   fonts:
     - family: Tahoma
       fonts:

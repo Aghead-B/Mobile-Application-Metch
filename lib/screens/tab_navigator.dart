@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:metch/screens/home_screen.dart';
+import 'package:metch/screens/home_screen_version1.dart';
 import 'package:metch/screens/my_match_screen.dart';
 import 'package:metch/screens/setup_match_screen.dart';
 
@@ -18,10 +19,10 @@ class TabNavigator extends StatelessWidget {
 
     late Widget child ;
     if(tabItem == "HomePage") {
-      child = const HomeScreen();
-    } else if(tabItem == "FindMatchPage") {
+      child = const HomeScreenVersion1();
+    } /*else if(tabItem == "FindMatchPage") {
       child = const MyMatchScreen();
-    } else if(tabItem == "SetupMatchScreen") {
+    }*/ else if(tabItem == "SetupMatchScreen") {
       child = const SetupMatchScreen();
     }
 
