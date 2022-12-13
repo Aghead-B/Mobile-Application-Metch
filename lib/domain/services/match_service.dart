@@ -13,7 +13,6 @@ class MatchService {
     );
 
       if (response.statusCode == 200) {
-        debugPrint(jsonDecode(response.body)['Id'].toString());
         return MatchCreated(id: jsonDecode(response.body)['Id']);
       } else {
         throw Exception('Failed to create match');
