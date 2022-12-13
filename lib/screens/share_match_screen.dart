@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:metch/domain/models/match.dart';
 import 'package:metch/domain/services/share_match_service.dart';
+import 'package:metch/screens/private_match_screen.dart';
 import 'package:metch/screens/setup_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import 'package:metch/domain/models/share_match.dart';
@@ -225,7 +226,9 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                             minimumSize: const Size(151, 53)),
                         icon: const Icon(Icons.whatsapp_rounded, size: 40),
                         label: const Text("Share"),
-                        onPressed: () => {debugPrint("Shared match")},
+                        onPressed: () => {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PrivateMatchScreen()))
+                        },
                       ),
                       ElevatedButton(
                         onPressed: () {

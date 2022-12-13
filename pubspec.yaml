@@ -33,6 +33,7 @@ flutter:
     - assets/images/padel.png
     - assets/images/logoWithShadow.png
     - assets/images/metchTagLine.png
+    - assets/images/private_match_bg.png
   fonts:
     - family: Tahoma
       fonts:
