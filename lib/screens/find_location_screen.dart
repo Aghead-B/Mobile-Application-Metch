@@ -22,7 +22,7 @@ class _FindLocationScreenState extends State<FindLocationScreen> {
   void initState() {
     super.initState();
     resourceService = ResourceService();
-    futureResource = resourceService.getResource(35);
+    futureResource = resourceService.getResource("1526,221");
 
     clubService = ClubService();
     futureClub = clubService.searchClubs("");

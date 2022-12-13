@@ -1,22 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:metch/screens/profile_screen.dart';
 import 'package:metch/screens/setup_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
-import '../widgets/home_text_button.dart';
-import 'find_match_screen.dart';
-import 'my_match_screen.dart';
+import '../domain/models/resource.dart';
+import '../domain/services/resource_service.dart';
 
-class HomeScreenVersion1 extends StatelessWidget {
+class HomeScreenVersion1 extends StatefulWidget {
   const HomeScreenVersion1({Key? key}) : super(key: key);
 
   @override
+  State<HomeScreenVersion1> createState() => _HomeScreenVersion1State();
+}
+
+class _HomeScreenVersion1State extends State<HomeScreenVersion1> {
+  late ResourceService resourceService;
+  late Future<List<Resource>> futureResource;
+
+  @override
+  void initState() {
+    super.initState();
+    resourceService = ResourceService();
+    futureResource = resourceService.getResource("1506,1522");
+  }
+
+  @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     final currentWidth = MediaQuery.of(context).size.width;
-    final currentHeight= MediaQuery.of(context).size.height;
+    final currentHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: Container(
@@ -36,68 +48,89 @@ class HomeScreenVersion1 extends StatelessWidget {
                   children: [
                     Image.asset(
                       'assets/images/logoWithShadow.png',
-                      height: currentHeight/8, // adaptive width and height
+                      height: currentHeight / 8, // adaptive width and height
                       width: currentWidth,
                     ),
                     Image.asset(
                       'assets/images/metchTagLine.png',
-                      height: currentHeight/8,// adaptive width and height
-                      width: currentWidth/2,
+                      height: currentHeight / 8, // adaptive width and height
+                      width: currentWidth / 2,
                     ),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, (currentHeight/10.7), 0, 0),
+                padding: EdgeInsets.fromLTRB(0, (currentHeight / 10.7), 0, 0),
                 child: Align(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: currentHeight/10.7, //height of button
-                        width: currentWidth/2.18, //width of button
-                        child: ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xff026969),
-                            side: const BorderSide(
-                                width: 0.5, // the thickness
-                                color: Colors.white // the color of the border
+                  child: FutureBuilder<List<Resource>>(
+                    future: futureResource,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Column(
+                          children: [
+                            SizedBox(
+                              height: currentHeight / 10.7, //height of button
+                              width: currentWidth / 2.18, //width of button
+                              child: ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xff026969),
+                                  side: const BorderSide(
+                                      width: 0.5, // the thickness
+                                      color: Colors
+                                          .white // the color of the border
+                                      ),
+                                  elevation: 8,
+                                  shape: RoundedRectangleBorder(
+                                      //to set border radius to button
+                                      borderRadius: BorderRadius.circular(8)),
                                 ),
-                            elevation: 8,
-                            shape: RoundedRectangleBorder(
-                                //to set border radius to button
-                                borderRadius: BorderRadius.circular(8)),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (BuildContext context) {
-                                  return const SetupMatchScreen();
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) {
+                                        return const SetupMatchScreen();
+                                      },
+                                    ),
+                                  );
                                 },
+                                icon: const Icon(
+                                  Icons.add,
+                                  size: 50,
+                                ),
+                                label: Text(
+                                  snapshot.data![1].value,
+                                  style: buttonText,
+                                ),
                               ),
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.add,
-                            size: 50,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.fromLTRB(0, 35, 0, 0),
+                              child: Text(
+                                snapshot.data![0].value,
+                                style: paragraph,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        );
+                      } else if (snapshot.hasError) {
+                        debugPrint(snapshot.error.toString());
+                        return const Padding(
+                          padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                          child: Text(
+                            'Something went wrong. Please try again later.',
+                            style: headline4,
                           ),
-                          label: const Text(
-                            'Setup',
-                            style: buttonText,
-                          ),
+                        );
+                      }
+                      return const Padding(
+                        padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 0.0),
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(0, 35, 0, 0),
-                        child: const Text(
-                          'Select your level. Select Your time.',
-                          style: paragraph,
-                        ),
-                      ),
-                      const Text(
-                        'Share it on WhatsApp!',
-                        style: paragraph,
-                      )
-                    ],
+                      );
+                    },
                   ),
                 ),
               ),

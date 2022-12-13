@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:metch/domain/api.constants.dart';
 import 'package:metch/domain/models/resource.dart';
@@ -8,8 +7,8 @@ import 'package:http/http.dart' as http;
 
 class ResourceService implements ResourceRepository {
   @override
-  Future<List<Resource>> getResource(int id) async {
-    final response = await http.get(Uri.parse('$api_url?ids'));
+  Future<List<Resource>> getResource(String ids) async {
+    final response = await http.get(Uri.parse('$api_url/Resource/?ids=$ids'));
 
     if (response.statusCode == 200) {
       List<Resource> resources = [];
@@ -22,6 +21,8 @@ class ResourceService implements ResourceRepository {
             id: it.current['Id'].toString(),
             value: it.current['Value'].toString()));
       }
+
+      debugPrint(resources[0].value);
 
       return resources;
     } else {
