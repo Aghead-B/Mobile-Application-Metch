@@ -23,17 +23,17 @@ class HomeTextButton extends StatelessWidget {
       },
       //If you ever want to make a List item , then use this code
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 12.5, 0, 12.5),
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: Row(
           children: [
             Icon(
               icon,
               color: Colors.white,
-              size: 40,
+              size: 60,
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-              child: Text(name, style: headline2),
+              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: Text(name, style: headline1HomeScreen),
             ),
           ],
         ),

@@ -22,9 +22,17 @@ class _SetLevelPageState extends State<SetLevelPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primary400,
+      backgroundColor: secondaryBackground,
       appBar: AppBar(
-        backgroundColor: primary700,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xff29b3b0), Color(0xff000000)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+        ),
         title: Center(
           child: Container(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 0.0),
@@ -135,10 +143,11 @@ class _SetLevelPageState extends State<SetLevelPage> {
             height: 45,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: secondary500,
+                backgroundColor: const Color(0xff29b3b0),
               ),
               onPressed: () {
-                Navigator.pop(context, Level(levelMin: firstDropdown, levelMax: secondDropdown));
+                Navigator.pop(context,
+                    Level(levelMin: firstDropdown, levelMax: secondDropdown));
               },
               child: const Text(
                 'Set Level',

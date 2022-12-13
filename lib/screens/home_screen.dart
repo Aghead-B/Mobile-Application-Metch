@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:metch/screens/profile_screen.dart';
 import 'package:metch/screens/setup_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import '../widgets/home_text_button.dart';
@@ -8,79 +9,87 @@ import 'my_match_screen.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-        child: Column(
-          children: [
-            Center(
-              child: Column(
-                children: [
-                  Image.asset('assets/images/logo.png'),
-                  const Text(
-                    'Metch',
-                    style: title,
-                  ),
-                  const Text(
-                    'Find players of your level',
-                    style: paragraph,
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(47, 35, 0, 0),
-              child: Align(
-                alignment: Alignment.centerLeft,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [Color(0xff006666), Color(0xff36a4a0)],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 100, 0, 0),
+          child: Column(
+            children: [
+              Center(
                 child: Column(
                   children: [
-                    Row(
-                      children: const [
-                        HomeTextButton(
-                          name: "Setup Match",
-                          icon: Icons.add,
-                          page: SetupMatchScreen(),
-                        ),
-                      ],
+                    Image.asset(
+                      'assets/images/logoWithShadow.png',
+                      height: 100,
+                      width: 100,
                     ),
-                    Row(
-                      children: const [
-                        HomeTextButton(
-                          name: "Find Match",
-                          icon: Icons.search,
-                          page: FindMatchScreen(),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: const [
-                        HomeTextButton(
-                          name: "My Match",
-                          icon: Icons.calendar_month,
-                          page: MyMatchScreen(),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: const [
-                        HomeTextButton(
-                          name: "Profile",
-                          icon: Icons.person,
-                          page: FindMatchScreen(),
-                        ),
-                      ],
+                    Image.asset(
+                      'assets/images/metchTagLine.png',
+                      height: 100,
+                      width: 200,
                     ),
                   ],
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.fromLTRB(95, 35, 0, 0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: const [
+                          HomeTextButton(
+                            name: "setup match",
+                            icon: Icons.add,
+                            page: SetupMatchScreen(),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: const [
+                          HomeTextButton(
+                            name: "find match",
+                            icon: Icons.search,
+                            page: FindMatchScreen(),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: const [
+                          HomeTextButton(
+                            name: "my matches",
+                            icon: Icons.access_time_rounded,
+                            page: MyMatchScreen(),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: const [
+                          HomeTextButton(
+                            name: "profile",
+                            icon: Icons.person,
+                            page: ProfileScreen(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-      backgroundColor: const Color.fromRGBO(53, 162, 158, 1.000),
     );
   }
 }

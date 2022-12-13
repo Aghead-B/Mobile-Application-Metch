@@ -15,7 +15,6 @@ class ShareMatchScreen extends StatefulWidget {
 }
 
 class _ShareMatchScreenState extends State<ShareMatchScreen> {
-
   late MatchService matchService;
   late Future<SharedMatch> futureMatch;
   late Future<MatchCreated> matchCreatedId;
@@ -47,11 +46,18 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      backgroundColor: primary500,
+      backgroundColor: secondaryBackground,
       appBar: AppBar(
-        backgroundColor: primary700,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xff29b3b0), Color(0xff000000)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+        ),
         title: Center(
           child: Container(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 0.0),
@@ -113,7 +119,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: textGrayColor,
                         ),
                       ),
                     ],
@@ -128,7 +134,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: textGrayColor,
                       ),
                     ),
                   ],
@@ -151,12 +157,12 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         Padding(
                             padding: EdgeInsets.fromLTRB(0.0, 0.0, 50.0, 0.0)),
                         Icon(
-                            color: Colors.white,
+                            color: textGrayColor,
                             size: 70,
                             Icons.panorama_fish_eye),
                         Text(
                           "open",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: textGrayColor),
                         ),
                       ],
                     ),
@@ -165,12 +171,12 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         Padding(
                             padding: EdgeInsets.fromLTRB(50.0, 0.0, 40.0, 0.0)),
                         Icon(
-                            color: Colors.white,
+                            color: textGrayColor,
                             size: 70,
                             Icons.panorama_fish_eye),
                         Text(
                           "open",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: textGrayColor),
                         ),
                       ],
                     ),
@@ -179,12 +185,12 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         Padding(
                             padding: EdgeInsets.fromLTRB(40.0, 0.0, 50.0, 0.0)),
                         Icon(
-                            color: Colors.white,
+                            color: textGrayColor,
                             size: 70,
                             Icons.panorama_fish_eye),
                         Text(
                           "open",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: textGrayColor),
                         ),
                       ],
                     ),
@@ -193,12 +199,12 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         Padding(
                             padding: EdgeInsets.fromLTRB(50.0, 0.0, 0.0, 0.0)),
                         Icon(
-                            color: Colors.white,
+                            color: textGrayColor,
                             size: 70,
                             Icons.panorama_fish_eye),
                         Text(
                           "open",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: textGrayColor),
                         ),
                       ],
                     ),
@@ -212,7 +218,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
                             textStyle: headline3,
-                            backgroundColor: secondary500,
+                            backgroundColor: const Color(0xff29b3b0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
@@ -227,12 +233,16 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         },
                         style: ElevatedButton.styleFrom(
                             textStyle: headline3,
-                            backgroundColor: secondary800,
+                            backgroundColor: secondaryBackground,
                             shape: RoundedRectangleBorder(
+                              side: const BorderSide(color: Colors.black),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             minimumSize: const Size(151, 53)),
-                        child: const Text("Cancel"),
+                        child: const Text(
+                          "Cancel",
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
                     ],
                   ),

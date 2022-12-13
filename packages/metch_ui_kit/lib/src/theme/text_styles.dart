@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:metch_ui_kit/metch_ui_kit.dart';
 
 const _metchFontFamily = 'Tahoma';
 
-const _textSizeParagraph = 16.0;
+const _textSizeParagraph = 18.0;
 
 const _textSizeCaption = 13.5;
 
@@ -19,13 +20,20 @@ const _textSizeHeadline4 = 18.0;
 const paragraph = TextStyle(
   fontFamily: _metchFontFamily,
   fontSize: _textSizeParagraph,
+  color: Color(0xffc6d9e5),
+);
+
+const paragraphBold = TextStyle(
+  fontFamily: _metchFontFamily,
+  fontSize: _textSizeParagraph,
   color: Colors.white,
+  fontWeight: FontWeight.bold,
 );
 
 const caption = TextStyle(
   fontFamily: _metchFontFamily,
   fontSize: _textSizeCaption,
-  color: Colors.white,
+  color: textGrayColor,
 );
 
 const title = TextStyle(
@@ -36,6 +44,12 @@ const title = TextStyle(
 );
 
 const headline1 = TextStyle(
+  fontFamily: _metchFontFamily,
+  fontSize: _textSizeHeadline1,
+  color: textGrayColor,
+);
+
+const headline1HomeScreen = TextStyle(
   fontFamily: _metchFontFamily,
   fontSize: _textSizeHeadline1,
   color: Colors.white,
@@ -50,13 +64,13 @@ const headline2 = TextStyle(
 const headline3 = TextStyle(
   fontFamily: _metchFontFamily,
   fontSize: _textSizeHeadline3,
-  color: Colors.white,
+  color: textGrayColor,
 );
 
 const headline4 = TextStyle(
   fontFamily: _metchFontFamily,
   fontSize: _textSizeHeadline4,
-  color: Colors.white,
+  color: textGrayColor,
 );
 
 const headline4Black = TextStyle(
@@ -74,7 +88,7 @@ const headline1Bold = TextStyle(
 
 const secondaryText = TextStyle(
   fontFamily: _metchFontFamily,
-  color: Colors.grey,
+  color: textGrayColor,
   fontSize: 18,
 );
 
