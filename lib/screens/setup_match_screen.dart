@@ -418,12 +418,10 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
       setState(() {
         toggleButton = true;
       });
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (BuildContext context) {
-        return const ShareMatchScreen();
-      }));
-    } else {
-      showAlert(context);
+      matchCreated.then((value) => Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => ShareMatchScreen(matchId: value.id)),
+          ));
     }
   }
 
