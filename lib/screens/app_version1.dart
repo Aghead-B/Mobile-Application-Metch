@@ -54,16 +54,15 @@ class _AppVersion1State extends State<AppVersion1> {
           ],
         ),
         bottomNavigationBar: Container(
-          // decoration: const BoxDecoration(
-          //   gradient: LinearGradient(
-          //     colors: [Color(0xff2e8d89), Color(0xff000000)],
-          //     // colors: [Color(0xff827e7a), Color(0xff202020)], black and gray
-          //     begin: Alignment.topCenter,
-          //     end: Alignment.bottomCenter,
-          //   ),
-          // ),
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xff29b3b0), Color(0xff000000)],
+              // colors: [Color(0xff827e7a), Color(0xff202020)], black and gray
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
           child: BottomNavigationBar(
-            type: BottomNavigationBarType.shifting,
             iconSize: 45,
             onTap: (int index) {
               _selectTab(pageKeys[index], index);
@@ -76,7 +75,6 @@ class _AppVersion1State extends State<AppVersion1> {
                   color: bottomNavigationBarIcon,
                 ),
                 label: '',
-                backgroundColor: Color(0xff184A48), // green
               ),
               BottomNavigationBarItem(
                 icon: Icon(
@@ -84,11 +82,11 @@ class _AppVersion1State extends State<AppVersion1> {
                   color: bottomNavigationBarIcon,
                 ),
                 label: '',
-                backgroundColor: Color(0xff464542), // gray
               )
             ],
             showSelectedLabels: false,
             showUnselectedLabels: false,
+            backgroundColor: Colors.transparent,
           ),
         ),
       ),

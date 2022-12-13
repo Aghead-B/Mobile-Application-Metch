@@ -27,7 +27,7 @@ class _SetLevelPageState extends State<SetLevelPage> {
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xff827e7a), Color(0xff202020)],
+              colors: [Color(0xff29b3b0), Color(0xff000000)],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -143,10 +143,11 @@ class _SetLevelPageState extends State<SetLevelPage> {
             height: 45,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: secondary500,
+                backgroundColor: const Color(0xff29b3b0),
               ),
               onPressed: () {
-                Navigator.pop(context, Level(levelMin: firstDropdown, levelMax: secondDropdown));
+                Navigator.pop(context,
+                    Level(levelMin: firstDropdown, levelMax: secondDropdown));
               },
               child: const Text(
                 'Set Level',

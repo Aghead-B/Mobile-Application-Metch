@@ -38,7 +38,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
           flexibleSpace: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xff827e7a), Color(0xff202020)],
+                colors: [Color(0xff29b3b0), Color(0xff000000)],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
@@ -204,7 +204,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                               textStyle: headline3,
-                              backgroundColor: secondary500,
+                              backgroundColor: const Color(0xff29b3b0),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),
                               ),

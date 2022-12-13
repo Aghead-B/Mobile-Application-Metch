@@ -12,10 +12,11 @@ class HomeScreenVersion1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent
     ));
+    final currentWidth = MediaQuery.of(context).size.width;
+    final currentHeight= MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: Container(
@@ -35,25 +36,25 @@ class HomeScreenVersion1 extends StatelessWidget {
                   children: [
                     Image.asset(
                       'assets/images/logoWithShadow.png',
-                      height: 100,
-                      width: 100,
+                      height: currentHeight/8, // adaptive width and height
+                      width: currentWidth,
                     ),
                     Image.asset(
                       'assets/images/metchTagLine.png',
-                      height: 100,
-                      width: 200,
+                      height: currentHeight/8,// adaptive width and height
+                      width: currentWidth/2,
                     ),
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 75, 0, 0),
+                padding: EdgeInsets.fromLTRB(0, (currentHeight/10.7), 0, 0),
                 child: Align(
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 75, //height of button
-                        width: 180, //width of button
+                        height: currentHeight/10.7, //height of button
+                        width: currentWidth/2.18, //width of button
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xff026969),
