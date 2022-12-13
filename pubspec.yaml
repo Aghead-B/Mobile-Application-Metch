@@ -9,6 +9,7 @@ environment:
   sdk: ">=2.18.1 <3.0.0"
 
 dependencies:
+  uni_links: ^0.5.1
   cupertino_icons: ^1.0.2
   intl: ^0.17.0
   video_player: ^2.4.8
@@ -30,6 +31,8 @@ flutter:
     - assets/images/logo.png
     - assets/videos/test.mp4
     - assets/images/padel.png
+    - assets/images/logoWithShadow.png
+    - assets/images/metchTagLine.png
   fonts:
     - family: Tahoma
       fonts:

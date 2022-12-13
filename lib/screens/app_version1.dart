@@ -1,23 +1,25 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:metch/screens/tab_navigator.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 
-class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
+class AppVersion1 extends StatefulWidget {
+  const AppVersion1({Key? key}) : super(key: key);
 
   @override
-  State<App> createState() => _AppState();
+  State<AppVersion1> createState() => _AppVersion1State();
 }
 
-class _AppState extends State<App> {
+class _AppVersion1State extends State<AppVersion1> {
   String _currentPage = "HomePage";
-  List<String> pageKeys = ["HomePage", "FindMatchPage", "SetupMatchScreen"];
+  List<String> pageKeys = ["HomePage", "SetupMatchScreen"];
   final Map<String, GlobalKey<NavigatorState>> _navigatorKeys = {
     "HomePage": GlobalKey<NavigatorState>(),
-    "FindMatchPage": GlobalKey<NavigatorState>(),
     "SetupMatchScreen": GlobalKey<NavigatorState>(),
   };
   int _selectedIndex = 0;
+
   void _selectTab(String tabItem, int index) {
     if (tabItem == _currentPage) {
       _navigatorKeys[tabItem]?.currentState?.popUntil((route) => route.isFirst);
@@ -48,63 +50,36 @@ class _AppState extends State<App> {
         body: Stack(
           children: <Widget>[
             _buildOffstageNavigator("HomePage"),
-            _buildOffstageNavigator("FindMatchPage"),
             _buildOffstageNavigator("SetupMatchScreen"),
           ],
         ),
         bottomNavigationBar: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xff2e8d89), Color(0xff000000)],
+              colors: [Color(0xff29b3b0), Color(0xff000000)],
+              // colors: [Color(0xff827e7a), Color(0xff202020)], black and gray
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
           ),
           child: BottomNavigationBar(
-            selectedItemColor: Colors.black,
+            iconSize: 45,
             onTap: (int index) {
               _selectTab(pageKeys[index], index);
             },
             currentIndex: _selectedIndex,
-            items: [
+            items: const [
               BottomNavigationBarItem(
-                  icon: Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.transparent,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.home,
-                      color: bottomNavigationBarIcon,
-                      size: 35,
-                    ),
-                  ),
-                  label: ''),
-              BottomNavigationBarItem(
-                icon: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.transparent,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.search,
-                    color: bottomNavigationBarIcon,
-                    size: 35,
-                  ),
+                icon: Icon(
+                  Icons.home_outlined,
+                  color: bottomNavigationBarIcon,
                 ),
                 label: '',
               ),
               BottomNavigationBarItem(
-                icon: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.transparent,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: bottomNavigationBarIcon,
-                    size: 35,
-                  ),
+                icon: Icon(
+                  Icons.add,
+                  color: bottomNavigationBarIcon,
                 ),
                 label: '',
               )

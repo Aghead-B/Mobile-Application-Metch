@@ -1,6 +1,6 @@
 import 'club.dart';
 
-class Match {
+class SharedMatch {
   final int id;
   final String date;
   final int court;
@@ -11,7 +11,7 @@ class Match {
   final Club club;
   final String? planned;
 
-  const Match(
+  const SharedMatch(
       {required this.id,
       required this.date,
       required this.court,
@@ -22,8 +22,8 @@ class Match {
       required this.club,
       this.planned});
 
-  factory Match.fromJson(Map<String, dynamic> json) {
-    return Match(
+  factory SharedMatch.fromJson(Map<String, dynamic> json) {
+    return SharedMatch(
       id: json['Id'],
         date: json['Created'],
         court: json['Court'],

@@ -8,12 +8,12 @@ import 'package:http/http.dart' as http;
 
 class MatchService implements MatchRepository {
   @override
-  Future<Match> searchMatch(int id) async {
+  Future<SharedMatch> getMatch(int id) async {
     final response = await http.get(Uri.parse('$api_url/Metch/$id'));
 
     if (response.statusCode == 200) {
       debugPrint(jsonDecode(response.body).toString());
-      Match newMatch = Match.fromJson(jsonDecode(response.body));
+      SharedMatch newMatch = SharedMatch.fromJson(jsonDecode(response.body));
       return newMatch;
     } else {
       throw Exception('Failed to load match');
