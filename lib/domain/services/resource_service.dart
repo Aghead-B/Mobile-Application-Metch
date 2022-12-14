@@ -22,12 +22,9 @@ class ResourceService implements ResourceRepository {
             value: it.current['Value'].toString()));
       }
 
-      debugPrint(resources[0].value);
-
       return resources;
     } else {
       throw Exception('Failed to load resource');
     }
   }
-
 }

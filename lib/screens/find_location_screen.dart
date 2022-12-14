@@ -18,14 +18,22 @@ class _FindLocationScreenState extends State<FindLocationScreen> {
   late ClubService clubService;
   late Future<List<Club>> futureClub;
 
+  String appBarTextApi = '';
+  String inputHintApi = '';
+
   @override
   void initState() {
     super.initState();
     resourceService = ResourceService();
-    futureResource = resourceService.getResource("1526,221");
-
     clubService = ClubService();
     futureClub = clubService.searchClubs("");
+
+    resourceService.getResource("1526,221").then((value) => {
+          setState(() {
+            appBarTextApi = value[0].value;
+            inputHintApi = value[1].value;
+          }),
+        });
   }
 
   @override
@@ -45,8 +53,8 @@ class _FindLocationScreenState extends State<FindLocationScreen> {
         title: Center(
           child: Container(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 0.0),
-            child: const Text(
-              'Set Location',
+            child: Text(
+              appBarTextApi,
               style: headline1Bold,
             ),
           ),
@@ -77,7 +85,7 @@ class _FindLocationScreenState extends State<FindLocationScreen> {
                 ),
                 filled: true,
                 fillColor: Colors.white,
-                hintText: 'Search location',
+                hintText: inputHintApi,
               ),
               style: headline4Black,
             ),
