@@ -147,11 +147,19 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  level.levelMin == 0 || level.levelMax == 0
-                      ? selectLevelText
-                      : "Level ${level.levelMin}-${level.levelMax}",
-                  style: headline1,
+                Container(
+                  alignment: Alignment.topLeft,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Column(
+                    children: [
+                      Text(
+                        level.levelMin == 0 || level.levelMax == 0
+                            ? selectLevelText
+                            : "Level ${level.levelMin}-${level.levelMax}",
+                        style: headline1,
+                      ),
+                    ],
+                  ),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -174,9 +182,17 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      club.name == '' ? selectLocationText : club.name,
-                      style: headline1,
+                    Container(
+                      alignment: Alignment.topLeft,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: Column(
+                        children: [
+                          Text(
+                            club.name == '' ? selectLocationText : club.name,
+                            style: headline1,
+                          ),
+                        ],
+                      ),
                     ),
                     const Icon(
                       Icons.arrow_forward,
