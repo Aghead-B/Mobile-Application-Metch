@@ -102,7 +102,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
     matchService = MatchService();
 
     resourceService
-        .getResource("1522,1525,1526,1527,1528,1117,1531")
+        .getResource("1522,1525,1526,1527,1528,1555,1531")
         .then((value) => {
               setState(() {
                 setupMatchText = value[0].value;
