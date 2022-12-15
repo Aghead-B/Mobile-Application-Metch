@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:metch_ui_kit/metch_ui_kit.dart';
+import 'package:metch/domain/models/share_match.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+
+import '../domain/services/match_service.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:metch/domain/models/match.dart';
 import 'package:metch/domain/services/share_match_service.dart';
@@ -18,27 +25,14 @@ class ShareMatchScreen extends StatefulWidget {
 }
 
 class _ShareMatchScreenState extends State<ShareMatchScreen> {
-
   late MatchService matchService;
   late Future<SharedMatch> futureMatch;
-  late Future<MatchCreated> matchCreatedId;
 
   @override
   void initState() {
     super.initState();
     matchService = MatchService();
     futureMatch = matchService.getMatch(widget.matchId);
-  }
-
-  Future<void> _navigateAndGetDataSelection(BuildContext context) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const SetupMatchScreen()),
-    );
-
-    setState(() {
-      matchCreatedId = result;
-    });
   }
 
   String convertDate(String date) {
@@ -48,13 +42,36 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
     return formattedDate;
   }
 
+  String convertDateIntoTime(String date) {
+    DateTime dateTime = DateTime.parse(date);
+    var formattedDate = DateFormat('HH:mm').format(dateTime);
+
+    return formattedDate;
+  }
+
+  String addDuration(String startTime, int durationMatch) {
+    Duration duration = Duration(minutes: durationMatch);
+    DateTime startMatchTime = DateTime.parse(startTime);
+    DateTime endTimeDateTimeFormat = startMatchTime.add(duration);
+
+    var formattedDate = DateFormat('HH:mm').format(endTimeDateTimeFormat);
+    return formattedDate;
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      backgroundColor: primary500,
+      backgroundColor: secondaryBackground,
       appBar: AppBar(
-        backgroundColor: primary700,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xff29b3b0), Color(0xff000000)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+        ),
         title: Center(
           child: Container(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 0.0),
@@ -73,65 +90,88 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
             return Column(
               children: [
                 Stack(
+                  alignment: Alignment.center,
                   children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 25.0),
-                      alignment: Alignment.topCenter,
-                      width: double.infinity,
-                      child: Image.asset(
-                          width: double.infinity, "assets/images/padel.png"),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.fromLTRB(0, 200, 0, 0),
-                        ),
-                        Text(
-                          '${snapshot.data!.levelMin.toString()} - ${snapshot.data!.levelMax.toString()} ',
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 55),
-                        ),
-                        const Icon(
-                          Icons.star,
+                    Image.asset("assets/images/private_match_bg.png"),
+                    const Text(
+                      "Padel",
+                      style: TextStyle(
                           color: Colors.white,
-                          size: 55,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                GestureDetector(
-                  onTap: () {
-                    _navigateAndGetDataSelection(context);
-                  },
-                  child: Row(
-                    children: [
-                      const Padding(
-                          padding: EdgeInsets.fromLTRB(25.0, 0.0, 0.0, 0.0)),
-                      Text(
-                        convertDate(snapshot.data!.planned.toString()),
-                        style: const TextStyle(
-                          fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
+                          fontSize: 40),
+                    ),
+                  ],
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.star,
+                            color: secondary900,
+                            size: 50,
+                          ),
+                          Text(
+                            "Level ${snapshot.data!.levelMin.toString()}",
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: secondary800,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 8, 16, 0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "What is level ${snapshot.data!.levelMin.toString()}?",
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: secondary800,
+                            ),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward,
+                            color: secondary800,
+                            size: 35,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                const Divider(
+                  color: secondary800,
+                  thickness: 1,
+                ),
+                Row(
+                    children: [
+                  const Padding(
+                      padding: EdgeInsets.fromLTRB(25.0, 0.0, 0.0, 0.0)),
+                  Text(
+                    convertDate(snapshot.data!.planned.toString()),
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: textGrayColor,
+                    ),
+                  ),
+                ]),
                 Row(
                   children: [
                     const Padding(
-                        padding: EdgeInsets.fromLTRB(25.0, 0.0, 0.0, 0.0)),
+                        padding: EdgeInsets.fromLTRB(25.0, 0.0, 0.0, 25.0)),
                     Text(
-                      snapshot.data!.duration.toString(),
+                      "${convertDateIntoTime(snapshot.data!.planned.toString())} - ${addDuration(snapshot.data!.planned.toString(), snapshot.data!.duration)}, Court ${snapshot.data!.court.toString()}",
                       style: const TextStyle(
-                        fontSize: 24,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: textGrayColor,
                       ),
                     ),
                   ],
@@ -139,10 +179,24 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                 Row(
                   children: [
                     const Padding(
-                        padding: EdgeInsets.fromLTRB(25.0, 50.0, 0.0, 0.0)),
-                    Text("${snapshot.data!.club.name}, ${snapshot.data!.court}",
+                        padding: EdgeInsets.fromLTRB(25.0, 75.0, 0.0, 0.0)),
+                    Text(
+                        "${snapshot.data!.club.name}\n${snapshot.data!.club.address}, ${snapshot.data!.club.city}",
                         style: headline3),
                   ],
+                ),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
+                  alignment: Alignment.topLeft,
+                  child:  Linkify(
+                    onOpen: (link) {
+
+                      launch(snapshot.data!.club.url.toString());
+                    },
+                    text: snapshot.data!.club.url,
+                    style: const TextStyle(fontSize: 18),
+                    options: LinkifyOptions(humanize: true, removeWww: true),
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -154,12 +208,12 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         Padding(
                             padding: EdgeInsets.fromLTRB(0.0, 0.0, 50.0, 0.0)),
                         Icon(
-                            color: Colors.white,
+                            color: textGrayColor,
                             size: 70,
                             Icons.panorama_fish_eye),
                         Text(
                           "open",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: textGrayColor),
                         ),
                       ],
                     ),
@@ -168,12 +222,12 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         Padding(
                             padding: EdgeInsets.fromLTRB(50.0, 0.0, 40.0, 0.0)),
                         Icon(
-                            color: Colors.white,
+                            color: textGrayColor,
                             size: 70,
                             Icons.panorama_fish_eye),
                         Text(
                           "open",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: textGrayColor),
                         ),
                       ],
                     ),
@@ -182,12 +236,12 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         Padding(
                             padding: EdgeInsets.fromLTRB(40.0, 0.0, 50.0, 0.0)),
                         Icon(
-                            color: Colors.white,
+                            color: textGrayColor,
                             size: 70,
                             Icons.panorama_fish_eye),
                         Text(
                           "open",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: textGrayColor),
                         ),
                       ],
                     ),
@@ -196,12 +250,12 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         Padding(
                             padding: EdgeInsets.fromLTRB(50.0, 0.0, 0.0, 0.0)),
                         Icon(
-                            color: Colors.white,
+                            color: textGrayColor,
                             size: 70,
                             Icons.panorama_fish_eye),
                         Text(
                           "open",
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: textGrayColor),
                         ),
                       ],
                     ),
@@ -215,7 +269,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
                             textStyle: headline3,
-                            backgroundColor: secondary500,
+                            backgroundColor: const Color(0xff29b3b0),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
@@ -232,12 +286,16 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         },
                         style: ElevatedButton.styleFrom(
                             textStyle: headline3,
-                            backgroundColor: secondary800,
+                            backgroundColor: secondaryBackground,
                             shape: RoundedRectangleBorder(
+                              side: const BorderSide(color: Colors.black),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             minimumSize: const Size(151, 53)),
-                        child: const Text("Cancel"),
+                        child: const Text(
+                          "Cancel",
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
                     ],
                   ),
