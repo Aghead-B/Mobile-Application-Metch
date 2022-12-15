@@ -27,6 +27,8 @@ const Color secondary500 = Color(0xFFF28B20);
 const Color secondary600 = Color(0xFFB66210);
 const Color secondary700 = Color(0xFF7C440B);
 const Color secondary800 = Color(0xFF297d7a);
+const Color secondary900 = Color(0xFFE69128);
+
 
 const Color bottomNavigationBarIcon = Color(0xFFbbbbbb);
 
