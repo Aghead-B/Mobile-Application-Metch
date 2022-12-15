@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:metch/screens/profile_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:metch/screens/setup_match_screen.dart';
 import 'package:metch/screens/share_match_screen.dart';
-import 'package:metch_ui_kit/metch_ui_kit.dart';
 import 'package:uni_links/uni_links.dart';
 import '../widgets/home_text_button.dart';
 import 'find_match_screen.dart';
@@ -46,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (link!= null) {
         var uri = Uri.parse(link);
         if(uri.queryParameters['id'] != null) {
+          debugPrint(uri.queryParameters['id']);
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
@@ -72,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _sub?.cancel();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

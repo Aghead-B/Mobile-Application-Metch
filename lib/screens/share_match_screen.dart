@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import 'package:metch/domain/models/share_match.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
-
 import '../domain/services/match_service.dart';
 import 'package:flutter_share/flutter_share.dart';
-import 'package:metch/domain/models/match.dart';
-import 'package:metch/domain/services/share_match_service.dart';
 import 'package:metch/screens/home_screen.dart';
-import 'package:metch/screens/setup_match_screen.dart';
-import 'package:metch_ui_kit/metch_ui_kit.dart';
-import 'package:metch/domain/models/share_match.dart';
-import 'package:intl/intl.dart';
 import '../widgets/home_text_button.dart';
 
 class ShareMatchScreen extends StatefulWidget {
