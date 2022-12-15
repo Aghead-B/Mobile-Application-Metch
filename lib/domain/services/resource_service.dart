@@ -10,7 +10,8 @@ class ResourceService implements ResourceRepository {
   Future<List<Resource>> getResource(String ids) async {
     Dio dio = Dio();
 
-    dio.interceptors.add(DioCacheManager(CacheConfig()).interceptor);
+    dio.interceptors.add(
+        DioCacheManager(CacheConfig(baseUrl: base_url)).interceptor);
 
     final response = await dio.get('$api_url/Resource/?ids=$ids',
         options: buildCacheOptions(const Duration(days: 7),
