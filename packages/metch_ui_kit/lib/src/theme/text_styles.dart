@@ -5,6 +5,8 @@ const _metchFontFamily = 'Tahoma';
 
 const _textSizeParagraph = 18.0;
 
+const _textSizeCaption = 13.5;
+
 const _textSizeTitle = 35.0;
 
 const _textSizeHeadline1 = 24.0;
@@ -28,13 +30,11 @@ const paragraphBold = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-TextStyle caption(double size) {
-  return TextStyle(
-    fontFamily: _metchFontFamily,
-    fontSize: size,
-    color: textGrayColor,
-  );
-}
+const caption = TextStyle(
+  fontFamily: _metchFontFamily,
+  fontSize: _textSizeCaption,
+  color: textGrayColor,
+);
 
 const title = TextStyle(
   fontFamily: _metchFontFamily,
@@ -43,13 +43,11 @@ const title = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-TextStyle headline1(double size) {
-  return TextStyle(
-    fontFamily: _metchFontFamily,
-    fontSize: size,
-    color: textGrayColor,
-  );
-}
+const headline1 = TextStyle(
+  fontFamily: _metchFontFamily,
+  fontSize: _textSizeHeadline1,
+  color: textGrayColor,
+);
 
 const headline1HomeScreen = TextStyle(
   fontFamily: _metchFontFamily,
