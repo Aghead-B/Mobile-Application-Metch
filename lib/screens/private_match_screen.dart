@@ -2,14 +2,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 
+import '../domain/models/share_match.dart';
+import '../domain/services/match_service.dart';
+
 class PrivateMatchScreen extends StatefulWidget {
-  const PrivateMatchScreen({Key? key}) : super(key: key);
+  const PrivateMatchScreen({Key? key, required this.matchId}) : super(key: key);
+  final int matchId;
 
   @override
   State<PrivateMatchScreen> createState() => _PrivateMatchScreenState();
 }
 
 class _PrivateMatchScreenState extends State<PrivateMatchScreen> {
+  late MatchService matchService;
+  late Future<SharedMatch> futureMatch;
+
+  @override
+  void initState() {
+    super.initState();
+    matchService = MatchService();
+    futureMatch = matchService.getMatch(widget.matchId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

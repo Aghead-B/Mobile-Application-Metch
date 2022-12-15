@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:metch/domain/models/match.dart';
-import 'package:metch/domain/services/share_match_service.dart';
-import 'package:metch/screens/private_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import 'package:metch/domain/models/share_match.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+
+import '../domain/services/match_service.dart';
 
 class ShareMatchScreen extends StatefulWidget {
   const ShareMatchScreen({Key? key, required this.matchId}) : super(key: key);
@@ -19,7 +18,6 @@ class ShareMatchScreen extends StatefulWidget {
 class _ShareMatchScreenState extends State<ShareMatchScreen> {
   late MatchService matchService;
   late Future<SharedMatch> futureMatch;
-  late Future<MatchCreated> matchCreatedId;
 
   @override
   void initState() {
@@ -183,8 +181,8 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                   alignment: Alignment.topLeft,
                   child:  Linkify(
                     onOpen: (link) {
-                      Uri link = snapshot.data!.club.url.toString() as Uri;
-                      launchUrl(link);
+
+                      launch(snapshot.data!.club.url.toString());
                     },
                     text: snapshot.data!.club.url,
                     style: const TextStyle(fontSize: 18),
@@ -270,8 +268,8 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         icon: const Icon(Icons.whatsapp_rounded, size: 40),
                         label: const Text("Share"),
                         onPressed: () => {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const PrivateMatchScreen()))
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: (context) => const PrivateMatchScreen()))
                         },
                       ),
                       ElevatedButton(
