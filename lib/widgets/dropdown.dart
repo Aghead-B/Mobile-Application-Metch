@@ -18,29 +18,30 @@ class Dropdown extends StatefulWidget {
 class _DropdownState extends State<Dropdown> {
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      dropdownColor: Colors.white,
-      value: widget.dropdownValue,
-      alignment: AlignmentDirectional.center,
-      icon: Icon(
-        widget.icon,
-        color: Colors.grey,
+    return DropdownButtonHideUnderline(
+      child: DropdownButton<String>(
+        dropdownColor: Colors.white,
+        value: widget.dropdownValue,
+        alignment: AlignmentDirectional.center,
+        icon: Icon(
+          widget.icon,
+          color: Colors.grey,
+        ),
+        style: secondaryText,
+        onChanged: (String? value) {
+          // This is called when the user selects an item.
+          setState(() {
+            widget.dropdownValue = value!;
+            widget.setter(value);
+          });
+        },
+        items: widget.list.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
       ),
-      elevation: 0,
-      style: secondaryText,
-      onChanged: (String? value) {
-        // This is called when the user selects an item.
-        setState(() {
-          widget.dropdownValue = value!;
-          widget.setter(value);
-        });
-      },
-      items: widget.list.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
     );
   }
 }
