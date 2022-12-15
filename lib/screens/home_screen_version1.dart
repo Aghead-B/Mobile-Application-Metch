@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:metch/screens/profile_screen.dart';
 import 'package:metch/screens/setup_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
-import '../widgets/home_text_button.dart';
-import 'find_match_screen.dart';
-import 'my_match_screen.dart';
 
 class HomeScreenVersion1 extends StatelessWidget {
   const HomeScreenVersion1({Key? key}) : super(key: key);
