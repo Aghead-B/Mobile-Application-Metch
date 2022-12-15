@@ -35,7 +35,7 @@ class _PrivateMatchScreenState extends State<PrivateMatchScreen> {
           ),
         ),
       ),
-      body:Column(
+      body: Column(
         children: [
           Stack(
             alignment: Alignment.center,
@@ -44,16 +44,143 @@ class _PrivateMatchScreenState extends State<PrivateMatchScreen> {
               const Text(
                 "Padel",
                 style: TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold, fontSize: 40),
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 40),
               ),
             ],
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                child: Row(
+                  children: const [
+                    Icon(
+                      Icons.star,
+                      color: secondary900,
+                      size: 50,
+                    ),
+                    Text(
+                      "Level 4",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: secondary800,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 16, 0),
+                child: Row(
+                  children: const [
+                    Text(
+                      "What is level 4?",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: secondary800,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward,
+                      color: secondary800,
+                      size: 35,
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          const Divider(
+            color: secondary800,
+            thickness: 1,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
+            child: Row(
+              children: const [
+                Text(
+                  "Today 14:00 - 15:00",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      color: secondary800,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20
+                      ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 32, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text(
+                  "Peakz KBK Amsterdam",
+                  style: TextStyle(
+                    color: secondary800,
+                    fontSize: 18,
+                  ),
+                ),
+                Text(
+                  "court 4",
+                  style: TextStyle(
+                    color: secondary800,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+          ),
           Container(
-
+            padding: const EdgeInsets.fromLTRB(8, 0, 0, 32),
+            alignment: Alignment.centerLeft,
+            child: const Text(
+              "peakz.com",
+              style: TextStyle(
+                fontSize: 16,
+                color: Color(0xB3297d7a),
+              ),
+            ),
+          ),
+          Container(
+            color: const Color(0xFFf39622),
+            width: double.infinity,
+            height: 75,
+            alignment: Alignment.center,
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                "This match is private, contact the organizer to join",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 32, 0, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: secondary800),
+                  onPressed: () {
+                    debugPrint("Patat");
+                  },
+                  child: const Text("setup match"),
+                ),
+              ],
+            ),
           )
         ],
-      )
-
+      ),
     );
   }
 }

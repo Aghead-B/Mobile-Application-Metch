@@ -31,7 +31,7 @@ class SharedMatch {
         levelMax: json['LevelMax'],
         duration: json['Duration'],
         spots: json['Spots'],
-        club: Club(id: json['Club']['Id'].toString(), name: json['Club']['Name']),
+        club: Club(id: json['Club']['Id'].toString(), name: json['Club']['Name'], city: json['Club']['City'], address: json['Club']['Address'], url: json['Club']['URL']),
         planned: json['Planned']);
   }
 }
