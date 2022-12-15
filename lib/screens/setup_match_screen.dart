@@ -76,6 +76,8 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
       MaterialPageRoute(builder: (context) => const FindLocationScreen()),
     );
 
+    if (result == null) return;
+
     setState(() {
       club = result;
     });
