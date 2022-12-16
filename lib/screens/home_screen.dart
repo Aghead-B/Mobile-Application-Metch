@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:metch/screens/profile_screen.dart';
 import 'package:metch/screens/setup_match_screen.dart';
-import 'package:metch_ui_kit/metch_ui_kit.dart';
+import '../domain/models/resource.dart';
+import '../domain/services/resource_service.dart';
 import '../widgets/home_text_button.dart';
 import 'find_match_screen.dart';
 import 'my_match_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,4 +98,5 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
 }
