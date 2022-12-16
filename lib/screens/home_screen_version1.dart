@@ -1,14 +1,75 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:metch/screens/profile_screen.dart';
 import 'package:metch/screens/setup_match_screen.dart';
+import 'package:metch/screens/share_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
-import '../widgets/home_text_button.dart';
-import 'find_match_screen.dart';
-import 'my_match_screen.dart';
+import 'package:uni_links/uni_links.dart';
 
-class HomeScreenVersion1 extends StatelessWidget {
+
+class HomeScreenVersion1 extends StatefulWidget {
   const HomeScreenVersion1({Key? key}) : super(key: key);
+
+  @override
+  _HomeScreenVersion1State createState() => _HomeScreenVersion1State();
+}
+
+class _HomeScreenVersion1State extends State<HomeScreenVersion1> {
+
+  StreamSubscription? _sub;
+
+  Future<void> handleAppStartLink() async {
+    try {
+      final initialLink = await getInitialLink();
+      if (initialLink!= null) {
+        var uri = Uri.parse(initialLink);
+        if(uri.queryParameters['id'] != null) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return ShareMatchScreen(matchId: int.parse(uri.queryParameters['id'].toString()));
+              },
+            ),
+          );
+        }
+      }
+    } on PlatformException {
+      throw Exception("Receiving initial link did not succeed");
+    }
+  }
+
+  Future<void> handleAppInBackgroundLink() async {
+    _sub = linkStream.listen((String? link) {
+      if (link!= null) {
+        var uri = Uri.parse(link);
+        if(uri.queryParameters['id'] != null) {
+          debugPrint(uri.queryParameters['id']);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return ShareMatchScreen(matchId: int.parse(uri.queryParameters['id'].toString()));
+              },
+            ),
+          );
+        }
+      }
+    }, onError: (err) {
+      throw Exception(err);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    handleAppStartLink();
+    handleAppInBackgroundLink();
+  }
+
+  @override
+  void dispose() {
+    _sub?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,3 +169,4 @@ class HomeScreenVersion1 extends StatelessWidget {
     );
   }
 }
+

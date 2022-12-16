@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import 'package:metch/domain/models/share_match.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
-
 import '../domain/services/match_service.dart';
+import 'package:flutter_share/flutter_share.dart';
+import 'package:metch/screens/home_screen.dart';
+import '../widgets/home_text_button.dart';
 
 class ShareMatchScreen extends StatefulWidget {
   const ShareMatchScreen({Key? key, required this.matchId}) : super(key: key);
@@ -268,13 +270,12 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         icon: const Icon(Icons.whatsapp_rounded, size: 40),
                         label: const Text("Share"),
                         onPressed: () => {
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (context) => const PrivateMatchScreen()))
+                          share()
                         },
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          debugPrint("Match Canceled");
+                          //TODO Cancel a match is yet to be implemented
                         },
                         style: ElevatedButton.styleFrom(
                             textStyle: headline3,
@@ -295,12 +296,18 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
               ],
             );
           } else if (snapshot.hasError) {
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-              child: Text(
-                '${snapshot.error}',
-                style: headline4,
-              ),
+            return Column(
+              children: const [
+                Text(
+                  'The match with this id can not be found or does not exist anymore.',
+                  style: headline4,
+                ),
+                HomeTextButton(
+                  name: "Home",
+                  icon: Icons.home,
+                  page: HomeScreen(),
+                ),
+              ],
             );
           }
           return Column(
@@ -321,6 +328,13 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
           );
         },
       ),
+    );
+  }
+  Future<void> share() async {
+    await FlutterShare.share(
+        title: 'Shared match using Metch.io',
+        text: 'Play padel with me using Metch! Join me with the link below:',
+        linkUrl: 'https://metch.io/match/?id=${widget.matchId}',
     );
   }
 }
