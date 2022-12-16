@@ -5,6 +5,8 @@ import 'package:metch/domain/models/share_match.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import '../domain/services/resource_service.dart';
+
 
 import '../domain/services/match_service.dart';
 
@@ -17,14 +19,30 @@ class ShareMatchScreen extends StatefulWidget {
 }
 
 class _ShareMatchScreenState extends State<ShareMatchScreen> {
+  late ResourceService resourceService;
   late MatchService matchService;
   late Future<SharedMatch> futureMatch;
 
+  String shareMatchTitle = '';
+  String shareButtonText = '';
+  String cancelButton = '';
+  String headTitle = '';
+
   @override
   void initState() {
-    super.initState();
+
     matchService = MatchService();
     futureMatch = matchService.getMatch(widget.matchId);
+
+    resourceService = ResourceService();
+    resourceService.getResource("1532,1304,1101").then((value) => {
+      setState(() {
+        shareMatchTitle = value[0].value;
+        shareButtonText = value[1].value;
+        cancelButton = value[2].value;
+      }),
+    });
+    super.initState();
   }
 
   String convertDate(String date) {
@@ -68,8 +86,8 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
           child: Container(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 0.0),
             // For the arrow nav, keep 40
-            child: const Text(
-              'Share Match',
+            child: Text(
+              shareMatchTitle,
               style: headline1Bold,
             ),
           ),
@@ -267,7 +285,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                             ),
                             minimumSize: const Size(151, 53)),
                         icon: const Icon(Icons.whatsapp_rounded, size: 40),
-                        label: const Text("Share"),
+                        label: Text(shareButtonText),
                         onPressed: () => {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const PrivateMatchScreen())
@@ -285,9 +303,9 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             minimumSize: const Size(151, 53)),
-                        child: const Text(
-                          "Cancel",
-                          style: TextStyle(color: Colors.black),
+                        child: Text(
+                          cancelButton,
+                          style: const TextStyle(color: Colors.black),
                         ),
                       ),
                     ],
