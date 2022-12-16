@@ -11,7 +11,7 @@ import '../widgets/dropdown.dart';
 import 'package:metch/screens/share_match_screen.dart';
 
 const List<String> playersList = <String>[
-  '1 players',
+  '1 player',
   '2 players',
   '3 players',
 ];
@@ -54,9 +54,9 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
   String courtValue = courtList[0];
 
   Future<TimeOfDay?> pickTime() => showTimePicker(
-        context: context,
-        initialTime: TimeOfDay(hour: date.hour, minute: date.minute),
-      );
+    context: context,
+    initialTime: TimeOfDay(hour: date.hour, minute: date.minute),
+  );
 
   Future<void> _navigateAndGetLocationSelection(BuildContext context) async {
     final result = await Navigator.push(
@@ -81,6 +81,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
 
   @override
   void initState() {
+    super.initState();
     formattedDate = DateFormat('yyyy-MM-dd').format(date);
     displayDate = DateFormat('d-MMM').format(date);
     formattedTime = DateFormat('HH:mm:ss.SSS').format(date);
@@ -91,6 +92,9 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentHeight = MediaQuery.of(context).size.height;
+    final currentWidth = MediaQuery.of(context).size.width;
+    double textSizeCaption = currentWidth/16.4;
     return Scaffold(
       backgroundColor: secondaryBackground,
       appBar: AppBar(
@@ -105,7 +109,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
         ),
         title: Center(
           child: Container(
-            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 0.0),
+            padding: EdgeInsets.fromLTRB(0.0, 0.0, currentWidth/9.8, 0.0),
             child: const Text(
               'setup match',
               style: headline1Bold,
@@ -113,282 +117,288 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(15.0, 30.0, 15.0, 0.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  level.levelMin == 0 || level.levelMax == 0
-                      ? 'Choose level...'
-                      : "Level ${level.levelMin}-${level.levelMax}",
-                  style: headline1,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    _navigateAndGetLevelSelection(context);
-                  },
-                  child: const Icon(
-                    Icons.arrow_forward,
-                    color: Color(0xff71716f),
-                    size: 28.0,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(currentWidth/26.2, currentHeight/26.7, currentWidth/26.2, 0.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    level.levelMin == 0 || level.levelMax == 0
+                        ? 'Choose level...'
+                        : "Level ${level.levelMin}-${level.levelMax}",
+                    style: headline1(textSizeCaption),
                   ),
-                ),
-              ],
-            ),
-            GestureDetector(
-              onTap: () {
-                _navigateAndGetLocationSelection(context);
-              },
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      club.name == '' ? 'Choose location...' : club.name,
-                      style: headline1,
-                    ),
-                    const Icon(
+                  GestureDetector(
+                    onTap: () {
+                      _navigateAndGetLevelSelection(context);
+                    },
+                    child: const Icon(
                       Icons.arrow_forward,
-                      color: Color(0xff71716f),
+                      color: textGrayColor,
                       size: 28.0,
                     ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
-              child: Row(
-                children: const [
-                  Icon(
-                    Icons.person,
-                    color: Color(0xff71716f),
-                    size: 30.0,
-                  ),
-                  Text(
-                    ' Looking for',
-                    style: headline1,
                   ),
                 ],
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(0.0, 10.0, 235.0, 0.0),
-              height: 40.0,
-              width: 125.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: Colors.white,
-              ),
-              padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
-              child: Dropdown(
-                dropdownValue: playersValue,
-                list: playersList,
-                icon: Icons.keyboard_arrow_down,
-                setter: (value) {
-                  playersValue = value;
+              GestureDetector(
+                onTap: () {
+                  _navigateAndGetLocationSelection(context);
                 },
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-              child: Row(
-                children: const [
-                  Icon(
-                    Icons.calendar_month,
-                    color: Color(0xff71716f),
-                    size: 30.0,
-                  ),
-                  Text(
-                    ' When',
-                    style: headline1,
-                  ),
-                ],
-              ),
-            ),
-            Row(
-              children: [
-                Container(
-                  margin: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white,
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      elevation: 0,
-                      fixedSize: const Size(125, 0),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          displayDate,
-                          style: secondaryText,
-                        ),
-                        const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                    onPressed: () async {
-                      await showDatePicker(
-                        context: context,
-                        initialDate: date,
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime(2030),
-                      ).then((selectedDate) {
-                        if (selectedDate != null) {
-                          setState(() {
-                            date = selectedDate;
-                            formattedDate =
-                                DateFormat('yyyy-MM-dd').format(selectedDate);
-                            displayDate =
-                                DateFormat('d-MMM').format(selectedDate);
-                          });
-                        }
-                      });
-                    },
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.fromLTRB(10.0, 10.0, 0.0, 0.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white,
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      elevation: 0,
-                      fixedSize: const Size(102, 0),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          displayTime,
-                          style: secondaryText,
-                        ),
-                        const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                    onPressed: () async {
-                      final time = await pickTime();
-                      if (time == null) return; // pressed 'CANCEL'
-
-                      final newDateTime = DateTime(date.year, date.month,
-                          date.day, time.hour, time.minute);
-
-                      setState(() {
-                        date = newDateTime; // pressed 'OK'
-                        formattedTime = DateFormat('HH:mm:ss.SSS').format(date);
-                        displayTime = DateFormat('Hm').format(date);
-                      });
-                    },
-                  ),
-                ),
-                Container(
-                  alignment: AlignmentDirectional.center,
-                  margin: const EdgeInsets.fromLTRB(10.0, 10.0, 0.0, 0.0),
-                  width: 102.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white,
-                  ),
-                  child: Dropdown(
-                    dropdownValue: durationValue,
-                    list: durationList,
-                    icon: Icons.keyboard_arrow_down,
-                    setter: (value) {
-                      durationValue = value;
-                    },
-                  ),
-                )
-              ],
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-              child: Row(
-                children: const [
-                  Icon(
-                    Icons.sports_tennis_sharp,
-                    color: Color(0xff71716f),
-                    size: 30.0,
-                  ),
-                  Text(
-                    ' Court',
-                    style: headline1,
-                  ),
-                ],
-              ),
-            ),
-            Row(
-              children: [
-                Container(
-                  alignment: AlignmentDirectional.center,
-                  margin: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                  height: 40.0,
-                  width: 125.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white,
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: Dropdown(
-                      dropdownValue: courtValue,
-                      list: courtList,
-                      icon: Icons.keyboard_arrow_down,
-                      setter: (value) {
-                        courtValue = value;
-                      },
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 0.0),
-                  child: Column(
-                    children: const [
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(0.0, currentHeight/26.7, 0.0, 0.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
                       Text(
-                        'Only select if you booked a court.',
-                        style: caption,
+                        club.name == '' ? 'Choose location...' : club.name,
+                        style: headline1(textSizeCaption),
                       ),
-                      Text(
-                        'We do NOT book a court for you!.',
-                        style: caption,
+                      const Icon(
+                        Icons.arrow_forward,
+                        color: textGrayColor,
+                        size: 28.0,
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(0.0, 60.0, 0.0, 0.0),
-              height: 45,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff29b3b0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-                onPressed: toggleButton ? () => setupMatch() : null,
-                child: const Text(
-                  'Setup Match',
-                  style: buttonText,
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(0.0, currentHeight/26.7, 0.0, currentWidth/39.3),
+                child: Row(
+                  children: [
+                    Text(
+                      ' Looking for',
+                      style: headline1(textSizeCaption),
+                    ),
+                  ],
                 ),
               ),
-            )
-          ],
+              Row(
+                children: [
+                  Icon(
+                    Icons.person,
+                    color: textGrayColor,
+                    size: currentWidth / 9.8,
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(currentWidth/13.1, currentHeight/80.3, 0.0, 0.0),
+                    height: currentHeight/20.1,
+                    width: currentWidth/2.8,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.white,
+                    ),
+                    padding: EdgeInsets.fromLTRB(currentWidth/26.2, 0.0, 0.0, 0.0),
+                    child: Row(
+                      children: [
+                        Dropdown(
+                          dropdownValue: playersValue,
+                          list: playersList,
+                          icon: Icons.keyboard_arrow_down,
+                          setter: (value) {
+                            playersValue = value;
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(0.0, currentHeight/40.15, 0.0, 0.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.calendar_month,
+                      color: textGrayColor,
+                      size: currentWidth / 9.8,
+                    ),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(currentWidth/13.1, 0.0, 0.0, 0.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.white,
+                      ),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          elevation: 0,
+                          fixedSize: Size(currentWidth/2.8, 0),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              displayDate,
+                              style: secondaryText,
+                            ),
+                            const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.grey,
+                            )
+                          ],
+                        ),
+                        onPressed: () async {
+                          await showDatePicker(
+                            context: context,
+                            initialDate: date,
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2030),
+                          ).then((selectedDate) {
+                            if (selectedDate != null) {
+                              setState(() {
+                                date = selectedDate;
+                                formattedDate =
+                                    DateFormat('yyyy-MM-dd').format(selectedDate);
+                                displayDate =
+                                    DateFormat('d-MMM').format(selectedDate);
+                              });
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(currentWidth/39.3, 0.0, 0.0, 0.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.white,
+                      ),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          elevation: 0,
+                          fixedSize: Size(currentWidth/3.1, 0),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              displayTime,
+                              style: secondaryText,
+                            ),
+                            const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.grey,
+                            )
+                          ],
+                        ),
+                        onPressed: () async {
+                          final time = await pickTime();
+                          if (time == null) return; // pressed 'CANCEL'
+
+                          final newDateTime = DateTime(date.year, date.month,
+                              date.day, time.hour, time.minute);
+
+                          setState(() {
+                            date = newDateTime; // pressed 'OK'
+                            formattedTime = DateFormat('HH:mm:ss.SSS').format(date);
+                            displayTime = DateFormat('Hm').format(date);
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(0.0, currentHeight/40.15, 0.0, 0.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.access_time_rounded,
+                      color: textGrayColor,
+                      size: currentWidth / 9.8,
+                    ),
+                    Container(
+                      alignment: AlignmentDirectional.center,
+                      margin: EdgeInsets.fromLTRB(currentWidth/13.1, 0.0, 0.0, 0.0),
+                      width: currentWidth/3.1,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.white,
+                      ),
+                      child: Dropdown(
+                        dropdownValue: durationValue,
+                        list: durationList,
+                        icon: Icons.keyboard_arrow_down,
+                        setter: (value) {
+                          durationValue = value;
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(0.0, currentHeight/55.15, 0.0, 0.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.sports_tennis_sharp,
+                      color: textGrayColor,
+                      size: currentWidth / 9.8,
+                    ),
+                    Container(
+                      alignment: AlignmentDirectional.center,
+                      margin: EdgeInsets.fromLTRB(currentWidth/13.1, currentHeight/80.3, 0.0, 0.0),
+                      height: currentHeight/20,
+                      width: currentWidth/5.6,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.white,
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: Dropdown(
+                          dropdownValue: courtValue,
+                          list: courtList,
+                          icon: Icons.keyboard_arrow_down,
+                          setter: (value) {
+                            courtValue = value;
+                          },
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(currentWidth/26.2, currentHeight/160.1, 0.0, 0.0),
+                      child: Column(
+                        children:[
+                          Text(
+                            'Only select if you booked a court.',
+                            style: caption(currentWidth / 29.1),
+                          ),
+                          Text(
+                            "We'll NOT book a court for you!.",
+                            style: caption(currentWidth / 29.1),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(0.0, currentHeight/20.1, 0.0, 0.0),
+                height: currentHeight/17.8,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff29b3b0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  onPressed: toggleButton ? () => setupMatch() : null,
+                  child: const Text(
+                    'Setup Match',
+                    style: buttonText,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -400,14 +410,14 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
         toggleButton = false;
       });
       String getNumberDuration =
-          durationValue.replaceAll(RegExp(r'[^0-9]'), '');
+      durationValue.replaceAll(RegExp(r'[^0-9]'), '');
       String getNumberSpot = playersValue.replaceAll(RegExp(r'[^0-9]'), '');
-      String CombinedISO8601 = "${formattedDate}T${formattedTime}Z";
+      String combinedISO8601 = "${formattedDate}T${formattedTime}Z";
       Match match = Match(
         clubid: int.parse(club.id),
         sportid: SPORT_ID_PADEL,
         levelmin: level.levelMin,
-        planned: CombinedISO8601,
+        planned: combinedISO8601,
         duration: int.parse(getNumberDuration),
         spots: int.parse(getNumberSpot),
         levelmax: level.levelMax,
@@ -419,9 +429,9 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
         toggleButton = true;
       });
       matchCreated.then((value) => Navigator.of(context).push(
-            MaterialPageRoute(
-                builder: (context) => ShareMatchScreen(matchId: value.id)),
-          ));
+        MaterialPageRoute(
+            builder: (context) => ShareMatchScreen(matchId: value.id)),
+      ));
     }
   }
 
@@ -429,7 +439,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
     showDialog(
         context: context,
         builder: (context) => const AlertDialog(
-              content: Text("Please select a level and location."),
-            ));
+          content: Text("Please select a level and location."),
+        ));
   }
 }
