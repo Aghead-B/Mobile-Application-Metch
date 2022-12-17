@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:metch/screens/setup_match_screen.dart';
+import 'package:metch/screens/share_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
+import 'package:uni_links/uni_links.dart';
 import '../domain/services/resource_service.dart';
 
 class HomeScreenVersion1 extends StatefulWidget {
@@ -17,16 +20,70 @@ class _HomeScreenVersion1State extends State<HomeScreenVersion1> {
   String buttonTextApi = '';
   String descriptionTextApi = '';
 
+  StreamSubscription? _sub;
+
+  Future<void> handleAppStartLink() async {
+    try {
+      final initialLink = await getInitialLink();
+      if (initialLink != null) {
+        var uri = Uri.parse(initialLink);
+        if (uri.queryParameters['id'] != null) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return ShareMatchScreen(
+                    matchId: int.parse(uri.queryParameters['id'].toString()));
+              },
+            ),
+          );
+        }
+      }
+    } on PlatformException {
+      throw Exception("Receiving initial link did not succeed");
+    }
+  }
+
+  Future<void> handleAppInBackgroundLink() async {
+    _sub = linkStream.listen((String? link) {
+      if (link != null) {
+        var uri = Uri.parse(link);
+        if (uri.queryParameters['id'] != null) {
+          debugPrint(uri.queryParameters['id']);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return ShareMatchScreen(
+                    matchId: int.parse(uri.queryParameters['id'].toString()));
+              },
+            ),
+          );
+        }
+      }
+    }, onError: (err) {
+      throw Exception(err);
+    });
+  }
+
+  @override
+  void dispose() {
+    _sub?.cancel();
+    super.dispose();
+  }
+
   @override
   void initState() {
+    super.initState();
+
     resourceService = ResourceService();
-    resourceService.getResource([1506,1522]).then((value) => {
+    resourceService.getResource([1506, 1522]).then((value) => {
           setState(() {
             buttonTextApi = value[1].value;
             descriptionTextApi = value[0].value;
           }),
         });
-    super.initState();
+
+    handleAppStartLink();
+    handleAppInBackgroundLink();
   }
 
   @override
@@ -112,6 +169,10 @@ class _HomeScreenVersion1State extends State<HomeScreenVersion1> {
                           textAlign: TextAlign.center,
                         ),
                       ),
+                      const Text(
+                        'Share it on WhatsApp!',
+                        style: paragraph,
+                      )
                     ],
                   ),
                 ),
