@@ -53,6 +53,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: secondaryBackground,
       appBar: AppBar(
@@ -103,15 +104,15 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                         child: Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.star,
                               color: secondary900,
-                              size: 50,
+                              size: currentWidth/7.86,
                             ),
                             Text(
                               "Level ${snapshot.data!.levelMin.toString()}",
-                              style: const TextStyle(
-                                fontSize: 20,
+                              style: TextStyle(
+                                fontSize: currentWidth/19.65,
                                 color: secondary800,
                               ),
                             ),
@@ -124,15 +125,15 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                           children: [
                             Text(
                               "What is level ${snapshot.data!.levelMin.toString()}?",
-                              style: const TextStyle(
-                                fontSize: 20,
+                              style: TextStyle(
+                                fontSize: currentWidth/19.65,
                                 color: secondary800,
                               ),
                             ),
-                            const Icon(
+                            Icon(
                               Icons.arrow_forward,
                               color: secondary800,
-                              size: 35,
+                              size: currentWidth/11.2,
                             ),
                           ],
                         ),
