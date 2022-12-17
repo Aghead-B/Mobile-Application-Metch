@@ -27,7 +27,7 @@ class _SetLevelPageState extends State<SetLevelPage> {
   void initState() {
     super.initState();
     resourceService = ResourceService();
-    resourceService.getResource("1525").then((value) => {
+    resourceService.getResource([1525]).then((value) => {
           setState(() {
             setLevelText = value[0].value;
           }),

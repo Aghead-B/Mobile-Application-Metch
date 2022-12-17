@@ -7,13 +7,18 @@ import 'package:dio_http_cache/dio_http_cache.dart';
 
 class ResourceService implements ResourceRepository {
   @override
-  Future<List<Resource>> getResource(String ids) async {
+  Future<List<Resource>> getResource(List<int> ids) async {
     Dio dio = Dio();
 
-    dio.interceptors.add(
-        DioCacheManager(CacheConfig(baseUrl: base_url)).interceptor);
+    var idsString = ids
+        .toString()
+        .replaceAll(RegExp(r'[\[\]]'), '')
+        .replaceAll(RegExp(r'\s+'), '');
 
-    final response = await dio.get('$api_url/Resource/?ids=$ids',
+    dio.interceptors
+        .add(DioCacheManager(CacheConfig(baseUrl: base_url)).interceptor);
+
+    final response = await dio.get('$api_url/Resource/?ids=$idsString',
         options: buildCacheOptions(const Duration(days: 7),
             maxStale: const Duration(days: 10)));
 

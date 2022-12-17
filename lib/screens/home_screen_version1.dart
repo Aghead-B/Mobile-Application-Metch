@@ -20,7 +20,7 @@ class _HomeScreenVersion1State extends State<HomeScreenVersion1> {
   @override
   void initState() {
     resourceService = ResourceService();
-    resourceService.getResource("1506,1522").then((value) => {
+    resourceService.getResource([1506,1522]).then((value) => {
           setState(() {
             buttonTextApi = value[1].value;
             descriptionTextApi = value[0].value;
