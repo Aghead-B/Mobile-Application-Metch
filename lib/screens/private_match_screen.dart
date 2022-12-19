@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:metch/screens/setup_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
-
 import '../domain/models/share_match.dart';
 import '../domain/services/match_service.dart';
 
@@ -185,7 +185,13 @@ class _PrivateMatchScreenState extends State<PrivateMatchScreen> {
                   style:
                       ElevatedButton.styleFrom(backgroundColor: secondary800),
                   onPressed: () {
-                    debugPrint("Patat");
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return const SetupMatchScreen();
+                        },
+                      ),
+                    );
                   },
                   child: const Text("setup match"),
                 ),

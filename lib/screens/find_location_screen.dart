@@ -28,7 +28,7 @@ class _FindLocationScreenState extends State<FindLocationScreen> {
     clubService = ClubService();
     futureClub = clubService.searchClubs("");
 
-    resourceService.getResource("1526,221").then((value) => {
+    resourceService.getResource([1526,221]).then((value) => {
           setState(() {
             appBarTextApi = value[0].value;
             inputHintApi = value[1].value;

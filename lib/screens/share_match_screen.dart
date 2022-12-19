@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:metch/screens/private_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import 'package:metch/domain/models/share_match.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +8,9 @@ import '../domain/services/resource_service.dart';
 
 
 import '../domain/services/match_service.dart';
+import 'package:flutter_share/flutter_share.dart';
+import 'package:metch/screens/home_screen.dart';
+import '../widgets/home_text_button.dart';
 
 class ShareMatchScreen extends StatefulWidget {
   const ShareMatchScreen({Key? key, required this.matchId}) : super(key: key);
@@ -30,12 +32,11 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
 
   @override
   void initState() {
-
     matchService = MatchService();
     futureMatch = matchService.getMatch(widget.matchId);
 
     resourceService = ResourceService();
-    resourceService.getResource("1532,1304,1101").then((value) => {
+    resourceService.getResource([1532,1304,1101]).then((value) => {
       setState(() {
         shareMatchTitle = value[0].value;
         shareButtonText = value[1].value;
@@ -293,7 +294,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          debugPrint("Match Canceled");
+                          //TODO Cancel a match is yet to be implemented
                         },
                         style: ElevatedButton.styleFrom(
                             textStyle: headline3,
@@ -340,6 +341,13 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
           );
         },
       ),
+    );
+  }
+  Future<void> share() async {
+    await FlutterShare.share(
+        title: 'Shared match using Metch.io',
+        text: 'Play padel with me using Metch! Join me with the link below:',
+        linkUrl: 'https://metch.io/match/?id=${widget.matchId}',
     );
   }
 }
