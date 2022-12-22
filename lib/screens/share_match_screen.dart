@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:metch/screens/private_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import 'package:metch/domain/models/share_match.dart';
 import 'package:intl/intl.dart';
@@ -9,8 +10,6 @@ import '../domain/services/resource_service.dart';
 
 import '../domain/services/match_service.dart';
 import 'package:flutter_share/flutter_share.dart';
-import 'package:metch/screens/home_screen.dart';
-import '../widgets/home_text_button.dart';
 
 class ShareMatchScreen extends StatefulWidget {
   const ShareMatchScreen({Key? key, required this.matchId}) : super(key: key);
