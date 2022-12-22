@@ -7,6 +7,8 @@ import 'package:metch/screens/find_location_screen.dart';
 import 'package:metch/screens/set_level_page.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import '../domain/models/club.dart';
+import '../domain/models/resource.dart';
+import '../domain/services/resource_service.dart';
 import '../widgets/dropdown.dart';
 import 'package:metch/screens/share_match_screen.dart';
 

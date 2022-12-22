@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:metch/domain/models/Level.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
+import '../domain/services/resource_service.dart';
 import '../widgets/videoplayer/video_player.dart';
 
 var minimumLevelList = List<int>.generate(10, (i) => i + 1);
