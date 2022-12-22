@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:metch/screens/private_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import 'package:metch/domain/models/share_match.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../domain/services/match_service.dart';
 import 'package:flutter_share/flutter_share.dart';
-import 'package:metch/screens/home_screen.dart';
-import '../widgets/home_text_button.dart';
+import '../domain/services/resource_service.dart';
 
 class ShareMatchScreen extends StatefulWidget {
   const ShareMatchScreen({Key? key, required this.matchId}) : super(key: key);
@@ -18,14 +18,29 @@ class ShareMatchScreen extends StatefulWidget {
 }
 
 class _ShareMatchScreenState extends State<ShareMatchScreen> {
+  late ResourceService resourceService;
   late MatchService matchService;
   late Future<SharedMatch> futureMatch;
 
+  String shareMatchTitle = '';
+  String shareButtonText = '';
+  String cancelButton = '';
+  String headTitle = '';
+
   @override
   void initState() {
-    super.initState();
     matchService = MatchService();
     futureMatch = matchService.getMatch(widget.matchId);
+
+    resourceService = ResourceService();
+    resourceService.getResource([1532,1304,1101]).then((value) => {
+      setState(() {
+        shareMatchTitle = value[0].value;
+        shareButtonText = value[1].value;
+        cancelButton = value[2].value;
+      }),
+    });
+    super.initState();
   }
 
   String convertDate(String date) {
@@ -54,6 +69,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
   @override
   Widget build(BuildContext context) {
     final currentWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: secondaryBackground,
       appBar: AppBar(
@@ -70,8 +86,8 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
           child: Container(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 0.0),
             // For the arrow nav, keep 40
-            child: const Text(
-              'Share Match',
+            child: Text(
+              shareMatchTitle,
               style: headline1Bold,
             ),
           ),
@@ -104,7 +120,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                         child: Row(
                           children: [
-                            Icon(
+                             Icon(
                               Icons.star,
                               color: secondary900,
                               size: currentWidth/7.86,
@@ -130,10 +146,10 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                                 color: secondary800,
                               ),
                             ),
-                            Icon(
+                             Icon(
                               Icons.arrow_forward,
                               color: secondary800,
-                              size: currentWidth/11.2,
+                               size: currentWidth/11.2,
                             ),
                           ],
                         ),
@@ -146,25 +162,25 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                   ),
                   Row(
                       children: [
-                    const Padding(
-                        padding: EdgeInsets.fromLTRB(25.0, 0.0, 0.0, 0.0)),
-                    Text(
-                      convertDate(snapshot.data!.planned.toString()),
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: textGrayColor,
-                      ),
-                    ),
-                  ]),
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(25.0, 0.0, 0.0, 0.0)),
+                        Text(
+                          convertDate(snapshot.data!.planned.toString()),
+                          style: TextStyle(
+                            fontSize: currentWidth/19.65,
+                            fontWeight: FontWeight.bold,
+                            color: textGrayColor,
+                          ),
+                        ),
+                      ]),
                   Row(
                     children: [
                       const Padding(
                           padding: EdgeInsets.fromLTRB(25.0, 0.0, 0.0, 25.0)),
                       Text(
                         "${convertDateIntoTime(snapshot.data!.planned.toString())} - ${addDuration(snapshot.data!.planned.toString(), snapshot.data!.duration)}, Court ${snapshot.data!.court.toString()}",
-                        style: const TextStyle(
-                          fontSize: 20,
+                        style: TextStyle(
+                          fontSize: currentWidth/19.65,
                           fontWeight: FontWeight.bold,
                           color: textGrayColor,
                         ),
@@ -270,10 +286,11 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                               ),
                               minimumSize: const Size(151, 53)),
                           icon: const Icon(Icons.whatsapp_rounded, size: 40),
-                          label: const Text("Share"),
+                          label: Text(shareButtonText),
                           onPressed: () => {
-                            share()
-                          },
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const PrivateMatchScreen())
+                            )},
                         ),
                         ElevatedButton(
                           onPressed: () {
@@ -287,9 +304,9 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               minimumSize: const Size(151, 53)),
-                          child: const Text(
-                            "Cancel",
-                            style: TextStyle(color: Colors.black),
+                          child: Text(
+                            cancelButton,
+                            style: const TextStyle(color: Colors.black),
                           ),
                         ),
                       ],
@@ -298,18 +315,12 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                 ],
               );
             } else if (snapshot.hasError) {
-              return Column(
-                children: const [
-                  Text(
-                    'The match with this id can not be found or does not exist anymore.',
-                    style: headline4,
-                  ),
-                  HomeTextButton(
-                    name: "Home",
-                    icon: Icons.home,
-                    page: HomeScreen(),
-                  ),
-                ],
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                child: Text(
+                  '${snapshot.error}',
+                  style: headline4,
+                ),
               );
             }
             return Column(
@@ -330,7 +341,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
             );
           },
         ),
-      ),
+      )
     );
   }
   Future<void> share() async {

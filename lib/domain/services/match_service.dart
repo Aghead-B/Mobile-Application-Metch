@@ -11,7 +11,6 @@ class MatchService {
     final response = await http.get(Uri.parse('$api_url/Metch/$id'));
 
     if (response.statusCode == 200) {
-      debugPrint(jsonDecode(response.body).toString());
       SharedMatch newMatch = SharedMatch.fromJson(jsonDecode(response.body));
       return newMatch;
     } else {

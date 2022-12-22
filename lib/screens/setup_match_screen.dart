@@ -7,6 +7,8 @@ import 'package:metch/screens/find_location_screen.dart';
 import 'package:metch/screens/set_level_page.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import '../domain/models/club.dart';
+import '../domain/models/resource.dart';
+import '../domain/services/resource_service.dart';
 import '../widgets/dropdown.dart';
 import 'package:metch/screens/share_match_screen.dart';
 
@@ -46,12 +48,22 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
   late MatchService matchService;
   late bool toggleButton;
   final int SPORT_ID_PADEL = 109;
+  late ResourceService resourceService;
+  late Future<List<Resource>> futureResource;
   Club club = const Club(id: '', name: '');
   Level level = const Level(levelMin: 0, levelMax: 0);
   DateTime date = DateTime.now();
   String playersValue = playersList[1];
   String durationValue = durationList[1];
   String courtValue = courtList[0];
+
+  String setupMatchText = '';
+  String selectLevelText = '';
+  String selectLocationText = '';
+  String lookingForText = '';
+  String whenText = '';
+  String courtText = '';
+  String disclaimerText = '';
 
   Future<TimeOfDay?> pickTime() => showTimePicker(
     context: context,
@@ -86,13 +98,27 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
 
   @override
   void initState() {
-    super.initState();
+    resourceService = ResourceService();
     formattedDate = DateFormat('yyyy-MM-dd').format(date);
     displayDate = DateFormat('d-MMM').format(date);
     formattedTime = DateFormat('HH:mm:ss.SSS').format(date);
     displayTime = DateFormat('Hm').format(date);
     toggleButton = true;
     matchService = MatchService();
+
+    resourceService
+        .getResource([1522, 1525, 1526, 1527, 1528, 1555, 1531]).then(
+            (value) => {
+          setState(() {
+            setupMatchText = value[0].value;
+            selectLevelText = value[1].value;
+            selectLocationText = value[2].value;
+            lookingForText = value[3].value;
+            whenText = value[4].value;
+            courtText = value[5].value;
+            disclaimerText = value[6].value;
+          }),
+        });
   }
 
   @override
@@ -115,8 +141,8 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
         title: Center(
           child: Container(
             padding: EdgeInsets.fromLTRB(0.0, 0.0, currentWidth/9.8, 0.0),
-            child: const Text(
-              'setup match',
+            child: Text(
+              setupMatchText,
               style: headline1Bold,
             ),
           ),
@@ -132,7 +158,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                 children: [
                   Text(
                     level.levelMin == 0 || level.levelMax == 0
-                        ? 'Choose level...'
+                        ? selectLevelText
                         : "Level ${level.levelMin}-${level.levelMax}",
                     style: headline1(textSizeCaption),
                   ),
@@ -153,17 +179,25 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                   _navigateAndGetLocationSelection(context);
                 },
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(0.0, currentHeight/26.7, 0.0, 0.0),
+                  padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        club.name == '' ? 'Choose location...' : club.name,
-                        style: headline1(textSizeCaption),
+                      Container(
+                        alignment: Alignment.topLeft,
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Column(
+                          children: [
+                            Text(
+                              club.name == '' ? selectLocationText : club.name,
+                              style: headline1(textSizeCaption),
+                            ),
+                          ],
+                        ),
                       ),
                       const Icon(
                         Icons.arrow_forward,
-                        color: textGrayColor,
+                        color: Color(0xff71716f),
                         size: 28.0,
                       ),
                     ],
@@ -175,7 +209,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                 child: Row(
                   children: [
                     Text(
-                      ' Looking for',
+                      lookingForText,
                       style: headline1(textSizeCaption),
                     ),
                   ],
@@ -396,8 +430,8 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                     ),
                   ),
                   onPressed: toggleButton ? () => setupMatch() : null,
-                  child: const Text(
-                    'Setup Match',
+                  child: Text(
+                    setupMatchText,
                     style: buttonText,
                   ),
                 ),

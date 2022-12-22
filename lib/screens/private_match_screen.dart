@@ -6,8 +6,8 @@ import '../domain/models/share_match.dart';
 import '../domain/services/match_service.dart';
 
 class PrivateMatchScreen extends StatefulWidget {
-  const PrivateMatchScreen({Key? key, required this.matchId}) : super(key: key);
-  final int matchId;
+  const PrivateMatchScreen({Key? key}) : super(key: key);
+
 
   @override
   State<PrivateMatchScreen> createState() => _PrivateMatchScreenState();
@@ -21,7 +21,6 @@ class _PrivateMatchScreenState extends State<PrivateMatchScreen> {
   void initState() {
     super.initState();
     matchService = MatchService();
-    futureMatch = matchService.getMatch(widget.matchId);
   }
 
   @override

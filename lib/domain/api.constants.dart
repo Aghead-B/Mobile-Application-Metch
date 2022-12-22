@@ -1,1 +1,2 @@
-const api_url = 'https://metch.io/api';
+const base_url = 'https://metch.io';
+const api_url = '$base_url/api';

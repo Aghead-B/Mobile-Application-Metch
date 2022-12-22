@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:metch/domain/models/Level.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
+import '../domain/services/resource_service.dart';
 import '../widgets/videoplayer/video_player.dart';
 
 var minimumLevelList = List<int>.generate(10, (i) => i + 1);
@@ -18,10 +19,25 @@ class _SetLevelPageState extends State<SetLevelPage> {
   int maximumDropdownValue = maximumLevelList[6];
   late int firstDropdown = minimumDropdownValue;
   late int secondDropdown = maximumDropdownValue;
+  late ResourceService resourceService;
+
+  String setLevelText = '';
+
+  @override
+  void initState() {
+    super.initState();
+    resourceService = ResourceService();
+    resourceService.getResource([1525]).then((value) => {
+          setState(() {
+            setLevelText = value[0].value;
+          }),
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
     final currentWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: secondaryBackground,
       appBar: AppBar(
@@ -37,8 +53,8 @@ class _SetLevelPageState extends State<SetLevelPage> {
         title: Center(
           child: Container(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 0.0),
-            child: const Text(
-              'Set Level',
+            child: Text(
+              setLevelText,
               style: headline1Bold,
             ),
           ),
@@ -153,8 +169,8 @@ class _SetLevelPageState extends State<SetLevelPage> {
                 Navigator.pop(context,
                     Level(levelMin: firstDropdown, levelMax: secondDropdown));
               },
-              child: const Text(
-                'Set Level',
+              child: Text(
+                setLevelText,
                 style: buttonText,
               ),
             ),
