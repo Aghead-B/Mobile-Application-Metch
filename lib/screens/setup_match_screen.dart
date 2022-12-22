@@ -66,9 +66,9 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
   String disclaimerText = '';
 
   Future<TimeOfDay?> pickTime() => showTimePicker(
-        context: context,
-        initialTime: TimeOfDay(hour: date.hour, minute: date.minute),
-      );
+    context: context,
+    initialTime: TimeOfDay(hour: date.hour, minute: date.minute),
+  );
 
   Future<void> _navigateAndGetLocationSelection(BuildContext context) async {
     final result = await Navigator.push(
@@ -106,24 +106,23 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
     resourceService
         .getResource([1522, 1525, 1526, 1527, 1528, 1555, 1531]).then(
             (value) => {
-                  setState(() {
-                    setupMatchText = value[0].value;
-                    selectLevelText = value[1].value;
-                    selectLocationText = value[2].value;
-                    lookingForText = value[3].value;
-                    whenText = value[4].value;
-                    courtText = value[5].value;
-                    disclaimerText = value[6].value;
-                  }),
-                });
+          setState(() {
+            setupMatchText = value[0].value;
+            selectLevelText = value[1].value;
+            selectLocationText = value[2].value;
+            lookingForText = value[3].value;
+            whenText = value[4].value;
+            courtText = value[5].value;
+            disclaimerText = value[6].value;
+          }),
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     final currentHeight = MediaQuery.of(context).size.height;
     final currentWidth = MediaQuery.of(context).size.width;
-    double textSizeCaption = currentWidth / 16.4;
-
+    double textSizeCaption = currentWidth/16.4;
     return Scaffold(
       backgroundColor: secondaryBackground,
       appBar: AppBar(
@@ -138,7 +137,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
         ),
         title: Center(
           child: Container(
-            padding: EdgeInsets.fromLTRB(0.0, 0.0, currentWidth / 9.8, 0.0),
+            padding: EdgeInsets.fromLTRB(0.0, 0.0, currentWidth/9.8, 0.0),
             child: Text(
               setupMatchText,
               style: headline1Bold,
@@ -148,26 +147,17 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(currentWidth / 26.2,
-              currentHeight / 26.7, currentWidth / 26.2, 0.0),
+          padding: EdgeInsets.fromLTRB(currentWidth/26.2, currentHeight/26.7, currentWidth/26.2, 0.0),
           child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    alignment: Alignment.topLeft,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    child: Column(
-                      children: [
-                        Text(
-                          level.levelMin == 0 || level.levelMax == 0
-                              ? selectLevelText
-                              : "Level ${level.levelMin}-${level.levelMax}",
-                          style: headline1(textSizeCaption),
-                        ),
-                      ],
-                    ),
+                  Text(
+                    level.levelMin == 0 || level.levelMax == 0
+                        ? selectLevelText
+                        : "Level ${level.levelMin}-${level.levelMax}",
+                    style: headline1(textSizeCaption),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -186,8 +176,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                   _navigateAndGetLocationSelection(context);
                 },
                 child: Container(
-                  padding:
-                      EdgeInsets.fromLTRB(0.0, currentHeight / 26.7, 0.0, 0.0),
+                  padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -205,7 +194,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                       ),
                       const Icon(
                         Icons.arrow_forward,
-                        color: textGrayColor,
+                        color: Color(0xff71716f),
                         size: 28.0,
                       ),
                     ],
@@ -213,8 +202,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.fromLTRB(
-                    0.0, currentHeight / 26.7, 0.0, currentWidth / 39.3),
+                padding: EdgeInsets.fromLTRB(0.0, currentHeight/26.7, 0.0, currentWidth/39.3),
                 child: Row(
                   children: [
                     Text(
@@ -226,53 +214,37 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
               ),
               Row(
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.person,
-                    color: Color(0xff71716f),
-                    size: 30.0,
+                    color: textGrayColor,
+                    size: currentWidth / 9.8,
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(
-                        currentWidth / 13.1, currentHeight / 80.3, 0.0, 0.0),
-                    height: 40.0,
-                    width: 125.0,
+                    margin: EdgeInsets.fromLTRB(currentWidth/13.1, currentHeight/80.3, 0.0, 0.0),
+                    height: currentHeight/20.1,
+                    width: currentWidth/2.8,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.white,
                     ),
-                    padding:
-                        EdgeInsets.fromLTRB(currentWidth / 26.2, 0.0, 0.0, 0.0),
-                    child: Dropdown(
-                      dropdownValue: playersValue,
-                      list: playersList,
-                      icon: Icons.keyboard_arrow_down,
-                      setter: (value) {
-                        playersValue = value;
-                      },
+                    padding: EdgeInsets.fromLTRB(currentWidth/26.2, 0.0, 0.0, 0.0),
+                    child: Row(
+                      children: [
+                        Dropdown(
+                          dropdownValue: playersValue,
+                          list: playersList,
+                          icon: Icons.keyboard_arrow_down,
+                          setter: (value) {
+                            playersValue = value;
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
               Container(
-                padding:
-                    EdgeInsets.fromLTRB(0.0, currentHeight / 40.15, 0.0, 0.0),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.calendar_month,
-                      color: textGrayColor,
-                      size: currentWidth / 9.0,
-                    ),
-                    Text(
-                      whenText,
-                      style: headline1(textSizeCaption),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding:
-                    EdgeInsets.fromLTRB(0.0, currentHeight / 40.15, 0.0, 0.0),
+                padding: EdgeInsets.fromLTRB(0.0, currentHeight/40.15, 0.0, 0.0),
                 child: Row(
                   children: [
                     Icon(
@@ -281,8 +253,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                       size: currentWidth / 9.8,
                     ),
                     Container(
-                      margin: EdgeInsets.fromLTRB(
-                          currentWidth / 13.1, 0.0, 0.0, 0.0),
+                      margin: EdgeInsets.fromLTRB(currentWidth/13.1, 0.0, 0.0, 0.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         color: Colors.white,
@@ -291,7 +262,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           elevation: 0,
-                          fixedSize: Size(currentWidth / 2.8, 0),
+                          fixedSize: Size(currentWidth/2.8, 0),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -316,8 +287,8 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                             if (selectedDate != null) {
                               setState(() {
                                 date = selectedDate;
-                                formattedDate = DateFormat('yyyy-MM-dd')
-                                    .format(selectedDate);
+                                formattedDate =
+                                    DateFormat('yyyy-MM-dd').format(selectedDate);
                                 displayDate =
                                     DateFormat('d-MMM').format(selectedDate);
                               });
@@ -327,8 +298,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.fromLTRB(
-                          currentWidth / 39.3, 0.0, 0.0, 0.0),
+                      margin: EdgeInsets.fromLTRB(currentWidth/39.3, 0.0, 0.0, 0.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         color: Colors.white,
@@ -337,7 +307,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.white,
                           elevation: 0,
-                          fixedSize: Size(currentWidth / 3.1, 0),
+                          fixedSize: Size(currentWidth/3.1, 0),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -361,8 +331,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
 
                           setState(() {
                             date = newDateTime; // pressed 'OK'
-                            formattedTime =
-                                DateFormat('HH:mm:ss.SSS').format(date);
+                            formattedTime = DateFormat('HH:mm:ss.SSS').format(date);
                             displayTime = DateFormat('Hm').format(date);
                           });
                         },
@@ -372,8 +341,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                 ),
               ),
               Container(
-                padding:
-                    EdgeInsets.fromLTRB(0.0, currentHeight / 40.15, 0.0, 0.0),
+                padding: EdgeInsets.fromLTRB(0.0, currentHeight/40.15, 0.0, 0.0),
                 child: Row(
                   children: [
                     Icon(
@@ -383,9 +351,8 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                     ),
                     Container(
                       alignment: AlignmentDirectional.center,
-                      margin: EdgeInsets.fromLTRB(
-                          currentWidth / 13.1, 0.0, 0.0, 0.0),
-                      width: currentWidth / 3.1,
+                      margin: EdgeInsets.fromLTRB(currentWidth/13.1, 0.0, 0.0, 0.0),
+                      width: currentWidth/3.1,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         color: Colors.white,
@@ -403,7 +370,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+                padding: EdgeInsets.fromLTRB(0.0, currentHeight/55.15, 0.0, 0.0),
                 child: Row(
                   children: [
                     Icon(
@@ -411,58 +378,47 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                       color: textGrayColor,
                       size: currentWidth / 9.8,
                     ),
-                    Text(
-                      courtText,
-                      style: headline1(textSizeCaption),
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                children: [
-                  Container(
-                    alignment: AlignmentDirectional.center,
-                    margin: EdgeInsets.fromLTRB(
-                        currentWidth / 13.1, currentHeight / 80.3, 0.0, 0.0),
-                    height: currentHeight / 20,
-                    width: currentWidth / 5.6,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.white,
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: Dropdown(
-                        dropdownValue: courtValue,
-                        list: courtList,
-                        icon: Icons.keyboard_arrow_down,
-                        setter: (value) {
-                          courtValue = value;
-                        },
+                    Container(
+                      alignment: AlignmentDirectional.center,
+                      margin: EdgeInsets.fromLTRB(currentWidth/13.1, currentHeight/80.3, 0.0, 0.0),
+                      height: currentHeight/20,
+                      width: currentWidth/5.6,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.white,
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: Dropdown(
+                          dropdownValue: courtValue,
+                          list: courtList,
+                          icon: Icons.keyboard_arrow_down,
+                          setter: (value) {
+                            courtValue = value;
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(
-                        currentWidth / 26.2, currentHeight / 160.1, 0.0, 0.0),
-                    child: Container(
-                      padding: const EdgeInsets.all(16.0),
-                      width: MediaQuery.of(context).size.width * 0.55,
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(currentWidth/26.2, currentHeight/160.1, 0.0, 0.0),
                       child: Column(
-                        children: [
+                        children:[
                           Text(
-                            disclaimerText,
+                            'Only select if you booked a court.',
+                            style: caption(currentWidth / 29.1),
+                          ),
+                          Text(
+                            "We'll NOT book a court for you!.",
                             style: caption(currentWidth / 29.1),
                           ),
                         ],
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Container(
-                margin:
-                    EdgeInsets.fromLTRB(0.0, currentHeight / 20.1, 0.0, 0.0),
-                height: currentHeight / 17.8,
+                margin: EdgeInsets.fromLTRB(0.0, currentHeight/20.1, 0.0, 0.0),
+                height: currentHeight/17.8,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff29b3b0),
@@ -490,14 +446,14 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
         toggleButton = false;
       });
       String getNumberDuration =
-          durationValue.replaceAll(RegExp(r'[^0-9]'), '');
+      durationValue.replaceAll(RegExp(r'[^0-9]'), '');
       String getNumberSpot = playersValue.replaceAll(RegExp(r'[^0-9]'), '');
-      String CombinedISO8601 = "${formattedDate}T${formattedTime}Z";
+      String combinedISO8601 = "${formattedDate}T${formattedTime}Z";
       Match match = Match(
         clubid: int.parse(club.id),
         sportid: SPORT_ID_PADEL,
         levelmin: level.levelMin,
-        planned: CombinedISO8601,
+        planned: combinedISO8601,
         duration: int.parse(getNumberDuration),
         spots: int.parse(getNumberSpot),
         levelmax: level.levelMax,
@@ -509,18 +465,17 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
         toggleButton = true;
       });
       matchCreated.then((value) => Navigator.of(context).push(
-            MaterialPageRoute(
-                builder: (context) => ShareMatchScreen(matchId: value.id)),
-          ));
+        MaterialPageRoute(
+            builder: (context) => ShareMatchScreen(matchId: value.id)),
+      ));
     }
   }
 
   void showAlert(BuildContext context) {
     showDialog(
-      context: context,
-      builder: (context) => const AlertDialog(
-        content: Text("Please select a level and location."),
-      ),
-    );
+        context: context,
+        builder: (context) => const AlertDialog(
+          content: Text("Please select a level and location."),
+        ));
   }
 }
