@@ -36,6 +36,8 @@ class _SetLevelPageState extends State<SetLevelPage> {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: secondaryBackground,
       appBar: AppBar(
@@ -71,9 +73,9 @@ class _SetLevelPageState extends State<SetLevelPage> {
                   size: 45,
                   color: Colors.orange,
                 ),
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
-                  child: Text("Min", style: headline1),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
+                  child: Text("Min", style: headline1(currentWidth / 16.4)),
                 ),
                 Container(
                   margin: const EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 0.0),
@@ -112,7 +114,10 @@ class _SetLevelPageState extends State<SetLevelPage> {
                     }).toList(),
                   ),
                 ),
-                const Text("Max", style: headline1),
+                Text(
+                  "Max",
+                  style: headline1(currentWidth / 16.4),
+                ),
                 Container(
                   margin: const EdgeInsets.fromLTRB(10.0, 10.0, 0.0, 0.0),
                   height: 40.0,

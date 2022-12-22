@@ -70,6 +70,8 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final currentWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: secondaryBackground,
       appBar: AppBar(
@@ -93,253 +95,255 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
           ),
         ),
       ),
-      body: FutureBuilder<SharedMatch>(
-        future: futureMatch,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-              children: [
-                Stack(
-                  alignment: Alignment.center,
-                  children: <Widget>[
-                    Image.asset("assets/images/private_match_bg.png"),
-                    const Text(
-                      "Padel",
-                      style: TextStyle(
-                          color: Colors.white,
+      body: SingleChildScrollView(
+        child: FutureBuilder<SharedMatch>(
+          future: futureMatch,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Column(
+                children: [
+                  Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      Image.asset("assets/images/private_match_bg.png"),
+                      const Text(
+                        "Padel",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 40),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                        child: Row(
+                          children: [
+                             Icon(
+                              Icons.star,
+                              color: secondary900,
+                              size: currentWidth/7.86,
+                            ),
+                            Text(
+                              "Level ${snapshot.data!.levelMin.toString()}",
+                              style: TextStyle(
+                                fontSize: currentWidth/19.65,
+                                color: secondary800,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 8, 16, 0),
+                        child: Row(
+                          children: [
+                            Text(
+                              "What is level ${snapshot.data!.levelMin.toString()}?",
+                              style: TextStyle(
+                                fontSize: currentWidth/19.65,
+                                color: secondary800,
+                              ),
+                            ),
+                             Icon(
+                              Icons.arrow_forward,
+                              color: secondary800,
+                               size: currentWidth/11.2,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  const Divider(
+                    color: secondary800,
+                    thickness: 1,
+                  ),
+                  Row(
+                      children: [
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(25.0, 0.0, 0.0, 0.0)),
+                        Text(
+                          convertDate(snapshot.data!.planned.toString()),
+                          style: TextStyle(
+                            fontSize: currentWidth/19.65,
+                            fontWeight: FontWeight.bold,
+                            color: textGrayColor,
+                          ),
+                        ),
+                      ]),
+                  Row(
+                    children: [
+                      const Padding(
+                          padding: EdgeInsets.fromLTRB(25.0, 0.0, 0.0, 25.0)),
+                      Text(
+                        "${convertDateIntoTime(snapshot.data!.planned.toString())} - ${addDuration(snapshot.data!.planned.toString(), snapshot.data!.duration)}, Court ${snapshot.data!.court.toString()}",
+                        style: TextStyle(
+                          fontSize: currentWidth/19.65,
                           fontWeight: FontWeight.bold,
-                          fontSize: 40),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.star,
-                            color: secondary900,
-                            size: 50,
-                          ),
-                          Text(
-                            "Level ${snapshot.data!.levelMin.toString()}",
-                            style: const TextStyle(
-                              fontSize: 20,
-                              color: secondary800,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 8, 16, 0),
-                      child: Row(
-                        children: [
-                          Text(
-                            "What is level ${snapshot.data!.levelMin.toString()}?",
-                            style: const TextStyle(
-                              fontSize: 20,
-                              color: secondary800,
-                            ),
-                          ),
-                          const Icon(
-                            Icons.arrow_forward,
-                            color: secondary800,
-                            size: 35,
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                const Divider(
-                  color: secondary800,
-                  thickness: 1,
-                ),
-                Row(
-                    children: [
-                  const Padding(
-                      padding: EdgeInsets.fromLTRB(25.0, 0.0, 0.0, 0.0)),
-                  Text(
-                    convertDate(snapshot.data!.planned.toString()),
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: textGrayColor,
-                    ),
-                  ),
-                ]),
-                Row(
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.fromLTRB(25.0, 0.0, 0.0, 25.0)),
-                    Text(
-                      "${convertDateIntoTime(snapshot.data!.planned.toString())} - ${addDuration(snapshot.data!.planned.toString(), snapshot.data!.duration)}, Court ${snapshot.data!.court.toString()}",
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: textGrayColor,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.fromLTRB(25.0, 75.0, 0.0, 0.0)),
-                    Text(
-                        "${snapshot.data!.club.name}\n${snapshot.data!.club.address}, ${snapshot.data!.club.city}",
-                        style: headline3),
-                  ],
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
-                  alignment: Alignment.topLeft,
-                  child:  Linkify(
-                    onOpen: (link) {
-
-                      launch(snapshot.data!.club.url.toString());
-                    },
-                    text: snapshot.data!.club.url,
-                    style: const TextStyle(fontSize: 18),
-                    options: LinkifyOptions(humanize: true, removeWww: true),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.fromLTRB(0.0, 150.0, 0.0, 0.0)),
-                    Column(
-                      children: const [
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(0.0, 0.0, 50.0, 0.0)),
-                        Icon(
-                            color: textGrayColor,
-                            size: 70,
-                            Icons.panorama_fish_eye),
-                        Text(
-                          "open",
-                          style: TextStyle(color: textGrayColor),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: const [
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(50.0, 0.0, 40.0, 0.0)),
-                        Icon(
-                            color: textGrayColor,
-                            size: 70,
-                            Icons.panorama_fish_eye),
-                        Text(
-                          "open",
-                          style: TextStyle(color: textGrayColor),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: const [
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(40.0, 0.0, 50.0, 0.0)),
-                        Icon(
-                            color: textGrayColor,
-                            size: 70,
-                            Icons.panorama_fish_eye),
-                        Text(
-                          "open",
-                          style: TextStyle(color: textGrayColor),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: const [
-                        Padding(
-                            padding: EdgeInsets.fromLTRB(50.0, 0.0, 0.0, 0.0)),
-                        Icon(
-                            color: textGrayColor,
-                            size: 70,
-                            Icons.panorama_fish_eye),
-                        Text(
-                          "open",
-                          style: TextStyle(color: textGrayColor),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                            textStyle: headline3,
-                            backgroundColor: const Color(0xff29b3b0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            minimumSize: const Size(151, 53)),
-                        icon: const Icon(Icons.whatsapp_rounded, size: 40),
-                        label: Text(shareButtonText),
-                        onPressed: () => {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const PrivateMatchScreen())
-                          )},
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          //TODO Cancel a match is yet to be implemented
-                        },
-                        style: ElevatedButton.styleFrom(
-                            textStyle: headline3,
-                            backgroundColor: secondaryBackground,
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(color: Colors.black),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            minimumSize: const Size(151, 53)),
-                        child: Text(
-                          cancelButton,
-                          style: const TextStyle(color: Colors.black),
+                          color: textGrayColor,
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            );
-          } else if (snapshot.hasError) {
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-              child: Text(
-                '${snapshot.error}',
-                style: headline4,
-              ),
-            );
-          }
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 0.0),
+                  Row(
+                    children: [
+                      const Padding(
+                          padding: EdgeInsets.fromLTRB(25.0, 75.0, 0.0, 0.0)),
+                      Text(
+                          "${snapshot.data!.club.name}\n${snapshot.data!.club.address}, ${snapshot.data!.club.city}",
+                          style: headline3),
+                    ],
                   ),
-                  CircularProgressIndicator(
-                    color: Colors.white,
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
+                    alignment: Alignment.topLeft,
+                    child:  Linkify(
+                      onOpen: (link) {
+
+                        launch(snapshot.data!.club.url.toString());
+                      },
+                      text: snapshot.data!.club.url,
+                      style: const TextStyle(fontSize: 18),
+                      options: LinkifyOptions(humanize: true, removeWww: true),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Padding(
+                          padding: EdgeInsets.fromLTRB(0.0, 150.0, 0.0, 0.0)),
+                      Column(
+                        children: const [
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 50.0, 0.0)),
+                          Icon(
+                              color: textGrayColor,
+                              size: 70,
+                              Icons.panorama_fish_eye),
+                          Text(
+                            "open",
+                            style: TextStyle(color: textGrayColor),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: const [
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(50.0, 0.0, 40.0, 0.0)),
+                          Icon(
+                              color: textGrayColor,
+                              size: 70,
+                              Icons.panorama_fish_eye),
+                          Text(
+                            "open",
+                            style: TextStyle(color: textGrayColor),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: const [
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(40.0, 0.0, 50.0, 0.0)),
+                          Icon(
+                              color: textGrayColor,
+                              size: 70,
+                              Icons.panorama_fish_eye),
+                          Text(
+                            "open",
+                            style: TextStyle(color: textGrayColor),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: const [
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(50.0, 0.0, 0.0, 0.0)),
+                          Icon(
+                              color: textGrayColor,
+                              size: 70,
+                              Icons.panorama_fish_eye),
+                          Text(
+                            "open",
+                            style: TextStyle(color: textGrayColor),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                              textStyle: headline3,
+                              backgroundColor: const Color(0xff29b3b0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              minimumSize: const Size(151, 53)),
+                          icon: const Icon(Icons.whatsapp_rounded, size: 40),
+                          label: Text(shareButtonText),
+                          onPressed: () => {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const PrivateMatchScreen())
+                            )},
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            //TODO Cancel a match is yet to be implemented
+                          },
+                          style: ElevatedButton.styleFrom(
+                              textStyle: headline3,
+                              backgroundColor: secondaryBackground,
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              minimumSize: const Size(151, 53)),
+                          child: Text(
+                            cancelButton,
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
-              )
-            ],
-          );
-        },
-      ),
+              );
+            } else if (snapshot.hasError) {
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                child: Text(
+                  '${snapshot.error}',
+                  style: headline4,
+                ),
+              );
+            }
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 0.0),
+                    ),
+                    CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  ],
+                )
+              ],
+            );
+          },
+        ),
+      )
     );
   }
   Future<void> share() async {

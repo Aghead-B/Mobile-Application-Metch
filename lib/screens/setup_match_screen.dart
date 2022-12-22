@@ -104,22 +104,26 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
     matchService = MatchService();
 
     resourceService
-        .getResource([1522,1525,1526,1527,1528,1555,1531])
-        .then((value) => {
-              setState(() {
-                setupMatchText = value[0].value;
-                selectLevelText = value[1].value;
-                selectLocationText = value[2].value;
-                lookingForText = value[3].value;
-                whenText = value[4].value;
-                courtText = value[5].value;
-                disclaimerText = value[6].value;
-              }),
-            });
+        .getResource([1522, 1525, 1526, 1527, 1528, 1555, 1531]).then(
+            (value) => {
+                  setState(() {
+                    setupMatchText = value[0].value;
+                    selectLevelText = value[1].value;
+                    selectLocationText = value[2].value;
+                    lookingForText = value[3].value;
+                    whenText = value[4].value;
+                    courtText = value[5].value;
+                    disclaimerText = value[6].value;
+                  }),
+                });
   }
 
   @override
   Widget build(BuildContext context) {
+    final currentHeight = MediaQuery.of(context).size.height;
+    final currentWidth = MediaQuery.of(context).size.width;
+    double textSizeCaption = currentWidth / 16.4;
+
     return Scaffold(
       backgroundColor: secondaryBackground,
       appBar: AppBar(
@@ -134,7 +138,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
         ),
         title: Center(
           child: Container(
-            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 0.0),
+            padding: EdgeInsets.fromLTRB(0.0, 0.0, currentWidth / 9.8, 0.0),
             child: Text(
               setupMatchText,
               style: headline1Bold,
@@ -142,298 +146,339 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(15.0, 30.0, 15.0, 0.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  alignment: Alignment.topLeft,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  child: Column(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(currentWidth / 26.2,
+              currentHeight / 26.7, currentWidth / 26.2, 0.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    alignment: Alignment.topLeft,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    child: Column(
+                      children: [
+                        Text(
+                          level.levelMin == 0 || level.levelMax == 0
+                              ? selectLevelText
+                              : "Level ${level.levelMin}-${level.levelMax}",
+                          style: headline1(textSizeCaption),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      _navigateAndGetLevelSelection(context);
+                    },
+                    child: const Icon(
+                      Icons.arrow_forward,
+                      color: textGrayColor,
+                      size: 28.0,
+                    ),
+                  ),
+                ],
+              ),
+              GestureDetector(
+                onTap: () {
+                  _navigateAndGetLocationSelection(context);
+                },
+                child: Container(
+                  padding:
+                      EdgeInsets.fromLTRB(0.0, currentHeight / 26.7, 0.0, 0.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        level.levelMin == 0 || level.levelMax == 0
-                            ? selectLevelText
-                            : "Level ${level.levelMin}-${level.levelMax}",
-                        style: headline1,
+                      Container(
+                        alignment: Alignment.topLeft,
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: Column(
+                          children: [
+                            Text(
+                              club.name == '' ? selectLocationText : club.name,
+                              style: headline1(textSizeCaption),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(
+                        Icons.arrow_forward,
+                        color: textGrayColor,
+                        size: 28.0,
                       ),
                     ],
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    _navigateAndGetLevelSelection(context);
-                  },
-                  child: const Icon(
-                    Icons.arrow_forward,
-                    color: Color(0xff71716f),
-                    size: 28.0,
-                  ),
-                ),
-              ],
-            ),
-            GestureDetector(
-              onTap: () {
-                _navigateAndGetLocationSelection(context);
-              },
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(
+                    0.0, currentHeight / 26.7, 0.0, currentWidth / 39.3),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      alignment: Alignment.topLeft,
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      child: Column(
-                        children: [
-                          Text(
-                            club.name == '' ? selectLocationText : club.name,
-                            style: headline1,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const Icon(
-                      Icons.arrow_forward,
-                      color: Color(0xff71716f),
-                      size: 28.0,
+                    Text(
+                      lookingForText,
+                      style: headline1(textSizeCaption),
                     ),
                   ],
                 ),
               ),
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
-              child: Row(
+              Row(
                 children: [
                   const Icon(
                     Icons.person,
                     color: Color(0xff71716f),
                     size: 30.0,
                   ),
-                  Text(
-                    lookingForText,
-                    style: headline1,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(0.0, 10.0, 235.0, 0.0),
-              height: 40.0,
-              width: 125.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: Colors.white,
-              ),
-              padding: const EdgeInsets.fromLTRB(15.0, 0.0, 0.0, 0.0),
-              child: Dropdown(
-                dropdownValue: playersValue,
-                list: playersList,
-                icon: Icons.keyboard_arrow_down,
-                setter: (value) {
-                  playersValue = value;
-                },
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.calendar_month,
-                    color: Color(0xff71716f),
-                    size: 30.0,
-                  ),
-                  Text(
-                    whenText,
-                    style: headline1,
-                  ),
-                ],
-              ),
-            ),
-            Row(
-              children: [
-                Container(
-                  margin: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white,
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      elevation: 0,
-                      fixedSize: const Size(125, 0),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(
+                        currentWidth / 13.1, currentHeight / 80.3, 0.0, 0.0),
+                    height: 40.0,
+                    width: 125.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.white,
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          displayDate,
-                          style: secondaryText,
-                        ),
-                        const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                    onPressed: () async {
-                      await showDatePicker(
-                        context: context,
-                        initialDate: date,
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime(2030),
-                      ).then((selectedDate) {
-                        if (selectedDate != null) {
-                          setState(() {
-                            date = selectedDate;
-                            formattedDate =
-                                DateFormat('yyyy-MM-dd').format(selectedDate);
-                            displayDate =
-                                DateFormat('d-MMM').format(selectedDate);
-                          });
-                        }
-                      });
-                    },
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.fromLTRB(10.0, 10.0, 0.0, 0.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white,
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      elevation: 0,
-                      fixedSize: const Size(102, 0),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          displayTime,
-                          style: secondaryText,
-                        ),
-                        const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Colors.grey,
-                        )
-                      ],
-                    ),
-                    onPressed: () async {
-                      final time = await pickTime();
-                      if (time == null) return; // pressed 'CANCEL'
-
-                      final newDateTime = DateTime(date.year, date.month,
-                          date.day, time.hour, time.minute);
-
-                      setState(() {
-                        date = newDateTime; // pressed 'OK'
-                        formattedTime = DateFormat('HH:mm:ss.SSS').format(date);
-                        displayTime = DateFormat('Hm').format(date);
-                      });
-                    },
-                  ),
-                ),
-                Container(
-                  alignment: AlignmentDirectional.center,
-                  margin: const EdgeInsets.fromLTRB(10.0, 10.0, 0.0, 0.0),
-                  width: 102.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white,
-                  ),
-                  child: Dropdown(
-                    dropdownValue: durationValue,
-                    list: durationList,
-                    icon: Icons.keyboard_arrow_down,
-                    setter: (value) {
-                      durationValue = value;
-                    },
-                  ),
-                )
-              ],
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.sports_tennis_sharp,
-                    color: Color(0xff71716f),
-                    size: 30.0,
-                  ),
-                  Text(
-                    courtText,
-                    style: headline1,
-                  ),
-                ],
-              ),
-            ),
-            Row(
-              children: [
-                Container(
-                  alignment: AlignmentDirectional.center,
-                  margin: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                  height: 40.0,
-                  width: 125.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white,
-                  ),
-                  child: DropdownButtonHideUnderline(
+                    padding:
+                        EdgeInsets.fromLTRB(currentWidth / 26.2, 0.0, 0.0, 0.0),
                     child: Dropdown(
-                      dropdownValue: courtValue,
-                      list: courtList,
+                      dropdownValue: playersValue,
+                      list: playersList,
                       icon: Icons.keyboard_arrow_down,
                       setter: (value) {
-                        courtValue = value;
+                        playersValue = value;
                       },
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 0.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(16.0),
-                    width: MediaQuery.of(context).size.width * 0.55,
-                    child: Column(
-                      children: [
-                        Text(
-                          disclaimerText,
-                          style: caption,
-                        ),
-                      ],
+                ],
+              ),
+              Container(
+                padding:
+                    EdgeInsets.fromLTRB(0.0, currentHeight / 40.15, 0.0, 0.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.calendar_month,
+                      color: textGrayColor,
+                      size: currentWidth / 9.0,
                     ),
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(0.0, 60.0, 0.0, 0.0),
-              height: 45,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff29b3b0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-                onPressed: toggleButton ? () => setupMatch() : null,
-                child: Text(
-                  setupMatchText,
-                  style: buttonText,
+                    Text(
+                      whenText,
+                      style: headline1(textSizeCaption),
+                    ),
+                  ],
                 ),
               ),
-            )
-          ],
+              Container(
+                padding:
+                    EdgeInsets.fromLTRB(0.0, currentHeight / 40.15, 0.0, 0.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.calendar_month,
+                      color: textGrayColor,
+                      size: currentWidth / 9.8,
+                    ),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(
+                          currentWidth / 13.1, 0.0, 0.0, 0.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.white,
+                      ),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          elevation: 0,
+                          fixedSize: Size(currentWidth / 2.8, 0),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              displayDate,
+                              style: secondaryText,
+                            ),
+                            const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.grey,
+                            )
+                          ],
+                        ),
+                        onPressed: () async {
+                          await showDatePicker(
+                            context: context,
+                            initialDate: date,
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2030),
+                          ).then((selectedDate) {
+                            if (selectedDate != null) {
+                              setState(() {
+                                date = selectedDate;
+                                formattedDate = DateFormat('yyyy-MM-dd')
+                                    .format(selectedDate);
+                                displayDate =
+                                    DateFormat('d-MMM').format(selectedDate);
+                              });
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(
+                          currentWidth / 39.3, 0.0, 0.0, 0.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.white,
+                      ),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          elevation: 0,
+                          fixedSize: Size(currentWidth / 3.1, 0),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              displayTime,
+                              style: secondaryText,
+                            ),
+                            const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.grey,
+                            )
+                          ],
+                        ),
+                        onPressed: () async {
+                          final time = await pickTime();
+                          if (time == null) return; // pressed 'CANCEL'
+
+                          final newDateTime = DateTime(date.year, date.month,
+                              date.day, time.hour, time.minute);
+
+                          setState(() {
+                            date = newDateTime; // pressed 'OK'
+                            formattedTime =
+                                DateFormat('HH:mm:ss.SSS').format(date);
+                            displayTime = DateFormat('Hm').format(date);
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding:
+                    EdgeInsets.fromLTRB(0.0, currentHeight / 40.15, 0.0, 0.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.access_time_rounded,
+                      color: textGrayColor,
+                      size: currentWidth / 9.8,
+                    ),
+                    Container(
+                      alignment: AlignmentDirectional.center,
+                      margin: EdgeInsets.fromLTRB(
+                          currentWidth / 13.1, 0.0, 0.0, 0.0),
+                      width: currentWidth / 3.1,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.white,
+                      ),
+                      child: Dropdown(
+                        dropdownValue: durationValue,
+                        list: durationList,
+                        icon: Icons.keyboard_arrow_down,
+                        setter: (value) {
+                          durationValue = value;
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.sports_tennis_sharp,
+                      color: textGrayColor,
+                      size: currentWidth / 9.8,
+                    ),
+                    Text(
+                      courtText,
+                      style: headline1(textSizeCaption),
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                children: [
+                  Container(
+                    alignment: AlignmentDirectional.center,
+                    margin: EdgeInsets.fromLTRB(
+                        currentWidth / 13.1, currentHeight / 80.3, 0.0, 0.0),
+                    height: currentHeight / 20,
+                    width: currentWidth / 5.6,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.white,
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: Dropdown(
+                        dropdownValue: courtValue,
+                        list: courtList,
+                        icon: Icons.keyboard_arrow_down,
+                        setter: (value) {
+                          courtValue = value;
+                        },
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(
+                        currentWidth / 26.2, currentHeight / 160.1, 0.0, 0.0),
+                    child: Container(
+                      padding: const EdgeInsets.all(16.0),
+                      width: MediaQuery.of(context).size.width * 0.55,
+                      child: Column(
+                        children: [
+                          Text(
+                            disclaimerText,
+                            style: caption(currentWidth / 29.1),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                margin:
+                    EdgeInsets.fromLTRB(0.0, currentHeight / 20.1, 0.0, 0.0),
+                height: currentHeight / 17.8,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff29b3b0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  onPressed: toggleButton ? () => setupMatch() : null,
+                  child: Text(
+                    setupMatchText,
+                    style: buttonText,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -472,9 +517,10 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
 
   void showAlert(BuildContext context) {
     showDialog(
-        context: context,
-        builder: (context) => const AlertDialog(
-              content: Text("Please select a level and location."),
-            ));
+      context: context,
+      builder: (context) => const AlertDialog(
+        content: Text("Please select a level and location."),
+      ),
+    );
   }
 }
