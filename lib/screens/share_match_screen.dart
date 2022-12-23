@@ -288,9 +288,8 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                           icon: const Icon(Icons.whatsapp_rounded, size: 40),
                           label: Text(shareButtonText),
                           onPressed: () => {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const PrivateMatchScreen())
-                            )},
+                            share()
+                          },
                         ),
                         ElevatedButton(
                           onPressed: () {
