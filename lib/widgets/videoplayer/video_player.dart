@@ -11,13 +11,12 @@ class VideoPlayerWidget extends StatefulWidget {
 }
 
 class _VideoPlayerState extends State<VideoPlayerWidget> {
-  final asset = "assets/videos/test.mp4";
   late VideoPlayerController controller;
 
   @override
   void initState() {
     super.initState();
-    controller = VideoPlayerController.asset(asset)
+    controller = VideoPlayerController.network("https://metch.io/videos/padellevel.mp4")
       ..addListener(() => setState(() {}))
       ..setLooping(false)
       ..initialize().then((_) => controller.play());
