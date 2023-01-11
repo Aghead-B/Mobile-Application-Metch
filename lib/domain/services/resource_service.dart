@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:metch/domain/api.constants.dart';
 import 'package:metch/domain/models/resource.dart';
-import 'package:metch/domain/repositories/ResourceRepository.dart';
+import 'package:metch/domain/repositories/resource_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 
