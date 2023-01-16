@@ -1,33 +1,33 @@
 class Match {
-  final int clubid;
-  final int sportid;
-  final int levelmin;
+  final int clubId;
+  final int sportId;
+  final int levelMin;
   final String planned;
   final int duration;
   final int spots;
-  final int? levelmax;
+  final int? levelMax;
   final int? court;
 
   const Match({
-    required this.clubid,
-    required this.sportid,
-    required this.levelmin,
+    required this.clubId,
+    required this.sportId,
+    required this.levelMin,
     required this.planned,
     required this.duration,
     required this.spots,
-    this.levelmax,
+    this.levelMax,
     this.court,
   });
 
   factory Match.fromJson(Map<String, dynamic> json) {
     return Match(
-      clubid: json['clubid'],
-      sportid: json['sportid'],
-      levelmin: json['levelmin'],
+      clubId: json['clubid'],
+      sportId: json['sportid'],
+      levelMin: json['levelmin'],
       planned: json['planned'],
       duration: json['duration'],
       spots: json['spots'],
-      levelmax: json['levelmax'],
+      levelMax: json['levelmax'],
       court: json['court'],
     );
   }

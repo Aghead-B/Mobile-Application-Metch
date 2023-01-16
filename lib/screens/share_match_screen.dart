@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
-import 'package:metch/screens/private_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import 'package:metch/domain/models/share_match.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +25,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
   String shareButtonText = '';
   String cancelButton = '';
   String headTitle = '';
+  String openText = '';
 
   @override
   void initState() {
@@ -33,27 +33,26 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
     futureMatch = matchService.getMatch(widget.matchId);
 
     resourceService = ResourceService();
-    resourceService.getResource([1532,1304,1101]).then((value) => {
-      setState(() {
-        shareMatchTitle = value[0].value;
-        shareButtonText = value[1].value;
-        cancelButton = value[2].value;
-      }),
-    });
+    resourceService.getResource([1532, 1304, 1101, 324]).then((value) => {
+          setState(() {
+            shareMatchTitle = value[0].value;
+            shareButtonText = value[1].value;
+            cancelButton = value[2].value;
+            openText = value[3].value;
+          }),
+        });
     super.initState();
   }
 
   String convertDate(String date) {
     DateTime dateTime = DateTime.parse(date);
     var formattedDate = DateFormat('EEEE dd MMMM').format(dateTime);
-
     return formattedDate;
   }
 
   String convertDateIntoTime(String date) {
     DateTime dateTime = DateTime.parse(date);
     var formattedDate = DateFormat('HH:mm').format(dateTime);
-
     return formattedDate;
   }
 
@@ -71,283 +70,284 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
     final currentWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: secondaryBackground,
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xff29b3b0), Color(0xff000000)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+        backgroundColor: secondaryBackground,
+        appBar: AppBar(
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xff29b3b0), Color(0xff000000)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+          ),
+          title: Center(
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 0.0),
+              // For the arrow nav, keep 40
+              child: Text(
+                shareMatchTitle,
+                style: headline1Bold,
+              ),
             ),
           ),
         ),
-        title: Center(
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 40.0, 0.0),
-            // For the arrow nav, keep 40
-            child: Text(
-              shareMatchTitle,
-              style: headline1Bold,
-            ),
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: FutureBuilder<SharedMatch>(
-          future: futureMatch,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Column(
-                children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      Image.asset("assets/images/private_match_bg.png"),
-                      const Text(
-                        "Padel",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 40),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                        child: Row(
-                          children: [
-                             Icon(
-                              Icons.star,
-                              color: secondary900,
-                              size: currentWidth/7.86,
-                            ),
-                            Text(
-                              "Level ${snapshot.data!.levelMin.toString()}",
-                              style: TextStyle(
-                                fontSize: currentWidth/19.65,
-                                color: secondary800,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 8, 16, 0),
-                        child: Row(
-                          children: [
-                            Text(
-                              "What is level ${snapshot.data!.levelMin.toString()}?",
-                              style: TextStyle(
-                                fontSize: currentWidth/19.65,
-                                color: secondary800,
-                              ),
-                            ),
-                             Icon(
-                              Icons.arrow_forward,
-                              color: secondary800,
-                               size: currentWidth/11.2,
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  const Divider(
-                    color: secondary800,
-                    thickness: 1,
-                  ),
-                  Row(
-                      children: [
-                        const Padding(
-                            padding: EdgeInsets.fromLTRB(25.0, 0.0, 0.0, 0.0)),
-                        Text(
-                          convertDate(snapshot.data!.planned.toString()),
+        body: SingleChildScrollView(
+          child: FutureBuilder<SharedMatch>(
+            future: futureMatch,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        Image.asset("assets/images/private_match_bg.png"),
+                        const Text(
+                          "Padel",
                           style: TextStyle(
-                            fontSize: currentWidth/19.65,
-                            fontWeight: FontWeight.bold,
-                            color: textGrayColor,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 40),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.star,
+                                color: secondary900,
+                                size: currentWidth / 7.86,
+                              ),
+                              Text(
+                                "Level ${snapshot.data!.levelMin.toString()}",
+                                style: TextStyle(
+                                  fontSize: currentWidth / 19.65,
+                                  color: secondary800,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ]),
-                  Row(
-                    children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 8, 16, 0),
+                          child: Row(
+                            children: [
+                              Text(
+                                "What is level ${snapshot.data!.levelMin.toString()}?",
+                                style: TextStyle(
+                                  fontSize: currentWidth / 19.65,
+                                  color: secondary800,
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward,
+                                color: secondary800,
+                                size: currentWidth / 11.2,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    const Divider(
+                      color: secondary800,
+                      thickness: 1,
+                    ),
+                    Row(children: [
                       const Padding(
-                          padding: EdgeInsets.fromLTRB(25.0, 0.0, 0.0, 25.0)),
+                          padding: EdgeInsets.fromLTRB(25.0, 0.0, 0.0, 0.0)),
                       Text(
-                        "${convertDateIntoTime(snapshot.data!.planned.toString())} - ${addDuration(snapshot.data!.planned.toString(), snapshot.data!.duration)}, Court ${snapshot.data!.court.toString()}",
+                        convertDate(snapshot.data!.planned.toString()),
                         style: TextStyle(
-                          fontSize: currentWidth/19.65,
+                          fontSize: currentWidth / 19.65,
                           fontWeight: FontWeight.bold,
                           color: textGrayColor,
                         ),
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Padding(
-                          padding: EdgeInsets.fromLTRB(25.0, 75.0, 0.0, 0.0)),
-                      Text(
-                          "${snapshot.data!.club.name}\n${snapshot.data!.club.address}, ${snapshot.data!.club.city}",
-                          style: headline3),
-                    ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
-                    alignment: Alignment.topLeft,
-                    child:  Linkify(
-                      onOpen: (link) {
-
-                        launch(snapshot.data!.club.url.toString());
-                      },
-                      text: snapshot.data!.club.url,
-                      style: const TextStyle(fontSize: 18),
-                      options: LinkifyOptions(humanize: true, removeWww: true),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Padding(
-                          padding: EdgeInsets.fromLTRB(0.0, 150.0, 0.0, 0.0)),
-                      Column(
-                        children: const [
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 50.0, 0.0)),
-                          Icon(
-                              color: textGrayColor,
-                              size: 70,
-                              Icons.panorama_fish_eye),
-                          Text(
-                            "open",
-                            style: TextStyle(color: textGrayColor),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: const [
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(50.0, 0.0, 40.0, 0.0)),
-                          Icon(
-                              color: textGrayColor,
-                              size: 70,
-                              Icons.panorama_fish_eye),
-                          Text(
-                            "open",
-                            style: TextStyle(color: textGrayColor),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: const [
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(40.0, 0.0, 50.0, 0.0)),
-                          Icon(
-                              color: textGrayColor,
-                              size: 70,
-                              Icons.panorama_fish_eye),
-                          Text(
-                            "open",
-                            style: TextStyle(color: textGrayColor),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: const [
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(50.0, 0.0, 0.0, 0.0)),
-                          Icon(
-                              color: textGrayColor,
-                              size: 70,
-                              Icons.panorama_fish_eye),
-                          Text(
-                            "open",
-                            style: TextStyle(color: textGrayColor),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    ]),
+                    Row(
                       children: [
-                        ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                              textStyle: headline3,
-                              backgroundColor: const Color(0xff29b3b0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              minimumSize: const Size(151, 53)),
-                          icon: const Icon(Icons.whatsapp_rounded, size: 40),
-                          label: Text(shareButtonText),
-                          onPressed: () => {
-                            share()
-                          },
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            //TODO Cancel a match is yet to be implemented
-                          },
-                          style: ElevatedButton.styleFrom(
-                              textStyle: headline3,
-                              backgroundColor: secondaryBackground,
-                              shape: RoundedRectangleBorder(
-                                side: const BorderSide(color: Colors.black),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              minimumSize: const Size(151, 53)),
-                          child: Text(
-                            cancelButton,
-                            style: const TextStyle(color: Colors.black),
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(25.0, 0.0, 0.0, 25.0)),
+                        Text(
+                          "${convertDateIntoTime(snapshot.data!.planned.toString())} - ${addDuration(snapshot.data!.planned.toString(), snapshot.data!.duration)}, Court ${snapshot.data!.court.toString()}",
+                          style: TextStyle(
+                            fontSize: currentWidth / 19.65,
+                            fontWeight: FontWeight.bold,
+                            color: textGrayColor,
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              );
-            } else if (snapshot.hasError) {
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                child: Text(
-                  '${snapshot.error}',
-                  style: headline4,
-                ),
-              );
-            }
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 0.0),
+                    Row(
+                      children: [
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(25.0, 75.0, 0.0, 0.0)),
+                        Text(
+                            "${snapshot.data!.club.name}\n${snapshot.data!.club.address}, ${snapshot.data!.club.city}",
+                            style: headline3),
+                      ],
                     ),
-                    CircularProgressIndicator(
-                      color: Colors.white,
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
+                      alignment: Alignment.topLeft,
+                      child: Linkify(
+                        onOpen: (link) {
+                          launch(snapshot.data!.club.url.toString());
+                        },
+                        text: snapshot.data!.club.url,
+                        style: const TextStyle(fontSize: 18),
+                        options:
+                            LinkifyOptions(humanize: true, removeWww: true),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Padding(
+                            padding: EdgeInsets.fromLTRB(0.0, 150.0, 0.0, 0.0)),
+                        Column(
+                          children: [
+                            const Padding(
+                                padding:
+                                    EdgeInsets.fromLTRB(0.0, 0.0, 50.0, 0.0)),
+                            const Icon(
+                                color: textGrayColor,
+                                size: 70,
+                                Icons.panorama_fish_eye),
+                            Text(
+                              openText,
+                              style: const TextStyle(color: textGrayColor),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Padding(
+                                padding:
+                                    EdgeInsets.fromLTRB(50.0, 0.0, 40.0, 0.0)),
+                            const Icon(
+                                color: textGrayColor,
+                                size: 70,
+                                Icons.panorama_fish_eye),
+                            Text(
+                              openText,
+                              style: const TextStyle(color: textGrayColor),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Padding(
+                                padding:
+                                    EdgeInsets.fromLTRB(40.0, 0.0, 50.0, 0.0)),
+                            const Icon(
+                                color: textGrayColor,
+                                size: 70,
+                                Icons.panorama_fish_eye),
+                            Text(
+                              openText,
+                              style: const TextStyle(color: textGrayColor),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Padding(
+                                padding:
+                                    EdgeInsets.fromLTRB(50.0, 0.0, 0.0, 0.0)),
+                            const Icon(
+                                color: textGrayColor,
+                                size: 70,
+                                Icons.panorama_fish_eye),
+                            Text(
+                              openText,
+                              style: const TextStyle(color: textGrayColor),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                                textStyle: headline3,
+                                backgroundColor: const Color(0xff29b3b0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                minimumSize: const Size(151, 53)),
+                            icon: const Icon(Icons.whatsapp_rounded, size: 40),
+                            label: Text(shareButtonText),
+                            onPressed: () => {share()},
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              //TODO Cancel a match is yet to be implemented
+                            },
+                            style: ElevatedButton.styleFrom(
+                                textStyle: headline3,
+                                backgroundColor: secondaryBackground,
+                                shape: RoundedRectangleBorder(
+                                  side: const BorderSide(color: Colors.black),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                minimumSize: const Size(151, 53)),
+                            child: Text(
+                              cancelButton,
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
-                )
-              ],
-            );
-          },
-        ),
-      )
-    );
+                );
+              } else if (snapshot.hasError) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                  child: Text(
+                    '${snapshot.error}',
+                    style: headline4,
+                  ),
+                );
+              }
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0.0, 25.0, 0.0, 0.0),
+                      ),
+                      CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    ],
+                  )
+                ],
+              );
+            },
+          ),
+        ));
   }
+
   Future<void> share() async {
     await FlutterShare.share(
-        title: 'Shared match using Metch.io',
-        text: 'Play padel with me using Metch! Join me with the link below:',
-        linkUrl: 'https://metch.io/match/?id=${widget.matchId}',
+      title: 'Shared match using Metch.io',
+      text: 'Play padel with me using Metch! Join me with the link below:',
+      linkUrl: 'https://metch.io/match/?id=${widget.matchId}',
     );
   }
 }

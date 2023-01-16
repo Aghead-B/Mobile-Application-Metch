@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:metch/domain/api.constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:metch/domain/models/match.dart';
-
 import '../models/share_match.dart';
 
 class MatchService {
@@ -20,8 +18,8 @@ class MatchService {
 
   Future<MatchCreated> postMatch(Match match) async {
     final response = await http.post(Uri.parse('$api_url/Metch/'
-        '?clubid=${match.clubid}&sportid=${match.sportid}&levelmin=${match.levelmin}&planned=${match.planned}'
-        '&duration=${match.duration}&spots=${match.spots}&levelmax=${match.levelmax}&court=${match.court}'));
+        '?clubid=${match.clubId}&sportid=${match.sportId}&levelmin=${match.levelMin}&planned=${match.planned}'
+        '&duration=${match.duration}&spots=${match.spots}&levelmax=${match.levelMax}&court=${match.court}'));
 
     if (response.statusCode == 200) {
       return MatchCreated(

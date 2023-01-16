@@ -1,13 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:metch/screens/setup_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
+import '../domain/models/resource.dart';
 import '../domain/models/share_match.dart';
 import '../domain/services/match_service.dart';
+import '../domain/services/resource_service.dart';
 
 class PrivateMatchScreen extends StatefulWidget {
   const PrivateMatchScreen({Key? key}) : super(key: key);
-
 
   @override
   State<PrivateMatchScreen> createState() => _PrivateMatchScreenState();
@@ -16,11 +16,24 @@ class PrivateMatchScreen extends StatefulWidget {
 class _PrivateMatchScreenState extends State<PrivateMatchScreen> {
   late MatchService matchService;
   late Future<SharedMatch> futureMatch;
+  late ResourceService resourceService;
+  late Future<List<Resource>> futureResource;
+
+  String setupMatchText = '';
+  String courtText = '';
 
   @override
   void initState() {
     super.initState();
     matchService = MatchService();
+    resourceService = ResourceService();
+
+    resourceService.getResource([1522, 1117]).then((value) => {
+          setState(() {
+            setupMatchText = value[0].value;
+            courtText = value[1].value;
+          }),
+        });
   }
 
   @override
@@ -120,8 +133,7 @@ class _PrivateMatchScreenState extends State<PrivateMatchScreen> {
                   style: TextStyle(
                       color: secondary800,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20
-                      ),
+                      fontSize: 20),
                 ),
               ],
             ),
@@ -130,8 +142,8 @@ class _PrivateMatchScreenState extends State<PrivateMatchScreen> {
             padding: const EdgeInsets.fromLTRB(8, 0, 32, 0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   "Peakz KBK Amsterdam",
                   style: TextStyle(
                     color: secondary800,
@@ -139,8 +151,8 @@ class _PrivateMatchScreenState extends State<PrivateMatchScreen> {
                   ),
                 ),
                 Text(
-                  "court 4",
-                  style: TextStyle(
+                  "$courtText 4",
+                  style: const TextStyle(
                     color: secondary800,
                     fontSize: 18,
                   ),
@@ -193,7 +205,7 @@ class _PrivateMatchScreenState extends State<PrivateMatchScreen> {
                       ),
                     );
                   },
-                  child: const Text("setup match"),
+                  child: Text(setupMatchText),
                 ),
               ],
             ),
