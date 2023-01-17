@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 
@@ -21,7 +19,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final currentHeight = MediaQuery.of(context).size.height;
     final currentWidth = MediaQuery.of(context).size.width;
-    print(agheadProfileSelected);
     return Scaffold(
       backgroundColor: secondaryBackground,
       appBar: AppBar(
