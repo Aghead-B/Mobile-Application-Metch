@@ -6,7 +6,7 @@ import '../models/share_match.dart';
 
 class MatchService {
   Future<SharedMatch> getMatch(int id) async {
-    final response = await http.get(Uri.parse('$api_url/Metch/$id'));
+    final response = await http.get(Uri.parse('$api_url_v2/Metch/$id'));
 
     if (response.statusCode == 200) {
       SharedMatch newMatch = SharedMatch.fromJson(jsonDecode(response.body));
@@ -17,7 +17,7 @@ class MatchService {
   }
 
   Future<MatchCreated> postMatch(Match match) async {
-    final response = await http.post(Uri.parse('$api_url/Metch/'
+    final response = await http.post(Uri.parse('$api_url_v2/Metch/'
         '?clubid=${match.clubId}&sportid=${match.sportId}&levelmin=${match.levelMin}&planned=${match.planned}'
         '&duration=${match.duration}&spots=${match.spots}&levelmax=${match.levelMax}&court=${match.court}'));
 
