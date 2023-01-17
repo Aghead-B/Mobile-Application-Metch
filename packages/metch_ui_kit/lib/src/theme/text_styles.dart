@@ -28,11 +28,11 @@ const paragraphBold = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-TextStyle caption(double size) {
+TextStyle caption(double size , Color color) {
   return TextStyle(
     fontFamily: _metchFontFamily,
     fontSize: size,
-    color: textGrayColor,
+    color: color,
   );
 }
 

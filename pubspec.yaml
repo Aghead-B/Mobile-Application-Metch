@@ -39,6 +39,10 @@ flutter:
     - assets/images/logoWithShadow.png
     - assets/images/metchTagLine.png
     - assets/images/private_match_bg.png
+    - assets/images/Aghead.png
+    - assets/images/Devid.png
+    - assets/images/Hani.png
+    - assets/images/Michael.png
   fonts:
     - family: Tahoma
       fonts:
