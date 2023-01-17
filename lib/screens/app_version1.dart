@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:metch/screens/tab_navigator.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
@@ -11,10 +13,11 @@ class AppVersion1 extends StatefulWidget {
 
 class _AppVersion1State extends State<AppVersion1> {
   String _currentPage = "HomePage";
-  List<String> pageKeys = ["HomePage", "SetupMatchScreen"];
+  List<String> pageKeys = ["HomePage", "SetupMatchScreen", "ProfilePage"];
   final Map<String, GlobalKey<NavigatorState>> _navigatorKeys = {
     "HomePage": GlobalKey<NavigatorState>(),
     "SetupMatchScreen": GlobalKey<NavigatorState>(),
+    "ProfilePage": GlobalKey<NavigatorState>()
   };
   int _selectedIndex = 0;
 
@@ -34,7 +37,7 @@ class _AppVersion1State extends State<AppVersion1> {
     return WillPopScope(
       onWillPop: () async {
         final isFirstRouteInCurrentTab =
-            !await _navigatorKeys[_currentPage]!.currentState!.maybePop();
+        !await _navigatorKeys[_currentPage]!.currentState!.maybePop();
         if (isFirstRouteInCurrentTab) {
           if (_currentPage != "HomePage") {
             _selectTab("HomePage", 1);
@@ -49,6 +52,7 @@ class _AppVersion1State extends State<AppVersion1> {
           children: <Widget>[
             _buildOffstageNavigator("HomePage"),
             _buildOffstageNavigator("SetupMatchScreen"),
+            _buildOffstageNavigator("ProfilePage"),
           ],
         ),
         bottomNavigationBar: Container(
@@ -77,6 +81,13 @@ class _AppVersion1State extends State<AppVersion1> {
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.add,
+                  color: bottomNavigationBarIcon,
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.person,
                   color: bottomNavigationBarIcon,
                 ),
                 label: '',
