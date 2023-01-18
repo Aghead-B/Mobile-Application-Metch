@@ -16,7 +16,7 @@ class _VideoPlayerState extends State<VideoPlayerWidget> {
   @override
   void initState() {
     super.initState();
-    controller = VideoPlayerController.network("https://metch.io/videos/padellevel.mp4")
+    controller = VideoPlayerController.network("https://sportconnexions.com/videos/padellevel.mp4")
       ..addListener(() => setState(() {}))
       ..setLooping(false)
       ..initialize().then((_) => controller.play());
