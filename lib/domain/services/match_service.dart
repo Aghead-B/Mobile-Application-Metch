@@ -22,8 +22,6 @@ class MatchService {
         '?clubid=${match.clubId}&sportid=${match.sportId}&levelmin=${match.levelMin}&planned=${match.planned}'
         '&duration=${match.duration}&spots=${match.spots}&levelmax=${match.levelMax}&court=${match.court}&Sid=${globals.Sid}'));
 
-    print(globals.Sid);
-    print(globals.userId);
     if (response.statusCode == 200) {
       return MatchCreated(
           id: int.parse(jsonDecode(response.body)['Id'].toString()));
