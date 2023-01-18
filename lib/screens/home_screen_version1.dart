@@ -169,10 +169,6 @@ class _HomeScreenVersion1State extends State<HomeScreenVersion1> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      const Text(
-                        'Share it on WhatsApp!',
-                        style: paragraph,
-                      )
                     ],
                   ),
                 ),
