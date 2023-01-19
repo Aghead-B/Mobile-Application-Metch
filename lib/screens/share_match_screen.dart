@@ -293,7 +293,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              //TODO Cancel a match is yet to be implemented
+                              matchService.cancelMatch(widget.matchId);
                             },
                             style: ElevatedButton.styleFrom(
                                 textStyle: headline3,
