@@ -422,7 +422,7 @@ class _SetupMatchScreenState extends State<SetupMatchScreen> {
                           children: [
                             Text(
                               disclaimerText,
-                              style: caption(currentWidth / 29.1),
+                              style: caption(currentWidth / 29.1, textGrayColor),
                             ),
                           ],
                         ),
