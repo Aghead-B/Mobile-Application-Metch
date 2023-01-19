@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:metch/domain/models/players.dart';
 
@@ -8,9 +7,11 @@ class SharedMatch {
   final int id;
   final String date;
   final int court;
+  final int ownerId;
   final int levelMin;
   final int levelMax;
   final int duration;
+  final int state;
   final int spots;
   final Club club;
   final String? planned;
@@ -19,11 +20,13 @@ class SharedMatch {
   const SharedMatch(
       {required this.id,
       required this.date,
+      required this.ownerId,
       required this.court,
       required this.levelMin,
       required this.levelMax,
       required this.duration,
       required this.spots,
+      required this.state,
       required this.club,
       this.planned,
       required this.players});
@@ -55,9 +58,11 @@ class SharedMatch {
         id: json['Id'],
         date: json['Created'],
         court: json['Court'],
+        ownerId: json['OwnerId'],
         levelMin: json['LevelMin'],
         levelMax: json['LevelMax'],
         duration: json['Duration'],
+        state: json['State'],
         spots: json['Spots'],
         club: Club(
             id: json['Club']['Id'].toString(),

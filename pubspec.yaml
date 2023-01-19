@@ -10,6 +10,7 @@ environment:
 
 dependencies:
   flutter_share: ^2.0.0
+  shared_preferences:
   uni_links: ^0.5.1
   cupertino_icons: ^1.0.2
   intl: ^0.17.0

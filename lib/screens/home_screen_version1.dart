@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:metch/screens/private_match_screen.dart';
 import 'package:metch/screens/setup_match_screen.dart';
+import 'package:metch/screens/share_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import 'package:uni_links/uni_links.dart';
 import '../domain/services/resource_service.dart';
@@ -31,7 +31,7 @@ class _HomeScreenVersion1State extends State<HomeScreenVersion1> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return PrivateMatchScreen(matchId: int.parse(uri.queryParameters['id'].toString()));
+                return ShareMatchScreen(matchId: int.parse(uri.queryParameters['id'].toString()));
               },
             ),
           );
@@ -51,7 +51,7 @@ class _HomeScreenVersion1State extends State<HomeScreenVersion1> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return PrivateMatchScreen(matchId: int.parse(uri.queryParameters['id'].toString()));
+                return ShareMatchScreen(matchId: int.parse(uri.queryParameters['id'].toString()));
               },
             ),
           );

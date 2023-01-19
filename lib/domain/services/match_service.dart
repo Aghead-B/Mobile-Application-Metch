@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:metch/domain/api.constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:metch/domain/models/match.dart';
@@ -14,6 +15,18 @@ class MatchService {
       return newMatch;
     } else {
       throw Exception('Failed to load match');
+    }
+  }
+
+  Future<String> cancelMatch(int matchId) async {
+    final response = await http.post(
+        Uri.parse('$api_url_v2/Metch/$matchId?Sid=${globals.Sid}&state=4'));
+
+    debugPrint(response.body.toString());
+    if (response.statusCode == 200) {
+      return "Match canceled successfully";
+    } else {
+      throw Exception('Failed to cancel match');
     }
   }
 

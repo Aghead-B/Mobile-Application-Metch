@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
-import 'package:metch/screens/remove_player.dart';
 import 'package:metch/screens/setup_match_screen.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import 'package:metch/domain/models/share_match.dart';
@@ -9,7 +8,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../domain/services/match_service.dart';
 import 'package:flutter_share/flutter_share.dart';
 import '../domain/services/resource_service.dart';
-import 'add_player.dart';
 
 class PrivateMatchScreen extends StatefulWidget {
   const PrivateMatchScreen({Key? key, required this.matchId}) : super(key: key);

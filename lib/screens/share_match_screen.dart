@@ -4,6 +4,7 @@ import 'package:metch/screens/remove_player.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import 'package:metch/domain/models/share_match.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../domain/services/match_service.dart';
 import 'package:flutter_share/flutter_share.dart';
@@ -29,6 +30,9 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
   String cancelButton = '';
   String headTitle = '';
   String openText = '';
+
+  bool isOwner = false;
+  bool isVisible = true;
 
   @override
   void initState() {
@@ -66,6 +70,26 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
 
     var formattedDate = DateFormat('HH:mm').format(endTimeDateTimeFormat);
     return formattedDate;
+  }
+
+  checkOwner(int? ownerId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userIdFromCache = prefs.getString('userId');
+    if (ownerId == int.parse(userIdFromCache!)) {
+      setState(() {
+        isOwner = true;
+        isVisible = false;
+      });
+    } else {
+      setState(() {
+        isOwner = false;
+        isVisible = false;
+      });
+    }
+  }
+
+  onClickCancel() {
+    matchService.cancelMatch(widget.matchId);
   }
 
   @override
@@ -125,6 +149,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
             future: futureMatch,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                checkOwner(snapshot.data?.ownerId);
                 return Column(
                   children: [
                     Stack(
@@ -140,6 +165,26 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         ),
                       ],
                     ),
+                    snapshot.data!.state == 4
+                        ? Container(
+                            color: Colors.orangeAccent,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        16, 16, 16, 16),
+                                    child: Text(
+                                      "This match is canceled",
+                                      style: TextStyle(
+                                        fontSize: currentWidth / 19.65,
+                                        color: Colors.white,
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          )
+                        : const SizedBox(width: 0, height: 0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -370,21 +415,32 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                             label: Text(shareButtonText),
                             onPressed: () => {share()},
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              //TODO Cancel a match is yet to be implemented
-                            },
-                            style: ElevatedButton.styleFrom(
-                                textStyle: headline3,
-                                backgroundColor: secondaryBackground,
-                                shape: RoundedRectangleBorder(
-                                  side: const BorderSide(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                minimumSize: const Size(151, 53)),
-                            child: Text(
-                              cancelButton,
-                              style: const TextStyle(color: Colors.black),
+                          AnimatedOpacity(
+                            opacity: isOwner ? 1.0 : 0.0,
+                            duration: const Duration(milliseconds: 500),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                if (isOwner) {
+                                  onClickCancel();
+                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                    content: Text("Game is successfully canceled"),
+                                  ));
+                                } else {
+                                  null;
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  textStyle: headline3,
+                                  backgroundColor: secondaryBackground,
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  minimumSize: const Size(151, 53)),
+                              child: Text(
+                                cancelButton,
+                                style: const TextStyle(color: Colors.black),
+                              ),
                             ),
                           ),
                         ],
