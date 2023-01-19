@@ -80,8 +80,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
         isOwner = true;
         isVisible = false;
       });
-    }
-    else {
+    } else {
       setState(() {
         isOwner = false;
         isVisible = false;
@@ -166,6 +165,26 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                         ),
                       ],
                     ),
+                    snapshot.data!.state == 4
+                        ? Container(
+                            color: Colors.orangeAccent,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        16, 16, 16, 16),
+                                    child: Text(
+                                      "This match is canceled",
+                                      style: TextStyle(
+                                        fontSize: currentWidth / 19.65,
+                                        color: Colors.white,
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          )
+                        : const SizedBox(width: 0, height: 0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -403,6 +422,9 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                               onPressed: () {
                                 if (isOwner) {
                                   onClickCancel();
+                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                    content: Text("Game is successfully canceled"),
+                                  ));
                                 } else {
                                   null;
                                 }

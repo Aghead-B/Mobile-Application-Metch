@@ -1,0 +1,246 @@
+@startuml
+set namespaceSeparator ::
+
+class "metch::domain::models::club.dart::Club" {
+  +String id
+  +String name
+  +String? city
+  +String? address
+  +String? url
+}
+
+class "metch::domain::models::level.dart::Level" {
+  +int levelMin
+  +int levelMax
+}
+
+'class "metch::domain::models::match.dart::Match" {
+'  +int clubId
+'  +int sportId
+'  +int levelMin
+'  +String planned
+'  +int duration
+'  +int spots
+'  +int? levelMax
+'  +int? court
+'}
+
+'class "metch::domain::models::match.dart::MatchCreated" {
+'  +int id
+'}
+
+'class "metch::domain::models::players.dart::Players" {
+'  +String id
+'  +String name
+'  +String short
+'}
+
+'class "metch::domain::models::resource.dart::Resource" {
+'  +String id
+'  +String value
+'}
+
+class "metch::domain::models::share_match.dart::SharedMatch" {
+  +int id
+  +String date
+  +int court
+  +int levelMin
+  +int levelMax
+  +int duration
+  +int spots
+  +Club club
+  +String? planned
+  +List<Players> players
+}
+
+"metch::domain::models::share_match.dart::SharedMatch" o-- "metch::domain::models::club.dart::Club"
+
+class "metch::domain::services::club_service.dart::ClubService" {
+  +Future<List<Club>> searchClubs()
+}
+
+class "metch::domain::services::match_service.dart::MatchService" {
+  +Future<SharedMatch> getMatch()
+  +Future<MatchCreated> postMatch()
+  +dynamic removePlayer()
+  +dynamic postGuestPlayer()
+}
+
+class "metch::domain::services::resource_service.dart::ResourceService" {
+  +Future<List<Resource>> getResource()
+}
+
+class "metch::screens::add_player.dart::_AddPlayerPageState" {
+  +Future<SharedMatch> futureMatch
+  +MatchService matchService
+  +bool refresh
+  +void initState()
+  +String convertDate()
+  +String convertDateIntoTime()
+  +String addDuration()
+  +Widget build()
+}
+
+"metch::screens::add_player.dart::_AddPlayerPageState" o-- "metch::domain::services::match_service.dart::MatchService"
+
+class "metch::screens::find_location_screen.dart::_FindLocationScreenState" {
+  +ResourceService resourceService
+  +Future<List<Resource>> futureResource
+  +ClubService clubService
+  +Future<List<Club>> futureClub
+  +String appBarTextApi
+  +String inputHintApi
+  +void initState()
+  +Widget build()
+}
+
+"metch::screens::find_location_screen.dart::_FindLocationScreenState" o-- "metch::domain::services::resource_service.dart::ResourceService"
+"metch::screens::find_location_screen.dart::_FindLocationScreenState" o-- "metch::domain::services::club_service.dart::ClubService"
+
+class "metch::screens::home_screen_version1.dart::_HomeScreenVersion1State" {
+  +ResourceService resourceService
+  +String buttonTextApi
+  +String descriptionTextApi
+  -StreamSubscription<dynamic>? _sub
+  +Future<void> handleAppStartLink()
+  +Future<void> handleAppInBackgroundLink()
+  +void dispose()
+  +void initState()
+  +Widget build()
+}
+
+"metch::screens::home_screen_version1.dart::_HomeScreenVersion1State" o-- "metch::domain::services::resource_service.dart::ResourceService"
+
+class "metch::screens::private_match_screen.dart::_PrivateMatchScreenState" {
+  +ResourceService resourceService
+  +MatchService matchService
+  +Future<SharedMatch> futureMatch
+  +bool refresh
+  +String shareMatchTitle
+  +String shareButtonText
+  +String cancelButton
+  +String headTitle
+  +String openText
+  +String setupMatchText
+  +void initState()
+  +String convertDate()
+  +String convertDateIntoTime()
+  +String addDuration()
+  +Widget build()
+  +Future<void> share()
+}
+
+"metch::screens::private_match_screen.dart::_PrivateMatchScreenState" o-- "metch::domain::services::resource_service.dart::ResourceService"
+"metch::screens::private_match_screen.dart::_PrivateMatchScreenState" o-- "metch::domain::services::match_service.dart::MatchService"
+
+'class "metch::screens::profile_screen.dart::_ProfileScreenState" {
+'  +String profilePageText
+'  +bool agheadProfileSelected
+'  +bool devidProfileSelected
+'  +bool haniProfileSelected
+'  +bool michaelProfileSelected
+'  +Widget build()
+'}
+
+class "metch::screens::remove_player.dart::_RemovePlayerPageState" {
+  +Future<SharedMatch> futureMatch
+  +MatchService matchService
+  +bool refresh
+  +void initState()
+  +String convertDate()
+  +String convertDateIntoTime()
+  +String addDuration()
+  +Widget build()
+}
+
+"metch::screens::remove_player.dart::_RemovePlayerPageState" o-- "metch::domain::services::match_service.dart::MatchService"
+
+class "metch::screens::setup_match_screen.dart::_SetupMatchScreenState" {
+  +String formattedDate
+  +String displayDate
+  +String formattedTime
+  +String displayTime
+  +Future<MatchCreated> matchCreated
+  +MatchService matchService
+  +bool toggleButton
+  +int SPORT_ID_PADEL
+  +ResourceService resourceService
+  +Future<List<Resource>> futureResource
+  +Club club
+  +Level level
+  +DateTime date
+  +String playersValue
+  +String durationValue
+  +String courtValue
+  +String setupMatchText
+  +String selectLevelText
+  +String selectLocationText
+  +String lookingForText
+  +String whenText
+  +String courtText
+  +String disclaimerText
+  +Future<TimeOfDay?> pickTime()
+  -Future<void> _navigateAndGetLocationSelection()
+  -Future<void> _navigateAndGetLevelSelection()
+  +void initState()
+  +Widget build()
+  +Future<void> setupMatch()
+  +void showAlert()
+}
+
+"metch::screens::setup_match_screen.dart::_SetupMatchScreenState" o-- "metch::domain::services::match_service.dart::MatchService"
+"metch::screens::setup_match_screen.dart::_SetupMatchScreenState" o-- "metch::domain::services::resource_service.dart::ResourceService"
+"metch::screens::setup_match_screen.dart::_SetupMatchScreenState" o-- "metch::domain::models::club.dart::Club"
+"metch::screens::setup_match_screen.dart::_SetupMatchScreenState" o-- "metch::domain::models::level.dart::Level"
+
+class "metch::screens::set_level_page.dart::_SetLevelPageState" {
+  +int minimumDropdownValue
+  +int maximumDropdownValue
+  +int firstDropdown
+  +int secondDropdown
+  +ResourceService resourceService
+  +String setLevelText
+  +void initState()
+  +Widget build()
+}
+
+"metch::screens::set_level_page.dart::_SetLevelPageState" o-- "metch::domain::services::resource_service.dart::ResourceService"
+
+class "metch::screens::share_match_screen.dart::_ShareMatchScreenState" {
+  +ResourceService resourceService
+  +MatchService matchService
+  +Future<SharedMatch> futureMatch
+  +bool refresh
+  +String shareMatchTitle
+  +String shareButtonText
+  +String cancelButton
+  +String headTitle
+  +String openText
+  +void initState()
+  +String convertDate()
+  +String convertDateIntoTime()
+  +String addDuration()
+  +Widget build()
+  +Future<void> share()
+}
+
+"metch::screens::share_match_screen.dart::_ShareMatchScreenState" o-- "metch::domain::services::resource_service.dart::ResourceService"
+"metch::screens::share_match_screen.dart::_ShareMatchScreenState" o-- "metch::domain::services::match_service.dart::MatchService"
+
+'class "metch::widgets::videoplayer::video_overlay.dart::VideoOverlay" {
+'  +VideoPlayerController controller
+'  +Widget build()
+'  +Widget buildIndicator()
+'  +Widget buildPlay()
+'}
+
+'class "metch::widgets::videoplayer::video_player.dart::_VideoPlayerState" {
+'  +VideoPlayerController controller
+'  +void initState()
+'  +void dispose()
+'  +Widget build()
+'  +Widget buildVideo()
+'  +Widget buildVideoPlayer()
+'}
+
+@enduml

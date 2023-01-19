@@ -10,8 +10,6 @@ class MatchService {
   Future<SharedMatch> getMatch(int id) async {
     final response = await http.get(Uri.parse('$api_url_v2/Metch/$id'));
 
-    // var data = '{"Id":1248401,"SportId":109,"Created":"2023-01-18T09:18:57.8368585Z","Planned":"2023-01-18T10:14:24.077Z","PlannedShort":"","OwnerId":131885,"Court":0,"LevelMin":3,"LevelMax":7,"Duration":90,"Spots":2,"State":8,"Players":[{"Id":131885,"Name":"Alae el Hani","Short":"Alae"},{"Id":0,"Name":null,"Short":null},null,null],"Club":{"Id":2188,"Name":"Metzpoint","City":"Veldhoven","Address":"Peter Zuidlaan 40","URL":"http://www.metzpoint.nl"}}';
-
     if (response.statusCode == 200) {
       SharedMatch newMatch = SharedMatch.fromJson(jsonDecode(response.body));
       return newMatch;
