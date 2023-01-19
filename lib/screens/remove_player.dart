@@ -142,7 +142,7 @@ class _RemovePlayerPageState extends State<RemovePlayerPage> {
                                     widget.matchId, widget.spot);
                                 refresh = true;
                                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                  content: Text("Guest added successfully!"),
+                                  content: Text("Player removed successfully!"),
                                 ));
                               },
                               child: const Icon(
