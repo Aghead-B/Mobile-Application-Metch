@@ -29,4 +29,25 @@ class MatchService {
       throw Exception('Failed to create match');
     }
   }
+  removePlayer(int matchId, int spot) async {
+    final response = await http.post(Uri.parse('$api_url_v2/Metch/$matchId/?spot=$spot'));
+
+    if (response.statusCode == 200) {
+      print("statuscode ${response.statusCode}");
+    } else {
+      print("statuscode ${response.statusCode}");
+      throw Exception('Failed to remove player');
+    }
+  }
+  postGuestPlayer(int matchId, int spot) async {
+    const GUEST_USER = 0;
+    final response = await http.post(Uri.parse('$api_url_v2/Metch/$matchId/?spot=$spot&userId=$GUEST_USER'));
+
+    if (response.statusCode == 200) {
+      print("statuscode ${response.statusCode}");
+    } else {
+      print("statuscode ${response.statusCode}");
+      throw Exception('Failed to remove player');
+    }
+  }
 }

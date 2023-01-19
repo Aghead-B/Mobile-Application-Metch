@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:metch/screens/remove_player.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import 'package:metch/domain/models/share_match.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../domain/services/match_service.dart';
 import 'package:flutter_share/flutter_share.dart';
 import '../domain/services/resource_service.dart';
+import 'add_player.dart';
 
 class ShareMatchScreen extends StatefulWidget {
   const ShareMatchScreen({Key? key, required this.matchId}) : super(key: key);
@@ -31,7 +33,6 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
   void initState() {
     matchService = MatchService();
     futureMatch = matchService.getMatch(widget.matchId);
-
     resourceService = ResourceService();
     resourceService.getResource([1532, 1304, 1101, 324]).then((value) => {
           setState(() {
@@ -68,6 +69,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
   @override
   Widget build(BuildContext context) {
     final currentWidth = MediaQuery.of(context).size.width;
+    var id = 0;
 
     return Scaffold(
         backgroundColor: secondaryBackground,
@@ -217,13 +219,16 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                             const Padding(
                                 padding:
                                     EdgeInsets.fromLTRB(0.0, 0.0, 50.0, 0.0)),
-                            const Icon(
-                                color: textGrayColor,
-                                size: 70,
-                                Icons.panorama_fish_eye),
-                            Text(
-                              openText,
-                              style: const TextStyle(color: textGrayColor),
+                            GestureDetector(
+                              child: const Icon(
+                                  color: textGrayColor,
+                                  size: 70,
+                                  Icons.person_pin,
+                              ),
+                            ),
+                            const Text(
+                              "Organiser",
+                              style: TextStyle(color: textGrayColor),
                             ),
                           ],
                         ),
@@ -232,10 +237,32 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                             const Padding(
                                 padding:
                                     EdgeInsets.fromLTRB(50.0, 0.0, 40.0, 0.0)),
-                            const Icon(
+                            GestureDetector(
+                              onTap: () {
+                                if (id == 0) {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) => RemovePlayerPage(matchId: widget.matchId, spot: 1,)),
+                                  );
+                                }
+                                    Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => AddPlayerPage(matchId: widget.matchId, spot: 1,)),
+                                );
+                              },
+                              child: id == 0 ?
+                              const Icon(
                                 color: textGrayColor,
                                 size: 70,
-                                Icons.panorama_fish_eye),
+                                Icons.person_pin,
+                              )
+                              :
+                              const Icon(
+                                color: textGrayColor,
+                                size: 70,
+                                Icons.person_add,
+                                ),
+                            ),
                             Text(
                               openText,
                               style: const TextStyle(color: textGrayColor),
@@ -247,10 +274,31 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                             const Padding(
                                 padding:
                                     EdgeInsets.fromLTRB(40.0, 0.0, 50.0, 0.0)),
-                            const Icon(
+                            GestureDetector(
+                              onTap: () {
+                                id == 0
+                                    ?  Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => RemovePlayerPage(matchId: widget.matchId, spot: 1,)),
+                                )
+                                    : Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => AddPlayerPage(matchId: widget.matchId, spot: 1,)),
+                                );
+                              },
+                              child: id == 0 ?
+                              const Icon(
                                 color: textGrayColor,
                                 size: 70,
-                                Icons.panorama_fish_eye),
+                                Icons.person_pin,
+                              )
+                                  :
+                              const Icon(
+                                color: textGrayColor,
+                                size: 70,
+                                Icons.person_add,
+                              ),
+                            ),
                             Text(
                               openText,
                               style: const TextStyle(color: textGrayColor),
@@ -262,10 +310,31 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                             const Padding(
                                 padding:
                                     EdgeInsets.fromLTRB(50.0, 0.0, 0.0, 0.0)),
-                            const Icon(
+                            GestureDetector(
+                              onTap: () {
+                                id == 0
+                                    ?  Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => RemovePlayerPage(matchId: widget.matchId, spot: 1,)),
+                                )
+                                    : Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => AddPlayerPage(matchId: widget.matchId, spot: 1,)),
+                                );
+                              },
+                              child: id == 0 ?
+                              const Icon(
                                 color: textGrayColor,
                                 size: 70,
-                                Icons.panorama_fish_eye),
+                                Icons.person_pin,
+                              )
+                                  :
+                              const Icon(
+                                color: textGrayColor,
+                                size: 70,
+                                Icons.person_add,
+                              ),
+                            ),
                             Text(
                               openText,
                               style: const TextStyle(color: textGrayColor),
