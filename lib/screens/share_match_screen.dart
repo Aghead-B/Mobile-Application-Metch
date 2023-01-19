@@ -14,7 +14,6 @@ class ShareMatchScreen extends StatefulWidget {
   const ShareMatchScreen({Key? key, required this.matchId}) : super(key: key);
   final int matchId;
 
-
   @override
   _ShareMatchScreenState createState() => _ShareMatchScreenState();
 }
@@ -23,6 +22,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
   late ResourceService resourceService;
   late MatchService matchService;
   late Future<SharedMatch> futureMatch;
+  late bool refresh;
 
   String shareMatchTitle = '';
   String shareButtonText = '';
@@ -32,7 +32,9 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
 
   @override
   void initState() {
-      _getMatch();
+    refresh = false;
+    matchService = MatchService();
+    futureMatch = matchService.getMatch(widget.matchId);
     resourceService = ResourceService();
     resourceService.getResource([1532, 1304, 1101, 324]).then((value) => {
           setState(() {
@@ -43,23 +45,6 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
           }),
         });
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    print("banana");
-    super.didChangeDependencies();
-    var data = ModalRoute.of(context)?.settings.arguments;
-    if (data != null) {
-      setState(() {
-        _getMatch();
-      });
-    }
-  }
-
-  void _getMatch() {
-    matchService = MatchService();
-    futureMatch = matchService.getMatch(widget.matchId);
   }
 
   String convertDate(String date) {
@@ -86,6 +71,31 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
   @override
   Widget build(BuildContext context) {
     final currentWidth = MediaQuery.of(context).size.width;
+
+    Future<void> _navigateAndAddPlayer(BuildContext context, int spot) async {
+      final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                AddPlayerPage(matchId: widget.matchId, spot: spot)),
+      );
+      if (result != null && result == true) {
+        initState();
+      }
+    }
+
+    Future<void> _navigateAndRemovePlayer(
+        BuildContext context, int spot) async {
+      final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                RemovePlayerPage(matchId: widget.matchId, spot: spot)),
+      );
+      if (result != null && result == true) {
+        initState();
+      }
+    }
 
     return Scaffold(
         backgroundColor: secondaryBackground,
@@ -256,21 +266,8 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                             GestureDetector(
                               onTap: () {
                                 snapshot.data!.players[1].id != "-1"
-                                    ? Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                RemovePlayerPage(
-                                                  matchId: widget.matchId,
-                                                  spot: 3,
-                                                )),
-                                      )
-                                    : Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) => AddPlayerPage(
-                                                  matchId: widget.matchId,
-                                                  spot: 3,
-                                                )),
-                                      );
+                                    ? _navigateAndRemovePlayer(context, 3)
+                                    : _navigateAndAddPlayer(context, 3);
                               },
                               child: snapshot.data!.players[1].id != "-1"
                                   ? const Icon(
@@ -300,21 +297,8 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                             GestureDetector(
                               onTap: () {
                                 snapshot.data!.players[2].id != "-1"
-                                    ? Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                RemovePlayerPage(
-                                                  matchId: widget.matchId,
-                                                  spot: 2,
-                                                )),
-                                      )
-                                    : Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) => AddPlayerPage(
-                                                  matchId: widget.matchId,
-                                                  spot: 2,
-                                                )),
-                                      );
+                                    ? _navigateAndRemovePlayer(context, 2)
+                                    : _navigateAndAddPlayer(context, 2);
                               },
                               child: snapshot.data!.players[2].id != "-1"
                                   ? const Icon(
@@ -344,21 +328,8 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                             GestureDetector(
                               onTap: () {
                                 snapshot.data!.players[3].id != "-1"
-                                    ? Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                RemovePlayerPage(
-                                                  matchId: widget.matchId,
-                                                  spot: 4,
-                                                )),
-                                      )
-                                    : Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) => AddPlayerPage(
-                                                  matchId: widget.matchId,
-                                                  spot: 4,
-                                                )),
-                                      );
+                                    ? _navigateAndRemovePlayer(context, 4)
+                                    : _navigateAndAddPlayer(context, 4);
                               },
                               child: snapshot.data!.players[3].id != "-1"
                                   ? const Icon(

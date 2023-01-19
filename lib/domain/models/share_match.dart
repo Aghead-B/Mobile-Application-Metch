@@ -51,8 +51,6 @@ class SharedMatch {
       }
     }
 
-    print(players.toString());
-
     return SharedMatch(
         id: json['Id'],
         date: json['Created'],

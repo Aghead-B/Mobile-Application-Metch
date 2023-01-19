@@ -5,7 +5,8 @@ import '../domain/models/share_match.dart';
 import '../domain/services/match_service.dart';
 
 class RemovePlayerPage extends StatefulWidget {
-  const RemovePlayerPage({Key? key, required this.matchId, required this.spot}) : super(key: key);
+  const RemovePlayerPage({Key? key, required this.matchId, required this.spot})
+      : super(key: key);
   final int matchId;
   final int spot;
 
@@ -16,9 +17,11 @@ class RemovePlayerPage extends StatefulWidget {
 class _RemovePlayerPageState extends State<RemovePlayerPage> {
   late Future<SharedMatch> futureMatch;
   late MatchService matchService;
+  late bool refresh;
 
   @override
   void initState() {
+    refresh = false;
     matchService = MatchService();
     futureMatch = matchService.getMatch(widget.matchId);
     super.initState();
@@ -135,7 +138,12 @@ class _RemovePlayerPageState extends State<RemovePlayerPage> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                matchService.removePlayer(widget.matchId, widget.spot);
+                                matchService.removePlayer(
+                                    widget.matchId, widget.spot);
+                                refresh = true;
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                  content: Text("Guest added successfully!"),
+                                ));
                               },
                               child: const Icon(
                                 Icons.delete,
@@ -188,7 +196,7 @@ class _RemovePlayerPageState extends State<RemovePlayerPage> {
                 backgroundColor: const Color(0xff29b3b0),
               ),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(context, refresh);
               },
               child: const Text(
                 'Back',

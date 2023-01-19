@@ -18,41 +18,31 @@ class MatchService {
   }
 
   Future<MatchCreated> postMatch(Match match) async {
-    // final response = await http.post(Uri.parse('$api_url_v2/Metch/'
-    //     '?clubid=${match.clubId}&sportid=${match.sportId}&levelmin=${match.levelMin}&planned=${match.planned}'
-    //     '&duration=${match.duration}&spots=${match.spots}&levelmax=${match.levelMax}&court=${match.court}&Sid=${globals.Sid}'));
+    final response = await http.post(Uri.parse('$api_url_v2/Metch/'
+        '?clubid=${match.clubId}&sportid=${match.sportId}&levelmin=${match.levelMin}&planned=${match.planned}'
+        '&duration=${match.duration}&spots=${match.spots}&levelmax=${match.levelMax}&court=${match.court}&Sid=${globals.Sid}'));
 
-    // if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       return MatchCreated(
-          id: 1248468
-      );
-    // } else {
-    //   throw Exception('Failed to create match');
-    // }
+          id: int.parse(jsonDecode(response.body)['Id'].toString()));
+    } else {
+      throw Exception('Failed to create match');
+    }
   }
 
   removePlayer(int matchId, int spot) async {
-    final response = await http.post(Uri.parse('$api_url_v2/Metch/$matchId/?spot=$spot&Sid=${globals.Sid}'));
-    print('$api_url_v2/Metch/$matchId/?spot=$spot&Sid=${globals.Sid}');
-    print(response.body.toString());
-
-    if (response.statusCode == 200) {
-      print("statuscode ${response.statusCode}");
-    } else {
-      print("statuscode ${response.statusCode}");
+    final response = await http.post(
+        Uri.parse('$api_url_v2/Metch/$matchId/?spot=$spot&Sid=${globals.Sid}'));
+    if (response.statusCode != 200) {
       throw Exception('Failed to remove player');
     }
   }
 
   postGuestPlayer(int matchId, int spot) async {
     const GUEST_USER = 0;
-    final response = await http.post(Uri.parse('$api_url_v2/Metch/$matchId/?spot=$spot&userId=$GUEST_USER&Sid=${globals.Sid}'));
-    print('$api_url_v2/Metch/$matchId/?spot=$spot&userId=$GUEST_USER&Sid=${globals.Sid}');
-    print(response.body.toString());
-    if (response.statusCode == 200) {
-      print("statuscode ${response.statusCode}");
-    } else {
-      print("statuscode ${response.statusCode}");
+    final response = await http.post(Uri.parse(
+        '$api_url_v2/Metch/$matchId/?spot=$spot&userId=$GUEST_USER&Sid=${globals.Sid}'));
+    if (response.statusCode != 200) {
       throw Exception('Failed to remove player');
     }
   }
