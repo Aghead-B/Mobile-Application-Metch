@@ -18,8 +18,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool haniProfileSelected = false;
   bool michaelProfileSelected = false;
 
-
-
   @override
   Widget build(BuildContext context) {
     final currentHeight = MediaQuery.of(context).size.height;
@@ -69,6 +67,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 var savedId = globals.userId = "131874";
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.setString('userId', savedId);
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("You are now logged in as Aghead, please return to the home page "),
+                ));
               },
               child: Row(
                 children: [
@@ -87,8 +88,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Text(
                       "Aghead",
                       style: agheadProfileSelected
-                      ? caption(18, const Color(0xff29b3b0)) // if true
-                      : caption(18, textGrayColor), //otherwise
+                          ? caption(18, const Color(0xff29b3b0)) // if true
+                          : caption(18, textGrayColor), //otherwise
                     ),
                   ),
                 ],
@@ -106,6 +107,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 var savedId = globals.userId = "131820";
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.setString('userId', savedId);
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("You are now logged in as Devid, please return to the home page "),
+                ));
               },
               child: Row(
                 children: [
@@ -142,6 +146,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 var savedId = globals.userId = "131885";
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.setString('userId', savedId);
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("You are now logged in as Hani, please return to the home page "),
+                ));
               },
               child: Row(
                 children: [
@@ -178,6 +185,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 var savedId = globals.userId = "131818";
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.setString('userId', savedId);
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("You are now logged in as Michael, please return to the home page "),
+                ));
               },
               child: Row(
                 children: [
