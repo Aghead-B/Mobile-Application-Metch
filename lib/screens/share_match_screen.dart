@@ -14,8 +14,9 @@ class ShareMatchScreen extends StatefulWidget {
   const ShareMatchScreen({Key? key, required this.matchId}) : super(key: key);
   final int matchId;
 
+
   @override
-  State<ShareMatchScreen> createState() => _ShareMatchScreenState();
+  _ShareMatchScreenState createState() => _ShareMatchScreenState();
 }
 
 class _ShareMatchScreenState extends State<ShareMatchScreen> {
@@ -31,8 +32,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
 
   @override
   void initState() {
-    matchService = MatchService();
-    futureMatch = matchService.getMatch(widget.matchId);
+      _getMatch();
     resourceService = ResourceService();
     resourceService.getResource([1532, 1304, 1101, 324]).then((value) => {
           setState(() {
@@ -43,6 +43,23 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
           }),
         });
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    print("banana");
+    super.didChangeDependencies();
+    var data = ModalRoute.of(context)?.settings.arguments;
+    if (data != null) {
+      setState(() {
+        _getMatch();
+      });
+    }
+  }
+
+  void _getMatch() {
+    matchService = MatchService();
+    futureMatch = matchService.getMatch(widget.matchId);
   }
 
   String convertDate(String date) {
@@ -69,7 +86,6 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
   @override
   Widget build(BuildContext context) {
     final currentWidth = MediaQuery.of(context).size.width;
-    var id = 0;
 
     return Scaffold(
         backgroundColor: secondaryBackground,
@@ -221,14 +237,14 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                                     EdgeInsets.fromLTRB(0.0, 0.0, 50.0, 0.0)),
                             GestureDetector(
                               child: const Icon(
-                                  color: textGrayColor,
-                                  size: 70,
-                                  Icons.person_pin,
+                                color: textGrayColor,
+                                size: 70,
+                                Icons.person_pin,
                               ),
                             ),
-                            const Text(
-                              "Organiser",
-                              style: TextStyle(color: textGrayColor),
+                            Text(
+                              snapshot.data!.players.first.short,
+                              style: const TextStyle(color: textGrayColor),
                             ),
                           ],
                         ),
@@ -239,32 +255,39 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                                     EdgeInsets.fromLTRB(50.0, 0.0, 40.0, 0.0)),
                             GestureDetector(
                               onTap: () {
-                                if (id == 0) {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context) => RemovePlayerPage(matchId: widget.matchId, spot: 1,)),
-                                  );
-                                }
-                                    Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) => AddPlayerPage(matchId: widget.matchId, spot: 1,)),
-                                );
+                                snapshot.data!.players[1].id != "-1"
+                                    ? Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                RemovePlayerPage(
+                                                  matchId: widget.matchId,
+                                                  spot: 3,
+                                                )),
+                                      )
+                                    : Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) => AddPlayerPage(
+                                                  matchId: widget.matchId,
+                                                  spot: 3,
+                                                )),
+                                      );
                               },
-                              child: id == 0 ?
-                              const Icon(
-                                color: textGrayColor,
-                                size: 70,
-                                Icons.person_pin,
-                              )
-                              :
-                              const Icon(
-                                color: textGrayColor,
-                                size: 70,
-                                Icons.person_add,
-                                ),
+                              child: snapshot.data!.players[1].id != "-1"
+                                  ? const Icon(
+                                      color: textGrayColor,
+                                      size: 70,
+                                      Icons.person_pin,
+                                    )
+                                  : const Icon(
+                                      color: textGrayColor,
+                                      size: 70,
+                                      Icons.person_add,
+                                    ),
                             ),
                             Text(
-                              openText,
+                              snapshot.data!.players[1].id != "-1"
+                                  ? snapshot.data!.players[1].short
+                                  : openText,
                               style: const TextStyle(color: textGrayColor),
                             ),
                           ],
@@ -276,31 +299,39 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                                     EdgeInsets.fromLTRB(40.0, 0.0, 50.0, 0.0)),
                             GestureDetector(
                               onTap: () {
-                                id == 0
-                                    ?  Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) => RemovePlayerPage(matchId: widget.matchId, spot: 1,)),
-                                )
+                                snapshot.data!.players[2].id != "-1"
+                                    ? Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                RemovePlayerPage(
+                                                  matchId: widget.matchId,
+                                                  spot: 2,
+                                                )),
+                                      )
                                     : Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) => AddPlayerPage(matchId: widget.matchId, spot: 1,)),
-                                );
+                                        MaterialPageRoute(
+                                            builder: (context) => AddPlayerPage(
+                                                  matchId: widget.matchId,
+                                                  spot: 2,
+                                                )),
+                                      );
                               },
-                              child: id == 0 ?
-                              const Icon(
-                                color: textGrayColor,
-                                size: 70,
-                                Icons.person_pin,
-                              )
-                                  :
-                              const Icon(
-                                color: textGrayColor,
-                                size: 70,
-                                Icons.person_add,
-                              ),
+                              child: snapshot.data!.players[2].id != "-1"
+                                  ? const Icon(
+                                      color: textGrayColor,
+                                      size: 70,
+                                      Icons.person_pin,
+                                    )
+                                  : const Icon(
+                                      color: textGrayColor,
+                                      size: 70,
+                                      Icons.person_add,
+                                    ),
                             ),
                             Text(
-                              openText,
+                              snapshot.data!.players[2].id != "-1"
+                                  ? snapshot.data!.players[2].short
+                                  : openText,
                               style: const TextStyle(color: textGrayColor),
                             ),
                           ],
@@ -309,34 +340,42 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                           children: [
                             const Padding(
                                 padding:
-                                    EdgeInsets.fromLTRB(50.0, 0.0, 0.0, 0.0)),
+                                    EdgeInsets.fromLTRB(40.0, 0.0, 50.0, 0.0)),
                             GestureDetector(
                               onTap: () {
-                                id == 0
-                                    ?  Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) => RemovePlayerPage(matchId: widget.matchId, spot: 1,)),
-                                )
+                                snapshot.data!.players[3].id != "-1"
+                                    ? Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                RemovePlayerPage(
+                                                  matchId: widget.matchId,
+                                                  spot: 4,
+                                                )),
+                                      )
                                     : Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) => AddPlayerPage(matchId: widget.matchId, spot: 1,)),
-                                );
+                                        MaterialPageRoute(
+                                            builder: (context) => AddPlayerPage(
+                                                  matchId: widget.matchId,
+                                                  spot: 4,
+                                                )),
+                                      );
                               },
-                              child: id == 0 ?
-                              const Icon(
-                                color: textGrayColor,
-                                size: 70,
-                                Icons.person_pin,
-                              )
-                                  :
-                              const Icon(
-                                color: textGrayColor,
-                                size: 70,
-                                Icons.person_add,
-                              ),
+                              child: snapshot.data!.players[3].id != "-1"
+                                  ? const Icon(
+                                      color: textGrayColor,
+                                      size: 70,
+                                      Icons.person_pin,
+                                    )
+                                  : const Icon(
+                                      color: textGrayColor,
+                                      size: 70,
+                                      Icons.person_add,
+                                    ),
                             ),
                             Text(
-                              openText,
+                              snapshot.data!.players[3].id != "-1"
+                                  ? snapshot.data!.players[3].short
+                                  : openText,
                               style: const TextStyle(color: textGrayColor),
                             ),
                           ],
