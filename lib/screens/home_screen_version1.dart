@@ -31,8 +31,7 @@ class _HomeScreenVersion1State extends State<HomeScreenVersion1> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return ShareMatchScreen(
-                    matchId: int.parse(uri.queryParameters['id'].toString()));
+                return ShareMatchScreen(matchId: int.parse(uri.queryParameters['id'].toString()));
               },
             ),
           );
@@ -52,8 +51,7 @@ class _HomeScreenVersion1State extends State<HomeScreenVersion1> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return ShareMatchScreen(
-                    matchId: int.parse(uri.queryParameters['id'].toString()));
+                return ShareMatchScreen(matchId: int.parse(uri.queryParameters['id'].toString()));
               },
             ),
           );

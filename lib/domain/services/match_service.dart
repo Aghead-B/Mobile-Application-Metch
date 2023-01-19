@@ -8,16 +8,27 @@ import 'package:metch/globals.dart' as globals;
 
 class MatchService {
   Future<SharedMatch> getMatch(int id) async {
-    final response = await http.get(Uri.parse('$api_url_v2/Metch/$id?Sid=${globals.Sid}'));
+    final response = await http.get(Uri.parse('$api_url_v2/Metch/$id'));
 
     // var data = '{"Id":1248401,"SportId":109,"Created":"2023-01-18T09:18:57.8368585Z","Planned":"2023-01-18T10:14:24.077Z","PlannedShort":"","OwnerId":131885,"Court":0,"LevelMin":3,"LevelMax":7,"Duration":90,"Spots":2,"State":8,"Players":[{"Id":131885,"Name":"Alae el Hani","Short":"Alae"},{"Id":0,"Name":null,"Short":null},null,null],"Club":{"Id":2188,"Name":"Metzpoint","City":"Veldhoven","Address":"Peter Zuidlaan 40","URL":"http://www.metzpoint.nl"}}';
-
 
     if (response.statusCode == 200) {
       SharedMatch newMatch = SharedMatch.fromJson(jsonDecode(response.body));
       return newMatch;
     } else {
       throw Exception('Failed to load match');
+    }
+  }
+
+  Future<String> cancelMatch(int matchId) async {
+    final response = await http.post(
+        Uri.parse('$api_url_v2/Metch/$matchId?Sid=${globals.Sid}&state=4'));
+
+    debugPrint(response.body.toString());
+    if (response.statusCode == 200) {
+      return "Match canceled successfully";
+    } else {
+      throw Exception('Failed to cancel match');
     }
   }
 
@@ -34,16 +45,20 @@ class MatchService {
     }
   }
 
-  Future<String> cancelMatch(int matchId) async {
-    debugPrint("geit");
-    final response =
-        await http.post(Uri.parse('$api_url/Metch/$matchId/?Sid=a6a02fee-f041-4ae1-b2b9-16f223179f0b&state=4'));
+  removePlayer(int matchId, int spot) async {
+    final response = await http.post(
+        Uri.parse('$api_url_v2/Metch/$matchId/?spot=$spot&Sid=${globals.Sid}'));
+    if (response.statusCode != 200) {
+      throw Exception('Failed to remove player');
+    }
+  }
 
-    if (response.statusCode == 200) {
-      debugPrint(response.statusCode.toString());
-      return "Match canceled successfully";
-    } else {
-      throw Exception('Failed to cancel match');
+  postGuestPlayer(int matchId, int spot) async {
+    const GUEST_USER = 0;
+    final response = await http.post(Uri.parse(
+        '$api_url_v2/Metch/$matchId/?spot=$spot&userId=$GUEST_USER&Sid=${globals.Sid}'));
+    if (response.statusCode != 200) {
+      throw Exception('Failed to remove player');
     }
   }
 }

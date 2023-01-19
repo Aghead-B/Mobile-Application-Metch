@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:metch/screens/remove_player.dart';
 import 'package:metch_ui_kit/metch_ui_kit.dart';
 import 'package:metch/domain/models/share_match.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../domain/services/match_service.dart';
 import 'package:flutter_share/flutter_share.dart';
 import '../domain/services/resource_service.dart';
+import 'add_player.dart';
 
 class ShareMatchScreen extends StatefulWidget {
   const ShareMatchScreen({Key? key, required this.matchId}) : super(key: key);
   final int matchId;
 
   @override
-  State<ShareMatchScreen> createState() => _ShareMatchScreenState();
+  _ShareMatchScreenState createState() => _ShareMatchScreenState();
 }
 
 class _ShareMatchScreenState extends State<ShareMatchScreen> {
   late ResourceService resourceService;
   late MatchService matchService;
   late Future<SharedMatch> futureMatch;
+  late bool refresh;
 
   String shareMatchTitle = '';
   String shareButtonText = '';
@@ -27,11 +31,14 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
   String headTitle = '';
   String openText = '';
 
+  bool isOwner = false;
+  bool isVisible = true;
+
   @override
   void initState() {
+    refresh = false;
     matchService = MatchService();
     futureMatch = matchService.getMatch(widget.matchId);
-
     resourceService = ResourceService();
     resourceService.getResource([1532, 1304, 1101, 324]).then((value) => {
           setState(() {
@@ -65,9 +72,55 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
     return formattedDate;
   }
 
+  checkOwner(int? ownerId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userIdFromCache = prefs.getString('userId');
+    if (ownerId == int.parse(userIdFromCache!)) {
+      setState(() {
+        isOwner = true;
+        isVisible = false;
+      });
+    }
+    else {
+      setState(() {
+        isOwner = false;
+        isVisible = false;
+      });
+    }
+  }
+
+  onClickCancel() {
+    matchService.cancelMatch(widget.matchId);
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentWidth = MediaQuery.of(context).size.width;
+
+    Future<void> _navigateAndAddPlayer(BuildContext context, int spot) async {
+      final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                AddPlayerPage(matchId: widget.matchId, spot: spot)),
+      );
+      if (result != null && result == true) {
+        initState();
+      }
+    }
+
+    Future<void> _navigateAndRemovePlayer(
+        BuildContext context, int spot) async {
+      final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                RemovePlayerPage(matchId: widget.matchId, spot: spot)),
+      );
+      if (result != null && result == true) {
+        initState();
+      }
+    }
 
     return Scaffold(
         backgroundColor: secondaryBackground,
@@ -97,6 +150,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
             future: futureMatch,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                checkOwner(snapshot.data?.ownerId);
                 return Column(
                   children: [
                     Stack(
@@ -217,12 +271,15 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                             const Padding(
                                 padding:
                                     EdgeInsets.fromLTRB(0.0, 0.0, 50.0, 0.0)),
-                            const Icon(
+                            GestureDetector(
+                              child: const Icon(
                                 color: textGrayColor,
                                 size: 70,
-                                Icons.panorama_fish_eye),
+                                Icons.person_pin,
+                              ),
+                            ),
                             Text(
-                              openText,
+                              snapshot.data!.players.first.short,
                               style: const TextStyle(color: textGrayColor),
                             ),
                           ],
@@ -232,12 +289,28 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                             const Padding(
                                 padding:
                                     EdgeInsets.fromLTRB(50.0, 0.0, 40.0, 0.0)),
-                            const Icon(
-                                color: textGrayColor,
-                                size: 70,
-                                Icons.panorama_fish_eye),
+                            GestureDetector(
+                              onTap: () {
+                                snapshot.data!.players[1].id != "-1"
+                                    ? _navigateAndRemovePlayer(context, 3)
+                                    : _navigateAndAddPlayer(context, 3);
+                              },
+                              child: snapshot.data!.players[1].id != "-1"
+                                  ? const Icon(
+                                      color: textGrayColor,
+                                      size: 70,
+                                      Icons.person_pin,
+                                    )
+                                  : const Icon(
+                                      color: textGrayColor,
+                                      size: 70,
+                                      Icons.person_add,
+                                    ),
+                            ),
                             Text(
-                              openText,
+                              snapshot.data!.players[1].id != "-1"
+                                  ? snapshot.data!.players[1].short
+                                  : openText,
                               style: const TextStyle(color: textGrayColor),
                             ),
                           ],
@@ -247,12 +320,28 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                             const Padding(
                                 padding:
                                     EdgeInsets.fromLTRB(40.0, 0.0, 50.0, 0.0)),
-                            const Icon(
-                                color: textGrayColor,
-                                size: 70,
-                                Icons.panorama_fish_eye),
+                            GestureDetector(
+                              onTap: () {
+                                snapshot.data!.players[2].id != "-1"
+                                    ? _navigateAndRemovePlayer(context, 2)
+                                    : _navigateAndAddPlayer(context, 2);
+                              },
+                              child: snapshot.data!.players[2].id != "-1"
+                                  ? const Icon(
+                                      color: textGrayColor,
+                                      size: 70,
+                                      Icons.person_pin,
+                                    )
+                                  : const Icon(
+                                      color: textGrayColor,
+                                      size: 70,
+                                      Icons.person_add,
+                                    ),
+                            ),
                             Text(
-                              openText,
+                              snapshot.data!.players[2].id != "-1"
+                                  ? snapshot.data!.players[2].short
+                                  : openText,
                               style: const TextStyle(color: textGrayColor),
                             ),
                           ],
@@ -261,13 +350,29 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                           children: [
                             const Padding(
                                 padding:
-                                    EdgeInsets.fromLTRB(50.0, 0.0, 0.0, 0.0)),
-                            const Icon(
-                                color: textGrayColor,
-                                size: 70,
-                                Icons.panorama_fish_eye),
+                                    EdgeInsets.fromLTRB(40.0, 0.0, 50.0, 0.0)),
+                            GestureDetector(
+                              onTap: () {
+                                snapshot.data!.players[3].id != "-1"
+                                    ? _navigateAndRemovePlayer(context, 4)
+                                    : _navigateAndAddPlayer(context, 4);
+                              },
+                              child: snapshot.data!.players[3].id != "-1"
+                                  ? const Icon(
+                                      color: textGrayColor,
+                                      size: 70,
+                                      Icons.person_pin,
+                                    )
+                                  : const Icon(
+                                      color: textGrayColor,
+                                      size: 70,
+                                      Icons.person_add,
+                                    ),
+                            ),
                             Text(
-                              openText,
+                              snapshot.data!.players[3].id != "-1"
+                                  ? snapshot.data!.players[3].short
+                                  : openText,
                               style: const TextStyle(color: textGrayColor),
                             ),
                           ],
@@ -291,21 +396,25 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                             label: Text(shareButtonText),
                             onPressed: () => {share()},
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              matchService.cancelMatch(widget.matchId);
-                            },
-                            style: ElevatedButton.styleFrom(
-                                textStyle: headline3,
-                                backgroundColor: secondaryBackground,
-                                shape: RoundedRectangleBorder(
-                                  side: const BorderSide(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                minimumSize: const Size(151, 53)),
-                            child: Text(
-                              cancelButton,
-                              style: const TextStyle(color: Colors.black),
+                          AnimatedOpacity(
+                            opacity: isOwner ? 1.0 : 0.0,
+                            duration: const Duration(milliseconds: 500),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                debugPrint("kanus");
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  textStyle: headline3,
+                                  backgroundColor: secondaryBackground,
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  minimumSize: const Size(151, 53)),
+                              child: Text(
+                                cancelButton,
+                                style: const TextStyle(color: Colors.black),
+                              ),
                             ),
                           ),
                         ],
