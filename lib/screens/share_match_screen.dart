@@ -401,7 +401,11 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                             duration: const Duration(milliseconds: 500),
                             child: ElevatedButton(
                               onPressed: () {
-                                debugPrint("kanus");
+                                if (isOwner) {
+                                  onClickCancel();
+                                } else {
+                                  null;
+                                }
                               },
                               style: ElevatedButton.styleFrom(
                                   textStyle: headline3,
