@@ -310,9 +310,17 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                                     EdgeInsets.fromLTRB(50.0, 0.0, 40.0, 0.0)),
                             GestureDetector(
                               onTap: () {
-                                snapshot.data!.players[1].id != "-1"
-                                    ? _navigateAndRemovePlayer(context, 3)
-                                    : _navigateAndAddPlayer(context, 3);
+                                if (isOwner) {
+                                  snapshot.data!.players[1].id != "-1"
+                                      ? _navigateAndRemovePlayer(context, 3)
+                                      : _navigateAndAddPlayer(context, 3);
+                                }
+                                else {
+                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                    content: Text("You are not authorized to add or delete players"),
+                                  ));
+                                }
+
                               },
                               child: snapshot.data!.players[1].id != "-1"
                                   ? const Icon(
@@ -341,9 +349,16 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                                     EdgeInsets.fromLTRB(40.0, 0.0, 50.0, 0.0)),
                             GestureDetector(
                               onTap: () {
-                                snapshot.data!.players[2].id != "-1"
-                                    ? _navigateAndRemovePlayer(context, 2)
-                                    : _navigateAndAddPlayer(context, 2);
+                                if (isOwner) {
+                                  snapshot.data!.players[2].id != "-1"
+                                      ? _navigateAndRemovePlayer(context, 2)
+                                      : _navigateAndAddPlayer(context, 2);
+                                }
+                                else {
+                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                    content: Text("You are not authorized to add or delete players"),
+                                  ));
+                                }
                               },
                               child: snapshot.data!.players[2].id != "-1"
                                   ? const Icon(
@@ -372,9 +387,16 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                                     EdgeInsets.fromLTRB(40.0, 0.0, 50.0, 0.0)),
                             GestureDetector(
                               onTap: () {
-                                snapshot.data!.players[3].id != "-1"
-                                    ? _navigateAndRemovePlayer(context, 4)
-                                    : _navigateAndAddPlayer(context, 4);
+                                if (isOwner) {
+                                  snapshot.data!.players[3].id != "-1"
+                                      ? _navigateAndRemovePlayer(context, 4)
+                                      : _navigateAndAddPlayer(context, 4);
+                                }
+                                else {
+                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                    content: Text("You are not authorized to add or delete players"),
+                                  ));
+                                }
                               },
                               child: snapshot.data!.players[3].id != "-1"
                                   ? const Icon(
