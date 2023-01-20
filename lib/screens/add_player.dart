@@ -144,6 +144,7 @@ class _AddPlayerPageState extends State<AddPlayerPage> {
                                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                   content: Text("Guest added successfully!"),
                                 ));
+                                Navigator.pop(context, refresh);
                               },
                               child: const Icon(
                                 Icons.add,
@@ -187,22 +188,6 @@ class _AddPlayerPageState extends State<AddPlayerPage> {
                 ],
               );
             },
-          ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(0.0, 60.0, 0.0, 0.0),
-            height: 45,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff29b3b0),
-              ),
-              onPressed: () {
-                Navigator.pop(context, refresh);
-              },
-              child: const Text(
-                'Back',
-                style: buttonText,
-              ),
-            ),
           ),
         ],
       ),
