@@ -336,7 +336,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
                             Text(
                               snapshot.data!.players[1].id != "-1"
                                   ? snapshot.data!.players[1].short
-                                  : openText,
+                                  : "open",
                               style: const TextStyle(color: textGrayColor),
                             ),
                           ],
