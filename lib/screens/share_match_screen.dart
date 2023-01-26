@@ -29,7 +29,7 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
   String shareButtonText = '';
   String cancelButton = '';
   String headTitle = '';
-  String openText = '';
+  String openText = 'open';
 
   bool isOwner = false;
   bool isVisible = true;
@@ -45,7 +45,6 @@ class _ShareMatchScreenState extends State<ShareMatchScreen> {
             shareMatchTitle = value[0].value;
             shareButtonText = value[1].value;
             cancelButton = value[2].value;
-            openText = value[3].value;
           }),
         });
     super.initState();
