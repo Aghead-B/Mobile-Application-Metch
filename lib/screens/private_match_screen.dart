@@ -27,7 +27,7 @@ class _PrivateMatchScreenState extends State<PrivateMatchScreen> {
   String shareButtonText = '';
   String cancelButton = '';
   String headTitle = '';
-  String openText = '';
+  String openText = 'open';
   String setupMatchText = '';
 
   @override
@@ -42,7 +42,6 @@ class _PrivateMatchScreenState extends State<PrivateMatchScreen> {
             shareMatchTitle = value[1].value;
             shareButtonText = value[2].value;
             cancelButton = value[3].value;
-            openText = value[4].value;
           }),
         });
     super.initState();
